@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plataforma de Actividades - Lenguaje y Emociones</title>
+  <style>
+    :root {
+      --bg-color: #f1f5f9;
+      --card-bg: #ffffff;
+      --border-color: #cbd5e1;
+      --primary-color: #2563eb;
+      --accent-color: #7c3aed;
+      --success-color: #16a34a;
+      --error-color: #dc2626;
+      --text-color: #0f172a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    /* MENÚ DE NAVEGACIÓN PRINCIPAL */
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 800px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background-color: #e2e8f0;
+      color: var(--text-color);
+      border: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      background-color: #cbd5e1;
+    }
+
+    .nav-btn.active {
+      background-color: var(--primary-color);
+      color: white;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .main-container {
+      width: 100%;
+      max-width: 800px;
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .activity-section {
+      display: none;
+    }
+
+    .activity-section.active {
+      display: block;
+    }
+
+    /* ENCABEZADOS Y BARRAS DE PROGRESO */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .progress-container {
+      flex: 1;
+      height: 10px;
+      background-color: #e2e8f0;
+      border-radius: 10px;
+      margin-right: 15px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: var(--primary-color);
+      transition: width 0.4s ease;
+    }
+
+    .group-indicator {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    /* BANCOS DE PALABRAS */
+    .word-bank-box {
+      background: linear-gradient(135deg, #f3e8ff, #e0e7ff);
+      border: 2px dashed var(--accent-color);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .word-bank-title {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--accent-color);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .word-bank-tags {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .emotion-tag, .word-tag {
+      background-color: #ffffff;
+      color: var(--accent-color);
+      border: 2px solid var(--accent-color);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    /* TARJETAS DE SITUACIONES Y CONCEPTOS */
+    .card-list, .situations-list, .items-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .card-item, .situation-card, .item-card {
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: 18px;
+      background-color: #f8fafc;
+    }
+
+    .card-text, .situation-text, .concept-text {
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 12px;
+      color: #1e293b;
+    }
+
+    .bold-word {
+      font-weight: bold;
+      text-decoration: underline;
+      color: #9333ea;
+    }
+
+    .input-group, .input-zone {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background-color: #ffffff;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .input-group label, .input-zone label {
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: #64748b;
+      white-space: nowrap;
+    }
+
+    .input-group input, .input-group select, .input-zone input {
+      flex: 1;
+      border: 2px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .input-group input:focus, .input-group select:focus, .input-zone input:focus {
+      border-color: var(--primary-color);
+    }
+
+    /* PANTALLA 2 ACTIVIDAD 2: ESTRUCTURA GRID */
+    .family-title {
+      font-weight: bold;
+      color: #334155;
+      margin-bottom: 12px;
+    }
+
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .slot-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .slot-label {
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    /* BOTONES Y MENSAJES DE RETROALIMENTACIÓN */
+    .controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn-check {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 14px 36px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn-check:hover {
+      background-color: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .feedback-msg {
+      font-weight: bold;
+      min-height: 25px;
+      text-align: center;
+    }
+
+    .valid-input {
+      border-color: var(--success-color) !important;
+      background-color: #f0fdf4 !important;
+    }
+
+    .invalid-input {
+      border-color: var(--error-color) !important;
+      background-color: #fef2f2 !important;
+    }
+
+    /* PANTALLAS FINALES */
+    .final-screen {
+      text-align: center;
+      padding: 40px 20px;
+      display: none;
+    }
+
+    .final-screen h1 {
+      color: var(--success-color);
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      color: #334155;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA DE NAVEGACIÓN SUPERIOR PARA CAMBIAR DE ACTIVIDAD -->
+  <div class="nav-tabs">
+    <button class="nav-btn active" onclick="switchActivity(1)">Actividad 1</button>
+    <button class="nav-btn" onclick="switchActivity(2)">Actividad 2</button>
+    <button class="nav-btn" onclick="switchActivity(3)">Actividad 3</button>
+  </div>
+
+  <div class="main-container">
+
+    <!-- =======================================================
+         ACTIVIDAD 1: VOCABULARIO EMOCIONAL
+    ======================================================== -->
+    <div id="activity-1" class="activity-section active">
+      <div id="act1-game-zone">
+        <div class="header-bar">
+          <div class="progress-container">
+            <div class="progress-bar" id="act1-progress-bar"></div>
+          </div>
+          <div class="group-indicator" id="act1-group-title">Grupo 1 de 3</div>
+        </div>
+
+        <div class="word-bank-box">
+          <div class="word-bank-title">💡 Banco de Emociones para este grupo:</div>
+          <div class="word-bank-tags" id="act1-word-bank"></div>
+        </div>
+
+        <div class="situations-list" id="act1-situations-container"></div>
+
+        <div class="controls">
+          <button class="btn-check" onclick="Act1.validateGroup()">Comprobar Respuestas ➔</button>
+          <div class="feedback-msg" id="act1-feedback"></div>
+        </div>
+      </div>
+
+      <div class="final-screen" id="act1-final-screen">
+        <h1>🎉 ¡Excelente Trabajo en Actividad 1!</h1>
+        <p style="font-size: 1.2rem; color: #475569; margin-top: 10px;">
+          Has identificado correctamente todas las situaciones emocionales en los 3 grupos.
+        </p>
+      </div>
+    </div>
+
+
+    <!-- =======================================================
+         ACTIVIDAD 2: LABORATORIO DE LENGUAJE Y EMOCIONES
+    ======================================================== -->
+    <div id="activity-2" class="activity-section">
+      <div id="act2-game-zone">
+        <div class="header-bar">
+          <div class="progress-container">
+            <div class="progress-bar" id="act2-progress-bar"></div>
+          </div>
+          <div class="group-indicator" id="act2-group-title">Pantalla 1 de 3</div>
+        </div>
+
+        <div class="word-bank-box">
+          <div class="word-bank-title" id="act2-bank-title">💡 Banco de palabras:</div>
+          <div class="word-bank-tags" id="act2-word-bank"></div>
+        </div>
+
+        <h2 id="act2-section-instruction" style="font-size: 1.1rem; margin-bottom: 15px; color: #334155;"></h2>
+
+        <div id="act2-exercise-content"></div>
+
+        <div class="controls">
+          <button class="btn-check" onclick="Act2.validateScreen()">Comprobar Respuestas ➔</button>
+          <div class="feedback-msg" id="act2-feedback"></div>
+        </div>
+      </div>
+
+      <div class="final-screen" id="act2-final-screen">
+        <h1>🎉 ¡Excelente Trabajo en Actividad 2!</h1>
+        <p style="font-size: 1.2rem; color: #475569; margin-top: 10px;">
+          Has completado exitosamente las 3 secciones de la <b>ACTIVIDAD 2</b>.
+        </p>
+      </div>
+    </div>
+
+
+    <!-- =======================================================
+         ACTIVIDAD 3: VOCABULARIO Y DICCIONARIO INTERACTIVO
+    ======================================================== -->
+    <div id="activity-3" class="activity-section">
+      <div id="act3-game-zone">
+        <div class="header-bar">
+          <div class="progress-container">
+            <div class="progress-bar" id="act3-progress-bar"></div>
+          </div>
+          <div class="group-indicator" id="act3-group-title">Pantalla 1 de 20</div>
+        </div>
+
+        <div class="word-bank-box">
+          <div class="word-bank-title">💡 Banco de Palabras (Sección):</div>
+          <div class="word-bank-tags" id="act3-word-bank"></div>
+        </div>
+
+        <h2 class="section-title" id="act3-section-title">1. Escuela y Estudio</h2>
+
+        <div class="items-grid" id="act3-items-container"></div>
+
+        <div class="controls">
+          <button class="btn-check" onclick="Act3.validateScreen()">Comprobar Sección ➔</button>
+          <div class="feedback-msg" id="act3-feedback"></div>
+        </div>
+      </div>
+
+      <div class="final-screen" id="act3-final-screen">
+        <h1>🎉 ¡Excelente Trabajo en Actividad 3!</h1>
+        <p style="font-size: 1.2rem; color: #475569; margin-top: 10px;">
+          Has completado exitosamente las 20 secciones de la <b>ACTIVIDAD 3</b>.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // NORMALIZADOR GENERAL DE TEXTO
+    function cleanText(text) {
+      if (!text) return "";
+      return text
+        .trim()
+        .toUpperCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[()]/g, "");
+    }
+
+    // NAVEGACIÓN ENTRE ACTIVIDADES
+    function switchActivity(actNumber) {
+      document.querySelectorAll('.activity-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+      document.getElementById(`activity-${actNumber}`).classList.add('active');
+      document.querySelectorAll('.nav-btn')[actNumber - 1].classList.add('active');
+    }
+
+    // =======================================================
+    // MÓDULO ACTIVIDAD 1
+    // =======================================================
+    const Act1 = (() => {
+      const groupsData = [
+        {
+          emotionsBank: ["ABRUMADO", "CELOSO / ENVIDIOSO", "FRUSTRADO"],
+          situations: [
+            { letter: "A", text: "A. Llevas tres intentos tratando de resolver un problema de matemáticas, borras una y otra vez la hoja porque el resultado no da, y sientes ganas de cerrar el cuaderno.", correctAnswers: ["FRUSTRADO"] },
+            { letter: "B", text: "B. Es domingo por la tarde, tienes que repasar para dos exámenes, hacer una maqueta, ordenar tu cuarto y sacar al perro, todo antes de cenar. No sabes ni por dónde empezar.", correctAnswers: ["ABRUMADO"] },
+            { letter: "C", text: "C. Tu mejor amigo se compró la bicicleta que tú llevas meses pidiendo y notas un pellizco de molestia en el estómago cuando ves que todos lo felicitan.", correctAnswers: ["CELOSO", "ENVIDIOSO", "CELOSO / ENVIDIOSO", "CELOSO/ENVIDIOSO"] }
+          ]
+        },
+        {
+          emotionsBank: ["DECEPCIONADO", "AVERGONZADO", "ANSIOSO"],
+          situations: [
+            { letter: "A", text: "A. Mañana es tu primera exposición oral frente a todo el colegio. No puedes dormir, sientes \"mariposas\" desagradables en el estómago y no paras de pensar: \"¿Y si me quedo en blanco?\".", correctAnswers: ["ANSIOSO"] },
+            { letter: "B", text: "B. Llevabas semanas esperando el fin de semana porque tu papá te prometió ir al parque de atracciones, pero al final canceló a último momento por trabajo.", correctAnswers: ["DECEPCIONADO"] },
+            { letter: "C", text: "C. Tropezaste en medio del comedor escolar, se te cayó la bandeja haciendo mucho ruido y sentiste cómo la cara se te ponía roja mientras todos volteaban a mirar.", correctAnswers: ["AVERGONZADO"] }
+          ]
+        },
+        {
+          emotionsBank: ["ENTUSIASMADO", "SATISFECHO / ORGULLOSO", "ALIVIADO"],
+          situations: [
+            { letter: "A", text: "A. Llevabas toda la semana pensando que habías perdido tu cuaderno favorito con todos tus dibujos, pero de repente lo encuentras ordenado dentro de tu mochila y sientes que te vuelve el cuerpo al alma.", correctAnswers: ["ALIVIADO"] },
+            { letter: "B", text: "B. Falta solo una hora para que vengan a buscarte para ir al campamento de verano. Tienes la mochila lista, no puedes parar de mover las piernas y solo piensas en lo increíble que la van a pasar.", correctAnswers: ["ENTUSIASMADO"] },
+            { letter: "C", text: "C. Estuviste practicando durante semanas un paso de baile muy difícil. Hoy por fin te salió perfecto frente al espejo y sientes una gran alegría al ver que todo tu esfuerzo valió la pena.", correctAnswers: ["SATISFECHO", "ORGULLOSO", "SATISFECHO / ORGULLOSO", "SATISFECHO/ORGULLOSO"] }
+          ]
+        }
+      ];
+
+      let currentGroupIndex = 0;
+
+      function renderGroup() {
+        const group = groupsData[currentGroupIndex];
+        document.getElementById('act1-group-title').innerText = `Grupo ${currentGroupIndex + 1} de ${groupsData.length}`;
+        document.getElementById('act1-progress-bar').style.width = `${((currentGroupIndex + 1) / groupsData.length) * 100}%`;
+
+        const wordBankEl = document.getElementById('act1-word-bank');
+        wordBankEl.innerHTML = '';
+        group.emotionsBank.forEach(emotion => {
+          wordBankEl.innerHTML += `<span class="emotion-tag">${emotion}</span>`;
+        });
+
+        const container = document.getElementById('act1-situations-container');
+        container.innerHTML = '';
+        group.situations.forEach((sit, idx) => {
+          container.innerHTML += `
+            <div class="situation-card">
+              <div class="situation-text">${sit.text}</div>
+              <div class="input-group">
+                <label for="act1-input-${idx}">Escribe la emoción correcta:</label>
+                <input type="text" id="act1-input-${idx}" autocomplete="off" placeholder="Escribe aquí...">
+              </div>
+            </div>`;
+        });
+        document.getElementById('act1-feedback').innerText = '';
+      }
+
+      function validateGroup() {
+        const group = groupsData[currentGroupIndex];
+        let allCorrect = true;
+
+        group.situations.forEach((sit, idx) => {
+          const inputEl = document.getElementById(`act1-input-${idx}`);
+          const userValue = cleanText(inputEl.value);
+          const isMatch = sit.correctAnswers.some(ans => cleanText(ans) === userValue);
+
+          if (isMatch) {
+            inputEl.classList.remove('invalid-input');
+            inputEl.classList.add('valid-input');
+          } else {
+            inputEl.classList.remove('valid-input');
+            inputEl.classList.add('invalid-input');
+            allCorrect = false;
+          }
+        });
+
+        const feedbackEl = document.getElementById('act1-feedback');
+        if (allCorrect) {
+          feedbackEl.style.color = "var(--success-color)";
+          feedbackEl.innerText = "¡Excelente! Has asociado correctamente cada situación con su emoción.";
+
+          setTimeout(() => {
+            currentGroupIndex++;
+            if (currentGroupIndex < groupsData.length) {
+              renderGroup();
+            } else {
+              document.getElementById('act1-game-zone').style.display = 'none';
+              document.getElementById('act1-final-screen').style.display = 'block';
+            }
+          }, 1500);
+        } else {
+          feedbackEl.style.color = "var(--error-color)";
+          feedbackEl.innerText = "Revisa las casillas en rojo. Asegúrate de escribir la palabra del banco superior que corresponda.";
+        }
+      }
+
+      return { init: renderGroup, validateGroup };
+    })();
+
+
+    // =======================================================
+    // MÓDULO ACTIVIDAD 2
+    // =======================================================
+    const Act2 = (() => {
+      let currentScreen = 1;
+
+      function renderScreen() {
+        const progressBar = document.getElementById('act2-progress-bar');
+        const groupTitle = document.getElementById('act2-group-title');
+        const bankTitle = document.getElementById('act2-bank-title');
+        const wordBank = document.getElementById('act2-word-bank');
+        const instruction = document.getElementById('act2-section-instruction');
+        const content = document.getElementById('act2-exercise-content');
+        const feedback = document.getElementById('act2-feedback');
+
+        feedback.innerText = '';
+        content.innerHTML = '';
+        wordBank.innerHTML = '';
+
+        progressBar.style.width = `${(currentScreen / 3) * 100}%`;
+        groupTitle.innerText = `Pantalla ${currentScreen} de 3`;
+
+        if (currentScreen === 1) {
+          bankTitle.innerText = "💡 Vocabulario nuevo para elegir:";
+          instruction.innerText = "Lee las situaciones y reemplaza la palabra destacada por una emoción mucho más precisa:";
+
+          const bankWords = ["Decepcionado/a", "Abrumado/a", "Entusiasmado/a", "Frustrado/a", "Aliviado/a"];
+          bankWords.forEach(w => wordBank.innerHTML += `<span class="emotion-tag">${w}</span>`);
+
+          const p1Data = [
+            { text: "Camila llevaba 2 horas intentando armar una figura compleja y no le salía, así que se sintió <span class='bold-word'>muy molesta</span>.", label: "Emoción precisa:" },
+            { text: "Mateo pensó que no iba a encontrar su tarea a tiempo, pero la vio en el fondo de la mochila y se sintió <span class='bold-word'>bien</span>.", label: "Emoción precisa:" },
+            { text: "Sofía tenía tres exámenes la misma semana, entrenamiento de fútbol y la presentación de un proyecto. Se sentía <span class='bold-word'>mal</span>.", label: "Emoción precisa:" },
+            { text: "Lucas esperaba que su mejor amigo fuera a su partido, pero a último momento no pudo ir. Lucas se sintió <span class='bold-word'>triste</span>.", label: "Emoción precisa:" }
+          ];
+
+          let html = '<div class="card-list">';
+          p1Data.forEach((item, idx) => {
+            html += `
+              <div class="card-item">
+                <div class="card-text">${item.text}</div>
+                <div class="input-group">
+                  <label for="act2-p1-input-${idx}">${item.label}</label>
+                  <input type="text" id="act2-p1-input-${idx}" placeholder="Escribe la emoción..." autocomplete="off">
+                </div>
+              </div>`;
+          });
+          html += '</div>';
+          content.innerHTML = html;
+        } else if (currentScreen === 2) {
+          bankTitle.innerText = "🚥 Escala de Intensidad:";
+          instruction.innerText = "Ordena las palabras de MENOR a MAYOR intensidad para cada familia emocional:";
+
+          wordBank.innerHTML = `<span class="emotion-tag">🟢 Nivel Bajo</span> <span class="emotion-tag">🟡 Nivel Medio</span> <span class="emotion-tag">🔴 Nivel Alto</span>`;
+
+          const families = [
+            { name: "Familia 1 (Enojo): Furia — Fastidio — Frustración", options: ["Fastidio", "Frustración", "Furia"] },
+            { name: "Familia 2 (Miedo/Inquietud): Pánico — Inseguridad — Ansiedad", options: ["Ansiedad", "Inseguridad", "Pánico"] },
+            { name: "Familia 3 (Alegría): Calma — Entusiasmo — Euforia", options: ["Calma", "Entusiasmo", "Euforia"] }
+          ];
+
+          let html = '<div class="card-list">';
+          families.forEach((fam, fIdx) => {
+            html += `
+              <div class="card-item">
+                <div class="family-title">${fam.name}</div>
+                <div class="slots-grid">
+                  <div class="slot-box">
+                    <span class="slot-label">Bajo 🟢</span>
+                    <select id="act2-p2-select-${fIdx}-0">
+                      <option value="">Selecciona...</option>
+                      ${fam.options.map(o => `<option value="${o}">${o}</option>`).join('')}
+                    </select>
+                  </div>
+                  <div class="slot-box">
+                    <span class="slot-label">Medio 🟡</span>
+                    <select id="act2-p2-select-${fIdx}-1">
+                      <option value="">Selecciona...</option>
+                      ${fam.options.map(o => `<option value="${o}">${o}</option>`).join('')}
+                    </select>
+                  </div>
+                  <div class="slot-box">
+                    <span class="slot-label">Alto 🔴</span>
+                    <select id="act2-p2-select-${fIdx}-2">
+                      <option value="">Selecciona...</option>
+                      ${fam.options.map(o => `<option value="${o}">${o}</option>`).join('')}
+                    </select>
+                  </div>
+                </div>
+              </div>`;
+          });
+          html += '</div>';
+          content.innerHTML = html;
+        } else if (currentScreen === 3) {
+          bankTitle.innerText = "🧰 Caja de herramientas (Conectores):";
+          instruction.innerText = "Elige el conector adecuado para unir las oraciones:";
+
+          const tools = ["sin embargo", "debido a", "por lo tanto", "finalmente", "además"];
+          tools.forEach(t => wordBank.innerHTML += `<span class="emotion-tag">${t}</span>`);
+
+          const p3Data = [
+            { text: "Estudió mucho para el examen de ciencias; ___________, obtuvo la nota más alta." },
+            { text: "El equipo jugó un gran partido; ___________, no lograron clasificar a la final." },
+            { text: "Llegamos tarde al cine ___________ un tráfico imprevisto en la avenida." },
+            { text: "Me encanta leer libros de misterio; ___________, disfruto mucho escribir mis propios cuentos." },
+            { text: "Juntamos todas las piezas, seguimos el mapa y, ___________, encontramos el tesoro." }
+          ];
+
+          let html = '<div class="card-list">';
+          p3Data.forEach((item, idx) => {
+            html += `
+              <div class="card-item">
+                <div class="card-text">${item.text}</div>
+                <div class="input-group">
+                  <label for="act2-p3-select-${idx}">Conector puente:</label>
+                  <select id="act2-p3-select-${idx}">
+                    <option value="">Elegir conector...</option>
+                    ${tools.map(t => `<option value="${t}">${t}</option>`).join('')}
+                  </select>
+                </div>
+              </div>`;
+          });
+          html += '</div>';
+          content.innerHTML = html;
+        }
+      }
+
+      function validateScreen() {
+        const feedback = document.getElementById('act2-feedback');
+        let allCorrect = true;
+
+        if (currentScreen === 1) {
+          const answersList = [["FRUSTRADA", "FRUSTRADO"], ["ALIVIADO", "ALIVIADA"], ["ABRUMADA", "ABRUMADO"], ["DECEPCIONADO", "DECEPCIONADA"]];
+          answersList.forEach((validAns, idx) => {
+            const input = document.getElementById(`act2-p1-input-${idx}`);
+            const val = cleanText(input.value);
+            const isOk = validAns.some(a => cleanText(a) === val);
+            if (isOk) {
+              input.classList.remove('invalid-input'); input.classList.add('valid-input');
+            } else {
+              input.classList.remove('valid-input'); input.classList.add('invalid-input'); allCorrect = false;
+            }
+          });
+        } else if (currentScreen === 2) {
+          const correctOrders = [["FASTIDIO", "FRUSTRACION", "FURIA"], ["INSEGURIDAD", "ANSIEDAD", "PANICO"], ["CALMA", "ENTUSIASMO", "EUFORIA"]];
+          correctOrders.forEach((family, fIdx) => {
+            family.forEach((expectedWord, sIdx) => {
+              const select = document.getElementById(`act2-p2-select-${fIdx}-${sIdx}`);
+              const userVal = cleanText(select.value);
+              const targetVal = cleanText(expectedWord);
+              const isMatch = (userVal === targetVal) || (targetVal === "ENTUSIASMO" && userVal === "ENTUSIASMADO");
+
+              if (userVal !== "" && isMatch) {
+                select.classList.remove('invalid-input'); select.classList.add('valid-input');
+              } else {
+                select.classList.remove('valid-input'); select.classList.add('invalid-input'); allCorrect = false;
+              }
+            });
+          });
+        } else if (currentScreen === 3) {
+          const correctTools = ["POR LO TANTO", "SIN EMBARGO", "DEBIDO A", "ADEMAS", "FINALMENTE"];
+          correctTools.forEach((expectedTool, idx) => {
+            const select = document.getElementById(`act2-p3-select-${idx}`);
+            const userVal = cleanText(select.value);
+            if (userVal !== "" && userVal === cleanText(expectedTool)) {
+              select.classList.remove('invalid-input'); select.classList.add('valid-input');
+            } else {
+              select.classList.remove('valid-input'); select.classList.add('invalid-input'); allCorrect = false;
+            }
+          });
+        }
+
+        if (allCorrect) {
+          feedback.style.color = "var(--success-color)";
+          feedback.innerText = "¡Excelente! Respuestas correctas.";
+          setTimeout(() => {
+            currentScreen++;
+            if (currentScreen <= 3) {
+              renderScreen();
+            } else {
+              document.getElementById('act2-game-zone').style.display = 'none';
+              document.getElementById('act2-final-screen').style.display = 'block';
+            }
+          }, 1200);
+        } else {
+          feedback.style.color = "var(--error-color)";
+          feedback.innerText = "Revisa las opciones destacadas en rojo e inténtalo de nuevo.";
+        }
+      }
+
+      return { init: renderScreen, validateScreen };
+    })();
+
+
+    // =======================================================
+    // MÓDULO ACTIVIDAD 3
+    // =======================================================
+    const Act3 = (() => {
+      const rawData = [
+        { category: "1. Escuela y Estudio", items: [{ word: "Mochila", desc: "Bolso para llevar los libros, cuadernos y útiles escolares." }, { word: "Cuaderno", desc: "Libro con hojas en blanco o rayadas para escribir notas y tareas." }, { word: "Diccionario", desc: "Libro o herramienta que explica el significado de las palabras." }, { word: "Horario", desc: "Tabla que organiza las horas de las clases, actividades o tareas." }, { word: "Recreo", desc: "Tiempo libre para descansar, comer y jugar en el colegio." }, { word: "Biblioteca", desc: "Espacio donde se guardan, organizan y prestan libros para leer o investigar." }, { word: "Borrador", desc: "Utensilio que sirve para borrar lo escrito con lápiz o tiza." }, { word: "Regla", desc: "Instrumento recto que sirve para medir y trazar líneas derechas." }, { word: "Compás", desc: "Herramienta de dibujo que sirve para hacer círculos perfectos." }, { word: "Calculadora", desc: "Aparato que ayuda a realizar operaciones matemáticas con rapidez." }, { word: "Examen", desc: "Prueba para demostrar lo que has aprendido sobre un tema." }, { word: "Resumen", desc: "Escrito breve que contiene solo las ideas más importantes de un texto." }, { word: "Proyecto", desc: "Trabajo planificado sobre un tema para investigar o construir algo nuevo." }, { word: "Experimento", desc: "Prueba práctica que se realiza para comprobar cómo funciona algo en la ciencia." }, { word: "Tutoría", desc: "Tiempo dedicado a conversar con el profesor sobre el aprendizaje o la convivencia." }, { word: "Tijeras", desc: "Herramienta de corte formada por dos hojas metálicas que se cruzan." }, { word: "Pegamento", desc: "Sustancia que se utiliza para unir papel, cartón u otros materiales." }, { word: "Escuadra", desc: "Regla en forma de triángulo que ayuda a trazar ángulos exactos." }, { word: "Organizador", desc: "Cuaderno o agenda para anotar las fechas de tareas y compromisos." }, { word: "Exposición", desc: "Presentación oral en la que se explica un tema frente a los compañeros." }] },
+        { category: "2. Naturaleza y Ciencia", items: [{ word: "Volcán", desc: "Montaña que echa fuego, ceniza o magma por su cráter." }, { word: "Arcoíris", desc: "Franja de colores en el cielo cuando se combinan la lluvia y la luz del sol." }, { word: "Planeta", desc: "Gran esfera de roca o gas que gira alrededor de una estrella en el espacio." }, { word: "Semilla", desc: "Parte pequeña de una planta de la que nace y crece una nueva planta." }, { word: "Clima", desc: "El estado del tiempo habitual (calor, frío, lluvia) en un lugar determinado." }, { word: "Atmósfera", desc: "Capa de gases que rodea y protege a un planeta." }, { word: "Ecosistema", desc: "Comunidad formada por los seres vivos y el medio natural donde se relacionan." }, { word: "Gravedad", desc: "Fuerza invisible que atrae los objetos hacia el centro de la Tierra." }, { word: "Fósil", desc: "Resto o huella petrificada de un ser vivo que habitó la Tierra hace miles o millones de años." }, { word: "Biodiversidad", desc: "Variedad de especies de animales y plantas que viven en un lugar." }, { word: "Telescopio", desc: "Instrumento óptico que permite ver objetos muy lejanos en el espacio." }, { word: "Microscopio", desc: "Aparato que amplifica la imagen de cosas minúsculas que no se ven a simple vista." }, { word: "Glaciar", desc: "Enorme masa de hielo acumulada que se mueve muy lentamente sobre la tierra." }, { word: "Fotosíntesis", desc: "Proceso mediante el cual las plantas fabrican su propio alimento con la luz del sol." }, { word: "Oxígeno", desc: "Gas del aire que es imprescindible para la respiración de los seres vivos." }, { word: "Constelación", desc: "Grupo de estrellas que forma una figura imaginaria en el cielo nocturno." }, { word: "Evaporación", desc: "Transformación de un líquido en vapor por el efecto del calor." }, { word: "Cadena alimenticia", desc: "Serie de seres vivos donde cada uno se alimenta del anterior para sobrevivir." }, { word: "Mineral", desc: "Sustancia natural e inorgánica con una estructura química definida, como el cuarzo o el oro." }, { word: "Hábitat", desc: "Lugar con las condiciones adecuadas para que viva una especie animal o vegetal." }] },
+        { category: "3. Emociones y Conducta", items: [{ word: "Curioso", desc: "Alguien que siente deseos de investigar, aprender o saber más cosas." }, { word: "Valiente", desc: "Persona que no se deja dominar por el miedo al enfrentar un reto o peligro." }, { word: "Agradable", desc: "Persona u objeto que causa gusto o resulta muy amable en el trato." }, { word: "Sorpresa", desc: "Evento o noticia inesperada que causa asombro." }, { word: "Tranquilo", desc: "Estado de calma, sin nervios, prisas ni agitación." }, { word: "Frustrado", desc: "Sentimiento que surge cuando intentas algo muchas veces y no sale como esperabas." }, { word: "Abrumado", desc: "Sensación de molestia al tener demasiadas tareas o estímulos al mismo tiempo." }, { word: "Decepcionado", desc: "Tristeza al ver que una expectativa no se cumplió o una persona te falló." }, { word: "Avergonzado", desc: "Incomodidad producida por el temor a ser juzgado o al cometer un error en público." }, { word: "Ansioso", desc: "Inquietud por el futuro o preocupación excesiva por lo que pueda pasar." }, { word: "Entusiasmado", desc: "Energía positiva y ganas intensas de comenzar algo que te divierte." }, { word: "Aliviado", desc: "Sensación de descanso en el pecho cuando una preocupación desaparece." }, { word: "Empático", desc: "Alguien capaz de ponerse en el lugar del otro y comprender cómo se siente." }, { word: "Generoso", desc: "Persona dispuesta a dar o compartir sus cosas sin esperar nada a cambio." }, { word: "Paciente", desc: "Capacidad para saber esperar con calma sin enfadarse." }, { word: "Respetuoso", desc: "Persona que trata a los demás con consideración y valora las normas o diferencias." }, { word: "Satisfecho", desc: "Alegría que se siente tras esforzarse mucho y obtener un buen resultado." }, { word: "Cauteloso", desc: "Persona que actúa con precaución para evitar peligros o errores." }, { word: "Impulsivo", desc: "Alguien que actúa sin pensar previamente en las consecuencias." }, { word: "Tolerante", desc: "Actitud de aceptar ideas, gustos o hábitos distintos a los propios." }] },
+        { category: "4. Tecnología y Vida Digital", items: [{ word: "Internet", desc: "Red mundial que conecta computadoras y dispositivos para compartir información." }, { word: "Pantalla", desc: "Superficie donde se muestran las imágenes y el texto en un dispositivo." }, { word: "Teclado", desc: "Conjunto de teclas que sirve para escribir datos en la computadora o tableta." }, { word: "Contraseña", desc: "Serie secreta de letras, números o símbolos que protege tus cuentas." }, { word: "Navegador", desc: "Programa que usas para buscar páginas web y explorar la red." }, { word: "Ciberseguridad", desc: "Medidas para proteger la información y la privacidad cuando usas internet." }, { word: "Aplicación (App)", desc: "Programa diseñado para realizar una función específica en la tableta o celular." }, { word: "Descarga", desc: "Proceso de copiar archivos o información desde internet hacia tu dispositivo." }, { word: "Archivo", desc: "Documento, foto o video guardado en formato digital en una memoria." }, { word: "Enlace (Link)", desc: "Texto o imagen donde haces clic para ir a otra página web." }, { word: "Procesador", desc: "Componente interno que funciona como el \"cerebro\" de una computadora." }, { word: "Memoria", desc: "Espacio donde el dispositivo almacena datos e instrucciones." }, { word: "Red social", desc: "Plataforma en internet para comunicarse y compartir contenidos con otras personas." }, { word: "Cámara web", desc: "Dispositivo que captura imagen y video para transmitir en tiempo real." }, { word: "Micrófono", desc: "Aparato que transforma la voz en señales digitales para grabarla o transmitirla." }, { word: "Virus informático", desc: "Programa dañino que puede alterar o perjudicar el funcionamiento de un dispositivo." }, { word: "Buscador", desc: "Sitio web especializado que te ayuda a encontrar información escribiendo palabras clave." }, { word: "Perfil", desc: "Información personal que te identifica dentro de una aplicación o plataforma digital." }, { word: "Servidor", desc: "Computadora central encargada de guardar datos y prestar servicios a otros equipos conectados." }, { word: "Inalámbrico", desc: "Sistema de conexión que funciona sin necesidad de cables (como el Wi-Fi)." }] },
+        { category: "5. Convivencia y Vida Cotidiana", items: [{ word: "Acuerdo", desc: "Decisión tomada entre dos o más personas de común conformidad." }, { word: "Conflicto", desc: "Situación de desacuerdo o problema entre personas que requiere una solución." }, { word: "Compromiso", desc: "Obligación o promesa de cumplir con algo que se ha acordado." }, { word: "Diálogo", desc: "Conversación entre dos o más personas para intercambiar ideas y resolver diferencias." }, { word: "Colaboración", desc: "Trabajo conjunto entre varias personas para lograr una meta común." }, { word: "Responsabilidad", desc: "Cumplimiento de las obligaciones y asumir las consecuencias de los actos propios." }, { word: "Límite", desc: "Regla o línea que indica hasta dónde está permitido actuar para no perjudicar a nadie." }, { word: "Derecho", desc: "Norma o principio que garantiza lo que todas las personas deben recibir para vivir bien." }, { word: "Deber", desc: "Obligación moral o legal que debemos realizar dentro de la sociedad." }, { word: "Comunidad", desc: "Grupo de personas que comparten un espacio, unas reglas o unos intereses comunes." }, { word: "Costumbre", desc: "Hábito o tradición que se repite con frecuencia en una familia o cultura." }, { word: "Hospitalidad", desc: "Buena acogida y trato amable a los visitantes o invitados." }, { word: "Solidaridad", desc: "Apoyo incondicional a causas o a personas que atraviesan dificultades." }, { word: "Mediador", desc: "Persona neutral que ayuda a otras a resolver un desacuerdo." }, { word: "Norma", desc: "Regla que indica cómo se debe actuar en un grupo para mantener el orden y la seguridad." }, { word: "Convivencia", desc: "Acción de vivir o relacionarse en armonía y paz con los demás." }, { word: "Pertenencia", desc: "Sentimiento de formar parte de un grupo, familia o comunidad." }, { word: "Sinceridad", desc: "Hábito de decir la verdad sin mentiras ni engaños." }, { word: "Diversidad", desc: "Presencia de personas con diferentes orígenes, culturas o ideas dentro de un mismo espacio." }, { word: "Gratitud", desc: "Sentimiento de agradecimiento por un favor, un regalo o un gesto amable." }] }
+      ];
+
+      let screens = [];
+      rawData.forEach(cat => {
+        for (let i = 0; i < cat.items.length; i += 5) {
+          screens.push({ category: cat.category, items: cat.items.slice(i, i + 5) });
+        }
+      });
+
+      let currentScreenIndex = 0;
+
+      function renderScreen() {
+        const screenData = screens[currentScreenIndex];
+        document.getElementById('act3-group-title').innerText = `Pantalla ${currentScreenIndex + 1} de ${screens.length}`;
+        document.getElementById('act3-progress-bar').style.width = `${((currentScreenIndex + 1) / screens.length) * 100}%`;
+        document.getElementById('act3-section-title').innerText = screenData.category;
+
+        const wordBank = document.getElementById('act3-word-bank');
+        wordBank.innerHTML = '';
+        screenData.items.forEach(item => {
+          wordBank.innerHTML += `<span class="word-tag">${item.word}</span>`;
+        });
+
+        const container = document.getElementById('act3-items-container');
+        container.innerHTML = '';
+        screenData.items.forEach((item, idx) => {
+          container.innerHTML += `
+            <div class="item-card">
+              <div class="concept-text"><b>${item.word}:</b> ${item.desc}</div>
+              <div class="input-zone">
+                <label for="act3-input-${idx}">Escribe la palabra:</label>
+                <input type="text" id="act3-input-${idx}" autocomplete="off" placeholder="Escribe '${item.word}'...">
+              </div>
+            </div>`;
+        });
+        document.getElementById('act3-feedback').innerText = '';
+      }
+
+      function validateScreen() {
+        const screenData = screens[currentScreenIndex];
+        let allCorrect = true;
+
+        screenData.items.forEach((item, idx) => {
+          const inputEl = document.getElementById(`act3-input-${idx}`);
+          const userVal = cleanText(inputEl.value);
+          const expectedVal = cleanText(item.word);
+
+          let isCorrect = (userVal === expectedVal);
+          if (!isCorrect && item.word.includes("(")) {
+            const parts = item.word.split("(").map(p => cleanText(p));
+            isCorrect = parts.some(p => p === userVal);
+          }
+
+          if (isCorrect) {
+            inputEl.classList.remove('invalid-input'); inputEl.classList.add('valid-input');
+          } else {
+            inputEl.classList.remove('valid-input'); inputEl.classList.add('invalid-input'); allCorrect = false;
+          }
+        });
+
+        const feedbackEl = document.getElementById('act3-feedback');
+        if (allCorrect) {
+          feedbackEl.style.color = "var(--success-color)";
+          feedbackEl.innerText = "¡Excelente! Has completado esta sección.";
+          setTimeout(() => {
+            currentScreenIndex++;
+            if (currentScreenIndex < screens.length) {
+              renderScreen();
+            } else {
+              document.getElementById('act3-game-zone').style.display = 'none';
+              document.getElementById('act3-final-screen').style.display = 'block';
+            }
+          }, 1200);
+        } else {
+          feedbackEl.style.color = "var(--error-color)";
+          feedbackEl.innerText = "Revisa las casillas en rojo e inténtalo de nuevo.";
+        }
+      }
+
+      return { init: renderScreen, validateScreen };
+    })();
+
+    // INICIALIZACIÓN DE TODAS LAS ACTIVIDADES
+    window.onload = () => {
+      Act1.init();
+      Act2.init();
+      Act3.init();
+    };
+  </script>
+</body>
+</html>
