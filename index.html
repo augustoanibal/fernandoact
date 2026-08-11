@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plataforma de Actividades - Lenguaje y Emociones</title>
+  <title>Plataforma de Actividades e Interacción</title>
   <style>
     :root {
+      /* Estilos generales */
       --bg-color: #f1f5f9;
       --card-bg: #ffffff;
       --border-color: #cbd5e1;
@@ -14,6 +15,14 @@
       --success-color: #16a34a;
       --error-color: #dc2626;
       --text-color: #0f172a;
+
+      /* Estilos Bauhaus */
+      --bauhaus-red: #D9381E;
+      --bauhaus-blue: #124294;
+      --bauhaus-yellow: #F5B800;
+      --bauhaus-black: #111111;
+      --bauhaus-bg: #F0EFE9;
+      --bauhaus-card: #FFFFFF;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -295,15 +304,249 @@
       border-bottom: 2px solid var(--border-color);
       padding-bottom: 8px;
     }
+
+    /* =======================================================
+       ESTILOS ACTIVIDAD 4: RUEDA BAUHAUS
+    ======================================================== */
+    .act4-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+    }
+
+    .act4-title {
+      font-size: 1.8rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+      border-bottom: 4px solid var(--bauhaus-black);
+      padding-bottom: 5px;
+      color: var(--bauhaus-black);
+    }
+
+    .controls-top {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 25px;
+      background: var(--bauhaus-card);
+      padding: 12px 24px;
+      border: 3px solid var(--bauhaus-black);
+      box-shadow: 5px 5px 0px var(--bauhaus-black);
+    }
+
+    .controls-top label {
+      font-weight: 900;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      color: var(--bauhaus-black);
+    }
+
+    .controls-top select {
+      padding: 8px 16px;
+      font-size: 1.1rem;
+      font-weight: 900;
+      border: 3px solid var(--bauhaus-black);
+      background-color: var(--bauhaus-yellow);
+      cursor: pointer;
+      outline: none;
+    }
+
+    .wheel-container {
+      position: relative;
+      width: 360px;
+      height: 360px;
+      margin: 10px 0 25px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .indicator-arrow {
+      position: absolute;
+      top: -18px;
+      z-index: 10;
+      width: 0; 
+      height: 0; 
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 25px solid var(--bauhaus-red);
+      filter: drop-shadow(0px 3px 0px var(--bauhaus-black));
+    }
+
+    .outer-wheel {
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: var(--bauhaus-red);
+      border: 5px solid var(--bauhaus-black);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 6px 6px 0px var(--bauhaus-black);
+    }
+
+    .middle-wheel {
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: var(--bauhaus-blue);
+      border: 5px solid var(--bauhaus-black);
+      z-index: 2;
+    }
+
+    .center-wheel {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--bauhaus-yellow);
+      border: 5px solid var(--bauhaus-black);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--bauhaus-black);
+      z-index: 3;
+    }
+
+    .slice-line {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 3px;
+      height: 100%;
+      background-color: var(--bauhaus-black);
+      transform-origin: center;
+      margin-left: -1.5px;
+    }
+
+    .number-node {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: var(--bauhaus-card);
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .outer-node {
+      font-size: 1.3rem;
+      color: var(--bauhaus-card);
+    }
+
+    .spin-buttons {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .btn-rotate {
+      background: var(--bauhaus-blue);
+      color: var(--bauhaus-card);
+      border: 3px solid var(--bauhaus-black);
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 4px 4px 0px var(--bauhaus-black);
+      transition: all 0.1s;
+    }
+
+    .btn-rotate:hover { background: #0f3678; }
+    .btn-rotate:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px var(--bauhaus-black);
+    }
+
+    .quiz-card {
+      background: var(--bauhaus-card);
+      padding: 25px 35px;
+      border: 4px solid var(--bauhaus-black);
+      box-shadow: 7px 7px 0px var(--bauhaus-black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .math-expr {
+      font-size: 2.2rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--bauhaus-black);
+    }
+
+    .math-expr input {
+      width: 85px;
+      height: 55px;
+      font-size: 2rem;
+      text-align: center;
+      font-weight: 900;
+      border: 4px solid var(--bauhaus-black);
+      background-color: var(--bauhaus-bg);
+      outline: none;
+    }
+
+    .math-expr input:focus {
+      background-color: #FFF;
+      border-color: var(--bauhaus-blue);
+    }
+
+    .btn-check-bauhaus {
+      background-color: var(--bauhaus-yellow);
+      color: var(--bauhaus-black);
+      border: 3px solid var(--bauhaus-black);
+      padding: 12px;
+      font-size: 1.1rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 4px 4px 0px var(--bauhaus-black);
+      transition: all 0.1s;
+    }
+
+    .btn-check-bauhaus:hover { background-color: #e0a800; }
+    .btn-check-bauhaus:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px var(--bauhaus-black);
+    }
+
+    .feedback-bauhaus {
+      font-size: 1.1rem;
+      font-weight: 900;
+      min-height: 28px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .correct-bauhaus { color: #0d7a3e; }
+    .incorrect-bauhaus { color: var(--bauhaus-red); }
   </style>
 </head>
 <body>
 
-  <!-- BARRA DE NAVEGACIÓN SUPERIOR PARA CAMBIAR DE ACTIVIDAD -->
+  <!-- BARRA DE NAVEGACIÓN SUPERIOR -->
   <div class="nav-tabs">
     <button class="nav-btn active" onclick="switchActivity(1)">Actividad 1</button>
     <button class="nav-btn" onclick="switchActivity(2)">Actividad 2</button>
     <button class="nav-btn" onclick="switchActivity(3)">Actividad 3</button>
+    <button class="nav-btn" onclick="switchActivity(4)">Actividad 4 (Multiplicar)</button>
   </div>
 
   <div class="main-container">
@@ -341,7 +584,6 @@
       </div>
     </div>
 
-
     <!-- =======================================================
          ACTIVIDAD 2: LABORATORIO DE LENGUAJE Y EMOCIONES
     ======================================================== -->
@@ -377,7 +619,6 @@
       </div>
     </div>
 
-
     <!-- =======================================================
          ACTIVIDAD 3: VOCABULARIO Y DICCIONARIO INTERACTIVO
     ======================================================== -->
@@ -410,6 +651,41 @@
         <p style="font-size: 1.2rem; color: #475569; margin-top: 10px;">
           Has completado exitosamente las 20 secciones de la <b>ACTIVIDAD 3</b>.
         </p>
+      </div>
+    </div>
+
+    <!-- =======================================================
+         ACTIVIDAD 4: RUEDA DE MULTIPLICAR (BAUHAUS)
+    ======================================================== -->
+    <div id="activity-4" class="activity-section">
+      <div class="act4-wrapper">
+        <h1 class="act4-title">Rueda de Multiplicar</h1>
+
+        <div class="controls-top">
+          <label for="table-select">Tabla:</label>
+          <select id="table-select" onchange="Act4.changeTable(this.value)"></select>
+        </div>
+
+        <div class="wheel-container">
+          <div class="indicator-arrow"></div>
+          <div class="outer-wheel" id="outer-wheel"></div>
+          <div class="middle-wheel" id="middle-wheel"></div>
+          <div class="center-wheel" id="center-label">4 x</div>
+        </div>
+
+        <div class="spin-buttons">
+          <button class="btn-rotate" onclick="Act4.rotateWheel(-30)">↺ Izquierda</button>
+          <button class="btn-rotate" onclick="Act4.rotateWheel(30)">Derecha ↻</button>
+        </div>
+
+        <div class="quiz-card">
+          <div class="math-expr">
+            <span id="exp-factor1">4</span> × <span id="exp-factor2">1</span> =
+            <input type="number" id="user-answer" placeholder="?" autocomplete="off">
+          </div>
+          <button class="btn-check-bauhaus" onclick="Act4.checkAnswer()">Comprobar</button>
+          <div class="feedback-bauhaus" id="feedback"></div>
+        </div>
       </div>
     </div>
 
@@ -536,7 +812,6 @@
 
       return { init: renderGroup, validateGroup };
     })();
-
 
     // =======================================================
     // MÓDULO ACTIVIDAD 2
@@ -731,7 +1006,6 @@
       return { init: renderScreen, validateScreen };
     })();
 
-
     // =======================================================
     // MÓDULO ACTIVIDAD 3
     // =======================================================
@@ -739,7 +1013,7 @@
       const rawData = [
         { category: "1. Escuela y Estudio", items: [{ word: "Mochila", desc: "Bolso para llevar los libros, cuadernos y útiles escolares." }, { word: "Cuaderno", desc: "Libro con hojas en blanco o rayadas para escribir notas y tareas." }, { word: "Diccionario", desc: "Libro o herramienta que explica el significado de las palabras." }, { word: "Horario", desc: "Tabla que organiza las horas de las clases, actividades o tareas." }, { word: "Recreo", desc: "Tiempo libre para descansar, comer y jugar en el colegio." }, { word: "Biblioteca", desc: "Espacio donde se guardan, organizan y prestan libros para leer o investigar." }, { word: "Borrador", desc: "Utensilio que sirve para borrar lo escrito con lápiz o tiza." }, { word: "Regla", desc: "Instrumento recto que sirve para medir y trazar líneas derechas." }, { word: "Compás", desc: "Herramienta de dibujo que sirve para hacer círculos perfectos." }, { word: "Calculadora", desc: "Aparato que ayuda a realizar operaciones matemáticas con rapidez." }, { word: "Examen", desc: "Prueba para demostrar lo que has aprendido sobre un tema." }, { word: "Resumen", desc: "Escrito breve que contiene solo las ideas más importantes de un texto." }, { word: "Proyecto", desc: "Trabajo planificado sobre un tema para investigar o construir algo nuevo." }, { word: "Experimento", desc: "Prueba práctica que se realiza para comprobar cómo funciona algo en la ciencia." }, { word: "Tutoría", desc: "Tiempo dedicado a conversar con el profesor sobre el aprendizaje o la convivencia." }, { word: "Tijeras", desc: "Herramienta de corte formada por dos hojas metálicas que se cruzan." }, { word: "Pegamento", desc: "Sustancia que se utiliza para unir papel, cartón u otros materiales." }, { word: "Escuadra", desc: "Regla en forma de triángulo que ayuda a trazar ángulos exactos." }, { word: "Organizador", desc: "Cuaderno o agenda para anotar las fechas de tareas y compromisos." }, { word: "Exposición", desc: "Presentación oral en la que se explica un tema frente a los compañeros." }] },
         { category: "2. Naturaleza y Ciencia", items: [{ word: "Volcán", desc: "Montaña que echa fuego, ceniza o magma por su cráter." }, { word: "Arcoíris", desc: "Franja de colores en el cielo cuando se combinan la lluvia y la luz del sol." }, { word: "Planeta", desc: "Gran esfera de roca o gas que gira alrededor de una estrella en el espacio." }, { word: "Semilla", desc: "Parte pequeña de una planta de la que nace y crece una nueva planta." }, { word: "Clima", desc: "El estado del tiempo habitual (calor, frío, lluvia) en un lugar determinado." }, { word: "Atmósfera", desc: "Capa de gases que rodea y protege a un planeta." }, { word: "Ecosistema", desc: "Comunidad formada por los seres vivos y el medio natural donde se relacionan." }, { word: "Gravedad", desc: "Fuerza invisible que atrae los objetos hacia el centro de la Tierra." }, { word: "Fósil", desc: "Resto o huella petrificada de un ser vivo que habitó la Tierra hace miles o millones de años." }, { word: "Biodiversidad", desc: "Variedad de especies de animales y plantas que viven en un lugar." }, { word: "Telescopio", desc: "Instrumento óptico que permite ver objetos muy lejanos en el espacio." }, { word: "Microscopio", desc: "Aparato que amplifica la imagen de cosas minúsculas que no se ven a simple vista." }, { word: "Glaciar", desc: "Enorme masa de hielo acumulada que se mueve muy lentamente sobre la tierra." }, { word: "Fotosíntesis", desc: "Proceso mediante el cual las plantas fabrican su propio alimento con la luz del sol." }, { word: "Oxígeno", desc: "Gas del aire que es imprescindible para la respiración de los seres vivos." }, { word: "Constelación", desc: "Grupo de estrellas que forma una figura imaginaria en el cielo nocturno." }, { word: "Evaporación", desc: "Transformación de un líquido en vapor por el efecto del calor." }, { word: "Cadena alimenticia", desc: "Serie de seres vivos donde cada uno se alimenta del anterior para sobrevivir." }, { word: "Mineral", desc: "Sustancia natural e inorgánica con una estructura química definida, como el cuarzo o el oro." }, { word: "Hábitat", desc: "Lugar con las condiciones adecuadas para que viva una especie animal o vegetal." }] },
-        { category: "3. Emociones y Conducta", items: [{ word: "Curioso", desc: "Alguien que siente deseos de investigar, aprender o saber más cosas." }, { word: "Valiente", desc: "Persona que no se deja dominar por el miedo al enfrentar un reto o peligro." }, { word: "Agradable", desc: "Persona u objeto que causa gusto o resulta muy amable en el trato." }, { word: "Sorpresa", desc: "Evento o noticia inesperada que causa asombro." }, { word: "Tranquilo", desc: "Estado de calma, sin nervios, prisas ni agitación." }, { word: "Frustrado", desc: "Sentimiento que surge cuando intentas algo muchas veces y no sale como esperabas." }, { word: "Abrumado", desc: "Sensación de molestia al tener demasiadas tareas o estímulos al mismo tiempo." }, { word: "Decepcionado", desc: "Tristeza al ver que una expectativa no se cumplió o una persona te falló." }, { word: "Avergonzado", desc: "Incomodidad producida por el temor a ser juzgado o al cometer un error en público." }, { word: "Ansioso", desc: "Inquietud por el futuro o preocupación excesiva por lo que pueda pasar." }, { word: "Entusiasmado", desc: "Energía positiva y ganas intensas de comenzar algo que te divierte." }, { word: "Aliviado", desc: "Sensación de descanso en el pecho cuando una preocupación desaparece." }, { word: "Empático", desc: "Alguien capaz de ponerse en el lugar del otro y comprender cómo se siente." }, { word: "Generoso", desc: "Persona dispuesta a dar o compartir sus cosas sin esperar nada a cambio." }, { word: "Paciente", desc: "Capacidad para saber esperar con calma sin enfadarse." }, { word: "Respetuoso", desc: "Persona que trata a los demás con consideración y valora las normas o diferencias." }, { word: "Satisfecho", desc: "Alegría que se siente tras esforzarse mucho y obtener un buen resultado." }, { word: "Cauteloso", desc: "Persona que actúa con precaución para evitar peligros o errores." }, { word: "Impulsivo", desc: "Alguien que actúa sin pensar previamente en las consecuencias." }, { word: "Tolerante", desc: "Actitud de aceptar ideas, gustos o hábitos distintos a los propios." }] },
+        { category: "3. Emociones y Conducta", items: [{ word: "Curioso", desc: "Alguien que siente deseos de investigar, aprender o saber más cosas." }, { word: "Valiente", desc: "Persona que no se deja dominar por el miedo al enfrentar un reto o peligro." }, { word: "Agradable", desc: "Persona u objeto que causa gusto o resulta muy amable en el trato." }, { word: "Sorpresa", desc: "Evento o noticia inesperada que causa asombro." }, { word: "Tranquilo", desc: "Estado de calma, sin nervios, prisas ni agitación." }, { word: "Frustrado", desc: "Sentimiento que surge cuando intentas algo muchas veces y no sale como esperabas." }, { word: "Abrumado", desc: "Sensación de molestia al tener demasiadas tareas o estímulos al mismo tiempo." }, { word: "Decepcionado", desc: "Tristeza al ver que una expectativa no se cumplió o una persona te falló." }, { word: "Avergonzado", desc: "Incomodidad producida por el temor a ser juzgado o al cometer un error en público." }, { word: "Ansioso", desc: "Inquietud por el futuro o preocupación excessive por lo que pueda pasar." }, { word: "Entusiasmado", desc: "Energía positiva y ganas intensas de comenzar algo que te divierte." }, { word: "Aliviado", desc: "Sensación de descanso en el pecho cuando una preocupación desaparece." }, { word: "Empático", desc: "Alguien capaz de ponerse en el lugar del otro y comprender cómo se siente." }, { word: "Generoso", desc: "Persona dispuesta a dar o compartir sus cosas sin esperar nada a cambio." }, { word: "Paciente", desc: "Capacidad para saber esperar con calma sin enfadarse." }, { word: "Respetuoso", desc: "Persona que trata a los demás con consideración y valora las normas o diferencias." }, { word: "Satisfecho", desc: "Alegría que se siente tras esforzarse mucho y obtener un buen resultado." }, { word: "Cauteloso", desc: "Persona que actúa con precaución para evitar peligros o errores." }, { word: "Impulsivo", desc: "Alguien que actúa sin pensar previamente en las consecuencias." }, { word: "Tolerante", desc: "Actitud de aceptar ideas, gustos o hábitos distintos a los propios." }] },
         { category: "4. Tecnología y Vida Digital", items: [{ word: "Internet", desc: "Red mundial que conecta computadoras y dispositivos para compartir información." }, { word: "Pantalla", desc: "Superficie donde se muestran las imágenes y el texto en un dispositivo." }, { word: "Teclado", desc: "Conjunto de teclas que sirve para escribir datos en la computadora o tableta." }, { word: "Contraseña", desc: "Serie secreta de letras, números o símbolos que protege tus cuentas." }, { word: "Navegador", desc: "Programa que usas para buscar páginas web y explorar la red." }, { word: "Ciberseguridad", desc: "Medidas para proteger la información y la privacidad cuando usas internet." }, { word: "Aplicación (App)", desc: "Programa diseñado para realizar una función específica en la tableta o celular." }, { word: "Descarga", desc: "Proceso de copiar archivos o información desde internet hacia tu dispositivo." }, { word: "Archivo", desc: "Documento, foto o video guardado en formato digital en una memoria." }, { word: "Enlace (Link)", desc: "Texto o imagen donde haces clic para ir a otra página web." }, { word: "Procesador", desc: "Componente interno que funciona como el \"cerebro\" de una computadora." }, { word: "Memoria", desc: "Espacio donde el dispositivo almacena datos e instrucciones." }, { word: "Red social", desc: "Plataforma en internet para comunicarse y compartir contenidos con otras personas." }, { word: "Cámara web", desc: "Dispositivo que captura imagen y video para transmitir en tiempo real." }, { word: "Micrófono", desc: "Aparato que transforma la voz en señales digitales para grabarla o transmitirla." }, { word: "Virus informático", desc: "Programa dañino que puede alterar o perjudicar el funcionamiento de un dispositivo." }, { word: "Buscador", desc: "Sitio web especializado que te ayuda a encontrar información escribiendo palabras clave." }, { word: "Perfil", desc: "Información personal que te identifica dentro de una aplicación o plataforma digital." }, { word: "Servidor", desc: "Computadora central encargada de guardar datos y prestar servicios a otros equipos conectados." }, { word: "Inalámbrico", desc: "Sistema de conexión que funciona sin necesidad de cables (como el Wi-Fi)." }] },
         { category: "5. Convivencia y Vida Cotidiana", items: [{ word: "Acuerdo", desc: "Decisión tomada entre dos o más personas de común conformidad." }, { word: "Conflicto", desc: "Situación de desacuerdo o problema entre personas que requiere una solución." }, { word: "Compromiso", desc: "Obligación o promesa de cumplir con algo que se ha acordado." }, { word: "Diálogo", desc: "Conversación entre dos o más personas para intercambiar ideas y resolver diferencias." }, { word: "Colaboración", desc: "Trabajo conjunto entre varias personas para lograr una meta común." }, { word: "Responsabilidad", desc: "Cumplimiento de las obligaciones y asumir las consecuencias de los actos propios." }, { word: "Límite", desc: "Regla o línea que indica hasta dónde está permitido actuar para no perjudicar a nadie." }, { word: "Derecho", desc: "Norma o principio que garantiza lo que todas las personas deben recibir para vivir bien." }, { word: "Deber", desc: "Obligación moral o legal que debemos realizar dentro de la sociedad." }, { word: "Comunidad", desc: "Grupo de personas que comparten un espacio, unas reglas o unos intereses comunes." }, { word: "Costumbre", desc: "Hábito o tradición que se repite con frecuencia en una familia o cultura." }, { word: "Hospitalidad", desc: "Buena acogida y trato amable a los visitantes o invitados." }, { word: "Solidaridad", desc: "Apoyo incondicional a causas o a personas que atraviesan dificultades." }, { word: "Mediador", desc: "Persona neutral que ayuda a otras a resolver un desacuerdo." }, { word: "Norma", desc: "Regla que indica cómo se debe actuar en un grupo para mantener el orden y la seguridad." }, { word: "Convivencia", desc: "Acción de vivir o relacionarse en armonía y paz con los demás." }, { word: "Pertenencia", desc: "Sentimiento de formar parte de un grupo, familia o comunidad." }, { word: "Sinceridad", desc: "Hábito de decir la verdad sin mentiras ni engaños." }, { word: "Diversidad", desc: "Presencia de personas con diferentes orígenes, culturas o ideas dentro de un mismo espacio." }, { word: "Gratitud", desc: "Sentimiento de agradecimiento por un favor, un regalo o un gesto amable." }] }
       ];
@@ -824,11 +1098,191 @@
       return { init: renderScreen, validateScreen };
     })();
 
-    // INICIALIZACIÓN DE TODAS LAS ACTIVIDADES
+    // =======================================================
+    // MÓDULO ACTIVIDAD 4: RUEDA BAUHAUS
+    // =======================================================
+    const Act4 = (() => {
+      let audioCtx = null;
+
+      function playClickSound() {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        const bufferSize = audioCtx.sampleRate * 0.015;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = buffer.getChannelData(0);
+
+        for (let i = 0; i < bufferSize; i++) {
+          output[i] = Math.random() * 2 - 1;
+        }
+
+        const whiteNoise = audioCtx.createBufferSource();
+        whiteNoise.buffer = buffer;
+
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.value = 1200;
+
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.015);
+
+        whiteNoise.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        whiteNoise.start();
+      }
+
+      let currentTable = 4;
+      let currentMultiplier = 1;
+      let currentRotation = 0;
+
+      function initSelectOptions() {
+        const tableSelect = document.getElementById('table-select');
+        tableSelect.innerHTML = '';
+        for (let i = 1; i <= 12; i++) {
+          const opt = document.createElement('option');
+          opt.value = i;
+          opt.innerText = `Tabla del ${i}`;
+          if (i === 4) opt.selected = true;
+          tableSelect.appendChild(opt);
+        }
+      }
+
+      function drawWheels() {
+        const middleWheel = document.getElementById('middle-wheel');
+        const outerWheel = document.getElementById('outer-wheel');
+
+        middleWheel.innerHTML = '';
+        outerWheel.innerHTML = '';
+
+        const radiusMiddle = 85;
+        const radiusOuter = 145;
+
+        for (let i = 1; i <= 12; i++) {
+          const lineM = document.createElement('div');
+          lineM.className = 'slice-line';
+          lineM.style.transform = `rotate(${(i - 1) * 30 + 15}deg)`;
+          middleWheel.appendChild(lineM);
+
+          const lineO = document.createElement('div');
+          lineO.className = 'slice-line';
+          lineO.style.transform = `rotate(${(i - 1) * 30 + 15}deg)`;
+          outerWheel.appendChild(lineO);
+
+          const angleDeg = (i - 1) * 30 - 90;
+          const angleRad = (angleDeg * Math.PI) / 180;
+
+          const xM = 120 + radiusMiddle * Math.cos(angleRad);
+          const yM = 120 + radiusMiddle * Math.sin(angleRad);
+          const nodeM = document.createElement('div');
+          nodeM.className = 'number-node';
+          nodeM.style.left = `${xM}px`;
+          nodeM.style.top = `${yM}px`;
+          nodeM.innerText = i;
+          nodeM.onclick = () => selectMultiplier(i);
+          middleWheel.appendChild(nodeM);
+
+          const xO = 180 + radiusOuter * Math.cos(angleRad);
+          const yO = 180 + radiusOuter * Math.sin(angleRad);
+          const nodeO = document.createElement('div');
+          nodeO.className = 'number-node outer-node';
+          nodeO.style.left = `${xO}px`;
+          nodeO.style.top = `${yO}px`;
+          nodeO.id = `outer-ans-${i}`;
+          nodeO.innerText = currentTable * i;
+          outerWheel.appendChild(nodeO);
+        }
+      }
+
+      function changeTable(val) {
+        currentTable = parseInt(val);
+        document.getElementById('center-label').innerText = `${currentTable} x`;
+
+        for (let i = 1; i <= 12; i++) {
+          const node = document.getElementById(`outer-ans-${i}`);
+          if (node) node.innerText = currentTable * i;
+        }
+
+        updateQuiz();
+      }
+
+      function rotateWheel(deg) {
+        playClickSound();
+        currentRotation += deg;
+        document.getElementById('outer-wheel').style.transform = `rotate(${currentRotation}deg)`;
+
+        let normalizedDeg = (-currentRotation) % 360;
+        if (normalizedDeg < 0) normalizedDeg += 360;
+        
+        const sector = Math.round(normalizedDeg / 30) + 1;
+        currentMultiplier = sector > 12 ? 1 : sector;
+
+        updateQuiz();
+      }
+
+      function selectMultiplier(mult) {
+        playClickSound();
+        currentMultiplier = mult;
+        currentRotation = -(mult - 1) * 30;
+        document.getElementById('outer-wheel').style.transform = `rotate(${currentRotation}deg)`;
+        updateQuiz();
+      }
+
+      function updateQuiz() {
+        document.getElementById('exp-factor1').innerText = currentTable;
+        document.getElementById('exp-factor2').innerText = currentMultiplier;
+        const input = document.getElementById('user-answer');
+        input.value = '';
+        input.focus();
+        document.getElementById('feedback').innerText = '';
+      }
+
+      function checkAnswer() {
+        const input = document.getElementById('user-answer');
+        const val = parseInt(input.value);
+        const expected = currentTable * currentMultiplier;
+        const feedback = document.getElementById('feedback');
+
+        if (isNaN(val)) {
+          feedback.className = 'feedback-bauhaus incorrect-bauhaus';
+          feedback.innerText = 'Escribe un número';
+          return;
+        }
+
+        if (val === expected) {
+          feedback.className = 'feedback-bauhaus correct-bauhaus';
+          feedback.innerText = '¡Correcto!';
+        } else {
+          feedback.className = 'feedback-bauhaus incorrect-bauhaus';
+          feedback.innerText = 'Inténtalo de nuevo';
+        }
+      }
+
+      function init() {
+        initSelectOptions();
+        drawWheels();
+        changeTable(4);
+
+        document.getElementById('user-answer').addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') checkAnswer();
+        });
+      }
+
+      return { init, changeTable, rotateWheel, checkAnswer };
+    })();
+
+    // INICIALIZACIÓN GENERAL
     window.onload = () => {
       Act1.init();
       Act2.init();
       Act3.init();
+      Act4.init();
     };
   </script>
 </body>
