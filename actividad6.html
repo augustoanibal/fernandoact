@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sudoku Infantil de Animales</title>
+  <style>
+    :root {
+      --bg-color: #f0f4f8;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --primary-color: #2563eb;
+      --success-color: #10b981;
+      --border-color: #1e293b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Trebuchet MS', system-ui, sans-serif;
+      background-color: var(--bg-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+      color: var(--text-main);
+    }
+
+    /* HEADER Y BARRA SUPERIOR */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 420px;
+      margin-bottom: 15px;
+    }
+
+    .btn-home {
+      background-color: #ef4444;
+      color: white;
+      border: 3px solid var(--border-color);
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px var(--border-color);
+      transition: all 0.1s;
+      text-decoration: none;
+    }
+
+    .btn-home:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px var(--border-color);
+    }
+
+    .level-badge {
+      font-weight: 900;
+      font-size: 1.1rem;
+      background: #fef08a;
+      padding: 6px 14px;
+      border: 3px solid var(--border-color);
+      border-radius: 10px;
+      box-shadow: 3px 3px 0px var(--border-color);
+    }
+
+    /* BARRA DE PROGRESO */
+    .progress-container {
+      width: 100%;
+      max-width: 420px;
+      background: #e2e8f0;
+      border: 3px solid var(--border-color);
+      border-radius: 12px;
+      height: 22px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 3px 3px 0px var(--border-color);
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #10b981);
+      width: 5%;
+      transition: width 0.4s ease;
+    }
+
+    /* TABLERO DE SUDOKU 4x4 */
+    .sudoku-card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 20px;
+      border: 4px solid var(--border-color);
+      box-shadow: 6px 6px 0px var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .grid-4x4 {
+      display: grid;
+      grid-template-columns: repeat(4, 75px);
+      grid-template-rows: repeat(4, 75px);
+      border: 4px solid var(--border-color);
+      background-color: var(--border-color);
+      gap: 2px;
+    }
+
+    .cell {
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.2rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.2s;
+      position: relative;
+    }
+
+    /* Bordes gruesos para las subcuadrículas 2x2 */
+    .cell:nth-child(2n) { border-right: 3px solid var(--border-color); }
+    .cell:nth-child(4n) { border-right: none; }
+    .cell:nth-child(13), .cell:nth-child(14), .cell:nth-child(15), .cell:nth-child(16) { border-bottom: none; }
+    .cell:nth-child(n+5):nth-child(-n+8) { border-bottom: 3px solid var(--border-color); }
+
+    /* Colores pastel para las fichas */
+    .cell[data-val="1"] { background-color: #bae6fd; } /* Caracol - Azul */
+    .cell[data-val="2"] { background-color: #bbf7d0; } /* Mariposa Rosa - Verde */
+    .cell[data-val="3"] { background-color: #fef08a; } /* Mariposa Verde - Amarillo */
+    .cell[data-val="4"] { background-color: #e9d5ff; } /* Abeja - Morado */
+
+    .cell.selected {
+      outline: 4px solid #f59e0b;
+      z-index: 5;
+    }
+
+    .cell.fixed {
+      cursor: not-allowed;
+    }
+
+    /* PALETA DE SELECCIÓN DE ANIMALES */
+    .selector-palette {
+      display: flex;
+      gap: 10px;
+      margin-top: 5px;
+    }
+
+    .palette-btn {
+      width: 65px;
+      height: 65px;
+      font-size: 2rem;
+      border: 3px solid var(--border-color);
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.1s;
+    }
+
+    .palette-btn[data-val="1"] { background-color: #bae6fd; }
+    .palette-btn[data-val="2"] { background-color: #bbf7d0; }
+    .palette-btn[data-val="3"] { background-color: #fef08a; }
+    .palette-btn[data-val="4"] { background-color: #e9d5ff; }
+
+    .palette-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px var(--border-color);
+    }
+
+    .btn-clear {
+      background-color: #f1f5f9;
+      font-size: 1.2rem;
+    }
+
+    /* BOTÓN COMPROBAR Y NAVEGACIÓN */
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .btn-action {
+      flex: 1;
+      padding: 12px;
+      font-size: 1.1rem;
+      font-weight: 900;
+      border: 3px solid var(--border-color);
+      border-radius: 12px;
+      cursor: pointer;
+      text-transform: uppercase;
+      box-shadow: 4px 4px 0px var(--border-color);
+      transition: all 0.1s;
+    }
+
+    .btn-check { background-color: #facc15; }
+    .btn-next { background-color: #4ade80; display: none; }
+
+    .btn-action:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px var(--border-color);
+    }
+
+    .feedback-msg {
+      font-weight: 900;
+      font-size: 1.1rem;
+      min-height: 25px;
+      text-transform: uppercase;
+    }
+
+    .correct { color: #16a34a; }
+    .incorrect { color: #dc2626; }
+  </style>
+</head>
+<body>
+
+  <div class="header-bar">
+    <button class="btn-home" onclick="goToHome()">⌂ Inicio</button>
+    <div class="level-badge" id="level-title">Nivel 1 / 20</div>
+  </div>
+
+  <div class="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <div class="sudoku-card">
+    <div class="grid-4x4" id="grid"></div>
+
+    <div class="selector-palette">
+      <button class="palette-btn" data-val="1" onclick="selectAnimal(1)">🐌</button>
+      <button class="palette-btn" data-val="2" onclick="selectAnimal(2)">🦋</button>
+      <button class="palette-btn" data-val="3" onclick="selectAnimal(3)">🐝</button>
+      <button class="palette-btn" data-val="4" onclick="selectAnimal(4)">🐞</button>
+      <button class="palette-btn btn-clear" onclick="selectAnimal(0)">❌</button>
+    </div>
+
+    <div class="feedback-msg" id="feedback"></div>
+
+    <div class="action-buttons">
+      <button class="btn-action btn-check" id="btn-check" onclick="checkSolution()">Comprobar</button>
+      <button class="btn-action btn-next" id="btn-next" onclick="nextLevel()">Siguiente ➔</button>
+    </div>
+  </div>
+
+  <script>
+    // WEB AUDIO API
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playClickSound() {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.05);
+    }
+
+    function playPositiveSound() {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const notes = [523.25, 659.25, 783.99, 1046.50];
+      const now = audioCtx.currentTime;
+      notes.forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now + i * 0.08);
+        gain.gain.setValueAtTime(0.2, now + i * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.2);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now + i * 0.08);
+        osc.stop(now + i * 0.08 + 0.2);
+      });
+    }
+
+    function goToHome() {
+      playClickSound();
+      window.location.href = 'index.html';
+    }
+
+    const animalIcons = { 0: '', 1: '🐌', 2: '🦋', 3: '🐝', 4: '🐞' };
+
+    // BANCO DE 20 NIVELES DE SUDOKU 4x4 (0 representa casilla vacía)
+    const levels = [
+      { puzzle: [1,2,0,0, 0,0,2,0, 3,0,0,2, 0,1,3,4], solution: [1,2,4,3, 4,3,2,1, 3,4,1,2, 2,1,3,4] },
+      { puzzle: [0,1,0,4, 3,0,1,0, 0,4,0,2, 2,0,3,0], solution: [4,1,2,4, 3,2,1,4, 1,4,3,2, 2,4,3,1] },
+      { puzzle: [2,0,0,1, 0,1,2,0, 0,3,4,0, 4,0,0,3], solution: [2,4,3,1, 3,1,2,4, 1,3,4,2, 4,2,1,3] },
+      { puzzle: [0,0,3,0, 1,0,0,2, 3,0,0,4, 0,2,0,0], solution: [2,4,3,1, 1,3,4,2, 3,1,2,4, 4,2,1,3] },
+      { puzzle: [1,0,0,4, 0,2,3,0, 0,3,2,0, 4,0,0,1], solution: [1,3,2,4, 4,2,3,1, 2,3,2,4, 4,1,4,1] },
+      { puzzle: [0,3,4,0, 4,0,0,2, 1,0,0,3, 0,2,1,0], solution: [2,3,4,1, 4,1,3,2, 1,4,2,3, 3,2,1,4] },
+      { puzzle: [3,0,0,2, 0,4,1,0, 0,2,3,0, 1,0,0,4], solution: [3,1,4,2, 2,4,1,3, 4,2,3,1, 1,3,2,4] },
+      { puzzle: [4,0,2,0, 0,1,0,3, 2,0,3,0, 0,3,0,1], solution: [4,3,2,1, 1,1,4,3, 2,4,3,1, 3,3,1,1] },
+      { puzzle: [0,1,2,0, 2,0,0,4, 3,0,0,1, 0,4,3,0], solution: [4,1,2,3, 2,3,1,4, 3,2,4,1, 1,4,3,2] },
+      { puzzle: [1,4,0,0, 0,0,1,4, 4,1,0,0, 0,0,4,1], solution: [1,4,2,3, 3,2,1,4, 4,1,3,2, 2,3,4,1] },
+      { puzzle: [0,2,3,0, 3,0,0,1, 1,0,0,4, 0,4,1,0], solution: [4,2,3,1, 3,1,4,2, 1,3,2,4, 2,4,1,3] },
+      { puzzle: [2,0,1,0, 0,4,0,3, 3,0,4,0, 0,1,0,2], solution: [2,3,1,4, 1,4,2,3, 3,2,4,1, 4,1,3,2] },
+      { puzzle: [0,0,0,1, 1,0,0,0, 0,0,0,3, 3,0,0,0], solution: [4,2,3,1, 1,3,2,4, 2,4,1,3, 3,1,4,2] },
+      { puzzle: [3,4,0,0, 0,0,4,3, 4,3,0,0, 0,0,3,4], solution: [3,4,1,2, 1,2,4,3, 4,3,2,1, 2,1,3,4] },
+      { puzzle: [0,1,0,2, 4,0,3,0, 0,2,0,1, 3,0,4,0], solution: [3,1,4,2, 4,2,3,1, 1,2,2,1, 3,1,4,2] },
+      { puzzle: [1,0,4,0, 0,3,0,2, 2,0,3,0, 0,4,0,1], solution: [1,2,4,3, 4,3,1,2, 2,1,3,4, 3,4,2,1] },
+      { puzzle: [0,3,0,1, 1,0,2,0, 0,2,0,4, 4,0,1,0], solution: [2,3,4,1, 1,4,2,3, 3,2,1,4, 4,1,3,2] },
+      { puzzle: [2,1,0,0, 0,0,1,2, 1,2,0,0, 0,0,2,1], solution: [2,1,4,3, 3,4,1,2, 1,2,3,4, 4,3,2,1] },
+      { puzzle: [4,0,0,3, 0,2,1,0, 0,1,2,0, 3,0,0,4], solution: [4,1,2,3, 3,2,1,4, 2,1,4,3, 3,4,3,4] },
+      { puzzle: [0,2,4,0, 1,0,0,3, 4,0,0,2, 0,3,1,0], solution: [3,2,4,1, 1,4,2,3, 4,1,3,2, 2,3,1,4] }
+    ];
+
+    let currentLevel = 0;
+    let currentGridState = [];
+    let selectedCellIndex = null;
+
+    function loadLevel(levelIndex) {
+      currentLevel = levelIndex;
+      const levelData = levels[currentLevel];
+      currentGridState = [...levelData.puzzle];
+      selectedCellIndex = null;
+
+      document.getElementById('level-title').innerText = `Nivel ${currentLevel + 1} / 20`;
+      document.getElementById('progress-bar').style.width = `${((currentLevel + 1) / 20) * 100}%`;
+      document.getElementById('feedback').innerText = '';
+      document.getElementById('btn-check').style.display = 'block';
+      document.getElementById('btn-next').style.display = 'none';
+
+      renderGrid();
+    }
+
+    function renderGrid() {
+      const gridContainer = document.getElementById('grid');
+      gridContainer.innerHTML = '';
+
+      const initialPuzzle = levels[currentLevel].puzzle;
+
+      currentGridState.forEach((val, idx) => {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        if (initialPuzzle[idx] !== 0) cell.classList.add('fixed');
+        if (idx === selectedCellIndex) cell.classList.add('selected');
+
+        cell.setAttribute('data-val', val);
+        cell.innerText = animalIcons[val];
+
+        cell.onclick = () => {
+          if (initialPuzzle[idx] === 0) {
+            playClickSound();
+            selectedCellIndex = idx;
+            renderGrid();
+          }
+        };
+
+        gridContainer.appendChild(cell);
+      });
+    }
+
+    function selectAnimal(val) {
+      if (selectedCellIndex !== null) {
+        playClickSound();
+        currentGridState[selectedCellIndex] = val;
+        renderGrid();
+      }
+    }
+
+    function checkSolution() {
+      const solution = levels[currentLevel].solution;
+      const feedback = document.getElementById('feedback');
+      let isCorrect = true;
+
+      for (let i = 0; i < 16; i++) {
+        if (currentGridState[i] !== solution[i]) {
+          isCorrect = false;
+          break;
+        }
+      }
+
+      if (isCorrect) {
+        feedback.className = 'feedback-msg correct';
+        feedback.innerText = '¡Excelente! ¡Sudoku Correcto!';
+        playPositiveSound();
+        document.getElementById('btn-check').style.display = 'none';
+        
+        if (currentLevel < 19) {
+          document.getElementById('btn-next').style.display = 'block';
+        } else {
+          feedback.innerText = '¡Felicidades! Completaste los 20 niveles 🎉';
+        }
+      } else {
+        feedback.className = 'feedback-msg incorrect';
+        feedback.innerText = 'Hay errores. ¡Inténtalo de nuevo!';
+      }
+    }
+
+    function nextLevel() {
+      playClickSound();
+      if (currentLevel < 19) {
+        loadLevel(currentLevel + 1);
+      }
+    }
+
+    window.onload = () => {
+      loadLevel(0);
+    };
+  </script>
+</body>
+</html>
