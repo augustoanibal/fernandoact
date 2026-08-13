@@ -13,7 +13,8 @@
       --accent: #48a9a6;
       --text-main: #2b3a42;
       --text-muted: #6c7a89;
-      --success: #52b788;
+      --success: #2e7d32;
+      --success-bg: #e8f5e9;
       --border-color: #dcdfe3;
     }
 
@@ -33,7 +34,7 @@
     }
 
     .container {
-      max-width: 800px;
+      max-width: 850px;
       width: 100%;
     }
 
@@ -50,9 +51,9 @@
     h1 {
       color: var(--primary);
       text-align: center;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       margin-bottom: 15px;
-      font-size: 2em;
+      font-size: 1.8em;
     }
 
     .theory-box {
@@ -71,6 +72,7 @@
     .theory-box ul {
       margin-left: 20px;
       margin-top: 5px;
+      line-height: 1.5;
     }
 
     .instruction {
@@ -80,6 +82,7 @@
       padding: 12px 15px;
       border-left: 4px solid #ffca28;
       border-radius: 4px;
+      font-weight: 600;
     }
 
     /* Ejercicios */
@@ -95,7 +98,7 @@
     .exercise-header {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 12px;
     }
 
@@ -110,6 +113,7 @@
       justify-content: center;
       border-radius: 50%;
       font-size: 0.9em;
+      flex-shrink: 0;
     }
 
     .word-title {
@@ -123,16 +127,18 @@
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
+      margin-top: 8px;
     }
 
     input[type="text"] {
       padding: 10px 14px;
       border: 2px solid var(--border-color);
       border-radius: 6px;
-      font-size: 1em;
+      font-size: 0.95em;
       outline: none;
       transition: border-color 0.3s;
-      width: 200px;
+      min-width: 240px;
+      flex-grow: 1;
     }
 
     input[type="text"]:focus {
@@ -140,13 +146,14 @@
     }
 
     .feedback-tag {
-      background-color: #e8f5e9;
-      color: #2e7d32;
+      background-color: var(--success-bg);
+      color: var(--success);
       padding: 8px 12px;
       border-radius: 6px;
       font-size: 0.9em;
-      font-weight: bold;
+      font-weight: 600;
       display: none;
+      line-height: 1.3;
       animation: fadeIn 0.4s ease-in-out forwards;
     }
 
@@ -210,15 +217,25 @@
     <h1>GÉNERO Y NÚMERO DEL SUSTANTIVO</h1>
     
     <div class="theory-box">
-      <h3>Resumen Gramatical:</h3>
+      <h3>Repaso para recordar:</h3>
       <ul>
-        <li><strong>Género:</strong> Los sustantivos son <em>masculinos</em> (el/un) o <em>femeninos</em> (la/una). Hay palabras que varían con la terminación (<em>gato/gata</em>), otras cambian de raíz (<em>padre/madre</em>) y algunas son ambiguas o cambian de significado con el artículo (<em>el orden / la orden</em>).</li>
-        <li><strong>Número:</strong> Indica si es <em>singular</em> (uno) o <em>plural</em> (varios). Se añade <strong>-s</strong> si termina en vocal átona o <em>-é</em> (<em>casas, cafés</em>) y <strong>-es</strong> si termina en consonante, vocal tónica o <em>-z</em> pasándola a <em>-ces</em> (<em>árboles, lápices, rubíes</em>).</li>
+        <li><strong>Género (Masculino o Femenino):</strong>
+          <ul>
+            <li>Usamos <em>el / un</em> para el masculino y <em>la / una</em> para el femenino.</li>
+            <li>Algunas palabras cambian al final (<em>gato ➔ gata</em>), otras cambian totalmente (<em>padre ➔ madre</em>) y en otras solo cambia el artículo (<em>el estudiante ➔ la estudiante</em>).</li>
+          </ul>
+        </li>
+        <li><strong>Número (Singular o Plural):</strong>
+          <ul>
+            <li><strong>Singular:</strong> Se refiere a un solo objeto (<em>el árbol</em>).</li>
+            <li><strong>Plural:</strong> Se refiere a más de uno. Añadimos <strong>-s</strong> si termina en vocal (<em>casas</em>) o <strong>-es</strong> si termina en consonante (<em>árboles</em>). Si termina en <strong>-z</strong>, cambia a <strong>-ces</strong> (<em>lápiz ➔ lápices</em>).</li>
+          </ul>
+        </li>
       </ul>
     </div>
 
     <div class="instruction">
-      <strong>Indicación:</strong> Escribe la transformación solicitada para cada ejercicio. Al responder correctamente, aparecerá la nota explicativa automáticamente.
+      Indicación: Escribe la respuesta correcta para cada ejercicio (incluye el artículo cuando sea necesario, por ejemplo: <em>la actriz</em> o <em>los lápices</em>).
     </div>
   </header>
 
@@ -235,60 +252,60 @@
 <script>
   const exercises = [
     // 1 - 5
-    { prompt: "Escribe el femenino de: <strong>El actor</strong>", correct: ["la actriz"], note: "Femenino heterónimo/irregular (-triz)." },
-    { prompt: "Escribe el plural de: <strong>El lápiz</strong>", correct: ["los lápices"], note: "Termina en -z, cambia a -ces en plural." },
-    { prompt: "Escribe el femenino de: <strong>El rey</strong>", correct: ["la reina"], note: "Terminación femenina especial." },
-    { prompt: "Escribe el plural de: <strong>El rubí</strong>", correct: ["los rubíes", "los rubis"], note: "Sustantivos con vocal tónica admiten -es." },
-    { prompt: "Escribe el género opuesto de: <strong>El caballo</strong>", correct: ["la yegua"], note: "Heterónimo: cambia completamente la raíz." },
+    { prompt: "Escribe el femenino de: <strong>El actor</strong>", correct: ["la actriz"], note: "¡Correcto! El femenino cambia a 'actriz'." },
+    { prompt: "Escribe el plural de: <strong>El lápiz</strong>", correct: ["los lápices"], note: "¡Bien hecho! La 'z' final cambia a 'ces' en plural." },
+    { prompt: "Escribe el femenino de: <strong>El rey</strong>", correct: ["la reina"], note: "¡Excelente! El femenino de rey es reina." },
+    { prompt: "Escribe el plural de: <strong>El rubí</strong>", correct: ["los rubíes", "los rubis"], note: "¡Muy bien! Puede ser rubíes o rubís." },
+    { prompt: "Escribe el femenino de: <strong>El caballo</strong>", correct: ["la yegua"], note: "¡Correcto! Cambia la palabra completa a yegua." },
 
     // 6 - 10
-    { prompt: "Escribe el plural de: <strong>La crisis</strong>", correct: ["las crisis"], note: "Invariable en número por ser llana terminada en -s." },
-    { prompt: "Escribe el femenino de: <strong>El poeta</strong>", correct: ["la poeta", "la poetisa"], note: "Admite 'la poeta' o la forma tradicional 'poetisa'." },
-    { prompt: "Escribe el plural de: <strong>El lunes</strong>", correct: ["los lunes"], note: "Invariable en plural por terminar en -s siendo átona." },
-    { prompt: "Escribe el género opuesto de: <strong>El yerno</strong>", correct: ["la nuera"], note: "Heterónimo de parentesco." },
-    { prompt: "Escribe el plural de: <strong>El régimen</strong>", correct: ["los regímenes"], note: "Cambia la acentuación en plural (esdrújula)." },
+    { prompt: "Escribe el plural de: <strong>La crisis</strong>", correct: ["las crisis"], note: "¡Genial! No cambia la palabra, solo el artículo 'las'." },
+    { prompt: "Escribe el femenino de: <strong>El poeta</strong>", correct: ["la poeta", "la poetisa"], note: "¡Bien! Se acepta 'la poeta' o 'la poetisa'." },
+    { prompt: "Escribe el plural de: <strong>El lunes</strong>", correct: ["los lunes"], note: "¡Muy bien! Los días que terminan en 's' usan 'los' para plural." },
+    { prompt: "Escribe el femenino de: <strong>El yerno</strong>", correct: ["la nuera"], note: "¡Excelente! El femenino de yerno es nuera." },
+    { prompt: "Escribe el plural de: <strong>El pez</strong>", correct: ["los peces"], note: "¡Correcto! Recuerda que la 'z' pasa a 'ces'." },
 
     // 11 - 15
-    { prompt: "Escribe el femenino de: <strong>El alcalde</strong>", correct: ["la alcaldesa"], note: "Forma femenina con sufijo -esa." },
-    { prompt: "Escribe el plural de: <strong>El ají</strong>", correct: ["los ajíes", "los ajís"], note: "Admite -es (preferido) o -s." },
-    { prompt: "Escribe el género opuesto de: <strong>El toro</strong>", correct: ["la vaca"], note: "Heterónimo." },
-    { prompt: "Escribe el plural de: <strong>El tórax</strong>", correct: ["los tórax"], note: "Palabras llanas/esdrújulas en -x son invariables." },
-    { prompt: "Escribe el femenino de: <strong>El médico</strong>", correct: ["la médica"], note: "Femenino regular adaptado en -a." },
+    { prompt: "Escribe el femenino de: <strong>El alcalde</strong>", correct: ["la alcaldesa"], note: "¡Bien hecho! Termina en '-esa'." },
+    { prompt: "Escribe el plural de: <strong>El ají</strong>", correct: ["los ajíes", "los ajís"], note: "¡Muy bien! Se prefiere 'los ajíes'." },
+    { prompt: "Escribe el femenino de: <strong>El toro</strong>", correct: ["la vaca"], note: "¡Correcto! El femenino de toro es vaca." },
+    { prompt: "Escribe el plural de: <strong>El árbol</strong>", correct: ["los árboles"], note: "¡Excelente! Como termina en consonante se añade '-es'." },
+    { prompt: "Escribe el femenino de: <strong>El médico</strong>", correct: ["la médica"], note: "¡Bien! Simplemente cambiamos la 'o' por 'a'." },
 
     // 16 - 20
-    { prompt: "Escribe el plural de: <strong>La luz</strong>", correct: ["las luces"], note: "La -z final pasa a -ces en plural." },
-    { prompt: "Escribe el femenino de: <strong>El héroe</strong>", correct: ["la heroína"], note: "Sufijo femenino -ína." },
-    { prompt: "Escribe el plural de: <strong>El menú</strong>", correct: ["los menús", "los menúes"], note: "Admite ambos, aunque -s es más común hoy." },
-    { prompt: "Escribe el femenino de: <strong>El marqués</strong>", correct: ["la marquesa"], note: "Pierde la tilde al añadir -esa." },
-    { prompt: "Escribe el plural de: <strong>El carácter</strong>", correct: ["los caracteres"], note: "Cambia la posición del acento tónico." },
+    { prompt: "Escribe el plural de: <strong>La luz</strong>", correct: ["las luces"], note: "¡Perfecto! La 'z' cambia a 'ces'." },
+    { prompt: "Escribe el femenino de: <strong>El héroe</strong>", correct: ["la heroína"], note: "¡Muy bien! Se añade la terminación '-ína'." },
+    { prompt: "Escribe el plural de: <strong>El menú</strong>", correct: ["los menús", "los menúes"], note: "¡Bien hecho! Lo más común es 'los menús'." },
+    { prompt: "Escribe el femenino de: <strong>El marqués</strong>", correct: ["la marquesa"], note: "¡Excelente! Pierde la tilde al cambiar a '-esa'." },
+    { prompt: "Escribe el plural de: <strong>El flor</strong>", correct: ["las flores"], note: "¡Correcto! Añadimos '-es' al plural." },
 
     // 21 - 25
-    { prompt: "Escribe el género opuesto de: <strong>El carnero</strong>", correct: ["la oveja"], note: "Heterónimo." },
-    { prompt: "Escribe el plural de: <strong>La tesis</strong>", correct: ["las tesis"], note: "Invariable en plural." },
-    { prompt: "Escribe el femenino de: <strong>El estratega</strong>", correct: ["la estratega"], note: "Sustantivo común en cuanto al género." },
-    { prompt: "Escribe el plural de: <strong>El álbum</strong>", correct: ["los álbumes"], note: "Añade -es por terminar en consonante -m." },
-    { prompt: "Escribe el género opuesto de: <strong>El conde</strong>", correct: ["la condesa"], note: "Sufijo femenino -esa." },
+    { prompt: "Escribe el femenino de: <strong>El carnero</strong>", correct: ["la oveja"], note: "¡Muy bien! La hembra del carnero es la oveja." },
+    { prompt: "Escribe el plural de: <strong>La clase</strong>", correct: ["las clases"], note: "¡Bien hecho! Solo agregamos '-s'." },
+    { prompt: "Escribe el femenino de: <strong>El estudiante</strong>", correct: ["la estudiante"], note: "¡Correcto! Solo cambia el artículo de 'el' a 'la'." },
+    { prompt: "Escribe el plural de: <strong>El álbum</strong>", correct: ["los álbumes"], note: "¡Genial! Añadimos '-es' al final." },
+    { prompt: "Escribe el femenino de: <strong>El conde</strong>", correct: ["la condesa"], note: "¡Muy bien! Usamos la terminación '-esa'." },
 
     // 26 - 30
-    { prompt: "Escribe el plural de: <strong>El virus</strong>", correct: ["los virus"], note: "Invariable en plural." },
-    { prompt: "Escribe el femenino de: <strong>El emperador</strong>", correct: ["la emperatriz"], note: "Terminación irregular -triz." },
-    { prompt: "Escribe el plural de: <strong>La ley</strong>", correct: ["las leyes"], note: "Terminación en -y añade -es." },
-    { prompt: "Escribe el género opuesto de: <strong>El padrastro</strong>", correct: ["la madrastra"], note: "Femenino regular con -a." },
-    { prompt: "Escribe el plural de: <strong>El paraguas</strong>", correct: ["los paraguas"], note: "Sustantivo compuesto invariable en plural." },
+    { prompt: "Escribe el plural de: <strong>El virus</strong>", correct: ["los virus"], note: "¡Correcto! Queda igual, solo cambia a 'los'." },
+    { prompt: "Escribe el femenino de: <strong>El emperador</strong>", correct: ["la emperatriz"], note: "¡Excelente! Termina en '-triz'." },
+    { prompt: "Escribe el plural de: <strong>La ley</strong>", correct: ["las leyes"], note: "¡Bien hecho! Las palabras terminadas en 'y' añaden '-es'." },
+    { prompt: "Escribe el femenino de: <strong>El padrastro</strong>", correct: ["la madrastra"], note: "¡Correcto! Cambia a 'madrastra'." },
+    { prompt: "Escribe el plural de: <strong>El paraguas</strong>", correct: ["los paraguas"], note: "¡Genial! Permanece igual en plural." },
 
     // 31 - 35
-    { prompt: "Escribe el femenino de: <strong>El estudiante</strong>", correct: ["la estudiante"], note: "Común en cuanto al género (varía el artículo)." },
-    { prompt: "Escribe el plural de: <strong>El buey</strong>", correct: ["los bueyes"], note: "Añade -es al terminar en -y." },
-    { prompt: "Escribe el femenino de: <strong>El duque</strong>", correct: ["la duquesa"], note: "Sufijo femenino -esa." },
-    { prompt: "Escribe el plural de: <strong>El análisis</strong>", correct: ["los análisis"], note: "Invariable por terminar en -s no tónica." },
-    { prompt: "Escribe el femenino de: <strong>El capitán</strong>", correct: ["la capitana"], note: "Añade -a a los sustantivos terminados en -án." },
+    { prompt: "Escribe el femenino de: <strong>El doctor</strong>", correct: ["la doctora"], note: "¡Muy bien! Añadimos la 'a' al final." },
+    { prompt: "Escribe el plural de: <strong>El buey</strong>", correct: ["los bueyes"], note: "¡Perfecto! Añade '-es' al terminar en 'y'." },
+    { prompt: "Escribe el femenino de: <strong>El duque</strong>", correct: ["la duquesa"], note: "¡Excelente! El femenino es duquesa." },
+    { prompt: "Escribe el plural de: <strong>El tenis</strong>", correct: ["los tenis"], note: "¡Bien! Solo cambia el artículo a 'los'." },
+    { prompt: "Escribe el femenino de: <strong>El capitán</strong>", correct: ["la capitana"], note: "¡Correcto! Añadimos una 'a' al final." },
 
     // 36 - 40
-    { prompt: "Escribe el plural de: <strong>El cruz</strong>", correct: ["las cruces", "los cruces"], note: "La -z pasa a -ces en plural." },
-    { prompt: "Escribe el femenino de: <strong>El barón</strong>", correct: ["la baronesa"], note: "Sufijo femenino -esa." },
-    { prompt: "Escribe el plural de: <strong>El paraguas</strong>", correct: ["los paraguas"], note: "Invariable." },
-    { prompt: "Escribe el género opuesto de: <strong>El macho</strong>", correct: ["la hembra"], note: "Heterónimo para género gramatical." },
-    { prompt: "Escribe el plural de: <strong>El mamut</strong>", correct: ["los mamuts"], note: "Préstamos terminados en consonantes raras añaden -s." }
+    { prompt: "Escribe el plural de: <strong>La cruz</strong>", correct: ["las cruces"], note: "¡Muy bien! La 'z' cambia a 'ces'." },
+    { prompt: "Escribe el femenino de: <strong>El barón</strong>", correct: ["la baronesa"], note: "¡Genial! Cambia a baronesa." },
+    { prompt: "Escribe el plural de: <strong>El abrelatas</strong>", correct: ["los abrelatas"], note: "¡Correcto! La palabra no cambia en plural." },
+    { prompt: "Escribe el femenino de: <strong>El macho</strong>", correct: ["la hembra"], note: "¡Excelente! El opuesto gramatical es hembra." },
+    { prompt: "Escribe el plural de: <strong>El mamut</strong>", correct: ["los mamuts"], note: "¡Muy bien! Solo agregamos la '-s' al final." }
   ];
 
   let currentPage = 0;
@@ -320,7 +337,7 @@
                  oninput="checkAnswer(${globalIndex})"
                  autocomplete="off">
           <div id="tag-${globalIndex}" class="feedback-tag">
-            ✓ ${item.note}
+            ${item.note}
           </div>
         </div>
       `;
@@ -343,7 +360,7 @@
 
     if (isCorrect) {
       input.style.borderColor = "var(--success)";
-      input.style.backgroundColor = "#f1f8e9";
+      input.style.backgroundColor = "var(--success-bg)";
       tag.style.display = "inline-block";
     } else {
       input.style.borderColor = "var(--border-color)";
