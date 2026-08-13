@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El artículo «UN» / «UNA» - Actividad Interactiva</title>
+  <style>
+    :root {
+      --bg-color: #f4f7f6;
+      --card-bg: #ffffff;
+      --primary: #5b7086;
+      --primary-light: #eef2f5;
+      --accent: #48a9a6;
+      --text-main: #2b3a42;
+      --text-muted: #6c7a89;
+      --success-bg: #e8f5e9;
+      --success-border: #2e7d32;
+      --error-bg: #ffebee;
+      --error-border: #c62828;
+      --border-color: #dcdfe3;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+    }
+
+    header {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      margin-bottom: 25px;
+      border-top: 6px solid var(--primary);
+    }
+
+    h1 {
+      color: var(--primary);
+      text-align: center;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+      font-size: 1.8em;
+    }
+
+    .instruction {
+      font-size: 0.95em;
+      color: var(--text-main);
+      background: #fff8e1;
+      padding: 12px 15px;
+      border-left: 4px solid #ffca28;
+      border-radius: 4px;
+    }
+
+    .exercise-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      border: 1px solid var(--border-color);
+      transition: transform 0.2s ease;
+    }
+
+    .exercise-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .word-num {
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: bold;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 0.9em;
+    }
+
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      font-size: 1.1em;
+    }
+
+    input[type="text"] {
+      padding: 8px 12px;
+      border: 2px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 1em;
+      outline: none;
+      transition: all 0.3s;
+      width: 90px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary);
+    }
+
+    .feedback-msg {
+      font-size: 0.9em;
+      font-weight: bold;
+      display: none;
+      margin-left: 10px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 25px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button, .btn-home {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      font-size: 0.95em;
+    }
+
+    button:hover, .btn-home:hover {
+      background-color: #4a5c6e;
+    }
+
+    button:disabled {
+      background-color: #c0c9d0;
+      cursor: not-allowed;
+    }
+
+    .btn-home {
+      background-color: var(--accent);
+    }
+
+    .btn-home:hover {
+      background-color: #368784;
+    }
+
+    .btn-verify {
+      background-color: #2e7d32;
+    }
+
+    .btn-verify:hover {
+      background-color: #1b5e20;
+    }
+
+    .page-indicator {
+      font-weight: bold;
+      color: var(--text-muted);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header id="top">
+    <h1>El artículo «UN» / «UNA»</h1>
+    <div class="instruction">
+      <strong>Indicación:</strong> Escribe en el espacio en blanco el artículo indefinido que corresponda (<strong>un</strong> / <strong>una</strong>) y presiona <strong>Verificar</strong> para revisar tus respuestas.
+    </div>
+  </header>
+
+  <!-- Contenedor dinámico -->
+  <main id="quiz-container"></main>
+
+  <!-- Paginador y Botones -->
+  <div class="controls">
+    <button id="prev-btn" onclick="changePage(-1)">Anterior</button>
+    <a href="https://augustoanibal.github.io/fernandoact/index.html" class="btn-home">🏠 Inicio</a>
+    <button class="btn-verify" onclick="verifyCurrentPage()">✔ Verificar</button>
+    <span class="page-indicator" id="page-indicator">Página 1 de 6</span>
+    <button id="next-btn" onclick="changePage(1)">Siguiente</button>
+  </div>
+</div>
+
+<script>
+  const exercises = [
+    // Bloque A[cite: 9]
+    { id: 1, text: "libro muy interesante.", correct: "un" },
+    { id: 2, text: "manzana roja y jugosa.", correct: "una" },
+    { id: 3, text: "lámpara de escritorio.", correct: "una" },
+    { id: 4, text: "parque tranquilo cerca de la ciudad.", correct: "un" },
+    { id: 5, text: "guitarra acústica.", correct: "una" },
+    { id: 6, text: "lápiz de color azul.", correct: "un" },
+    { id: 7, text: "canción muy bonita.", correct: "una" },
+    { id: 8, text: "edificio antiguo.", correct: "un" },
+    { id: 9, text: "ventana abierta.", correct: "una" },
+    { id: 10, text: "perro muy juguetón.", correct: "un" },
+    // Bloque B[cite: 9]
+    { id: 11, text: "idea excelente para el proyecto.", correct: "una" },
+    { id: 12, text: "problema difícil de resolver.", correct: "un" },
+    { id: 13, text: "profesora dedicada a su trabajo.", correct: "una" },
+    { id: 14, text: "gran oportunidad de viaje.", correct: "una" },
+    { id: 15, text: "amigo de la infancia.", correct: "un" },
+    { id: 16, text: "poema escrito desde el corazón.", correct: "un" },
+    { id: 17, text: "solución rápida y efectiva.", correct: "una" },
+    { id: 18, text: "actor famoso de televisión.", correct: "un" },
+    { id: 19, text: "respuesta correcta.", correct: "una" },
+    { id: 20, text: "pregunta importante.", correct: "una" },
+    // Bloque C[cite: 9]
+    { id: 21, text: "águila sobrevolando las montañas.", correct: "un" },
+    { id: 22, text: "hacha de madera muy afilada.", correct: "un" },
+    { id: 23, text: "flor silvestre en el jardín.", correct: "una" },
+    { id: 24, text: "alma noble y sincera.", correct: "un" },
+    { id: 25, text: "aula limpia y ordenada.", correct: "un" },
+    { id: 26, text: "estrella fugaz en el cielo.", correct: "una" },
+    { id: 27, text: "mapa del continente.", correct: "un" },
+    { id: 28, text: "área restringida.", correct: "un" },
+    { id: 29, text: "agua fresca de la fuente.", correct: "un" },
+    { id: 30, text: "día soleado de verano.", correct: "un" }
+  ];
+
+  let currentPage = 0;
+  const itemsPerPage = 5;
+
+  function renderPage() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = '';
+
+    const start = currentPage * itemsPerPage;
+    const end = start + itemsPerPage;
+    const currentExercises = exercises.slice(start, end);
+
+    currentExercises.forEach((item, index) => {
+      const globalIndex = start + index;
+      const card = document.createElement('div');
+      card.className = 'exercise-card';
+      
+      card.innerHTML = `
+        <div class="exercise-header">
+          <span class="word-num">${item.id}</span>
+        </div>
+        <div class="input-group">
+          <input type="text" 
+                 id="input-${globalIndex}" 
+                 placeholder="un/una" 
+                 autocomplete="off">
+          <span>${item.text}</span>
+          <span id="feedback-${globalIndex}" class="feedback-msg"></span>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    const totalPages = Math.ceil(exercises.length / itemsPerPage);
+    document.getElementById('page-indicator').innerText = `Página ${currentPage + 1} de ${totalPages}`;
+    
+    document.getElementById('prev-btn').disabled = currentPage === 0;
+    document.getElementById('next-btn').disabled = currentPage === totalPages - 1;
+  }
+
+  function verifyCurrentPage() {
+    const start = currentPage * itemsPerPage;
+    const end = start + itemsPerPage;
+    const currentExercises = exercises.slice(start, end);
+
+    currentExercises.forEach((item, index) => {
+      const globalIndex = start + index;
+      const input = document.getElementById(`input-${globalIndex}`);
+      const feedback = document.getElementById(`feedback-${globalIndex}`);
+      const userAnswer = input.value.trim().toLowerCase();
+
+      if (userAnswer === item.correct) {
+        input.style.borderColor = "var(--success-border)";
+        input.style.backgroundColor = "var(--success-bg)";
+        feedback.style.color = "var(--success-border)";
+        feedback.innerText = "✓ ¡Correcto!";
+        feedback.style.display = "inline-block";
+      } else {
+        input.style.borderColor = "var(--error-border)";
+        input.style.backgroundColor = "var(--error-bg)";
+        feedback.style.color = "var(--error-border)";
+        feedback.innerText = `✗ Correcto: ${item.correct}`;
+        feedback.style.display = "inline-block";
+      }
+    });
+  }
+
+  function changePage(direction) {
+    currentPage += direction;
+    renderPage();
+    document.getElementById('top').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function goToHome() {
+    window.location.href = "https://augustoanibal.github.io/fernandoact/index.html";
+  }
+
+  renderPage();
+</script>
+
+</body>
+</html>
