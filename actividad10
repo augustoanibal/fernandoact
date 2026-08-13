@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Cazapalabras · El Reino</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #0b0e14;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Orbitron', sans-serif;
+      padding: 0.5rem;
+      margin: 0;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .game-container {
+      max-width: 750px;
+      width: 100%;
+      background: #1a1f2b;
+      padding: 1.2rem 0.8rem 1.2rem 0.8rem;
+      border-radius: 32px 32px 24px 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), inset 0 0 0 1px #3b4455;
+    }
+
+    .title-88m {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: #c7d0de;
+      text-shadow: 0 0 8px #4f6b8a, 0 0 20px #2d4055;
+      margin-bottom: 0.1rem;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .title-sub {
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 6px;
+      color: #FBBF24;
+      text-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+      margin-top: -4px;
+      margin-bottom: 0.8rem;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .game-wrapper {
+      background: #1a1a2e;
+      padding: 8px;
+      border-radius: 12px;
+      border: 3px solid #FBBF24;
+      box-shadow: 0 0 30px rgba(251, 191, 36, 0.12), inset 0 0 60px rgba(251, 191, 36, 0.04);
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    #wordCanvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .hud {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+      font-family: 'Orbitron', sans-serif;
+      color: #FBBF24;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+      z-index: 10;
+      font-size: 14px;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .hud-left,
+    .hud-right {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .hud-right {
+      align-items: flex-end;
+    }
+
+    .hud-item {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 2px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      font-size: 11px;
+      letter-spacing: 1px;
+      backdrop-filter: blur(4px);
+    }
+
+    .hud-item .value {
+      color: #FBBF24;
+      font-weight: 700;
+    }
+
+    .hud-item .highlight {
+      color: #FFD700;
+      font-weight: 900;
+    }
+
+    .crosshair {
+      position: absolute;
+      pointer-events: none;
+      z-index: 20;
+      width: 40px;
+      height: 40px;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+
+    .crosshair::before,
+    .crosshair::after {
+      content: '';
+      position: absolute;
+      background: #FBBF24;
+    }
+
+    .crosshair::before {
+      width: 2px;
+      height: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+    }
+
+    .crosshair::after {
+      width: 100%;
+      height: 2px;
+      top: 50%;
+      transform: translateY(-50%);
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+    }
+
+    .crosshair .dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #FF3333;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+    }
+
+    .crosshair.show {
+      display: block;
+    }
+
+    .center-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 30;
+      pointer-events: auto;
+      backdrop-filter: blur(4px);
+    }
+
+    .center-overlay.hidden {
+      display: none;
+      pointer-events: none;
+    }
+
+    .center-overlay .big-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #FBBF24;
+      text-shadow: 0 0 40px rgba(251, 191, 36, 0.4);
+      margin-bottom: 0.3rem;
+      letter-spacing: 4px;
+    }
+
+    .center-overlay .sub-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      color: #c7d0de;
+      margin-bottom: 0.3rem;
+      letter-spacing: 2px;
+    }
+
+    .center-overlay .info-text {
+      font-family: 'Arial', sans-serif;
+      font-size: 0.9rem;
+      color: #aabbcc;
+      margin-bottom: 1.2rem;
+      text-align: center;
+      max-width: 80%;
+      line-height: 1.5;
+    }
+
+    .center-overlay .start-btn {
+      background: #FBBF24;
+      border: none;
+      border-radius: 60px;
+      padding: 0.8rem 2.5rem;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: #0b0e14;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
+      letter-spacing: 2px;
+    }
+
+    .center-overlay .start-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 50px rgba(251, 191, 36, 0.5);
+    }
+
+    .center-overlay .start-btn:active {
+      transform: scale(0.95);
+    }
+
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 0.8rem 0 0.4rem 0;
+    }
+
+    .btn {
+      background: #202a3a;
+      border: none;
+      border-radius: 60px;
+      padding: 0.4rem 1rem;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      color: #ccddf7;
+      box-shadow: 0 4px 0 #0a0f17, 0 6px 12px rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      transition: 0.08s linear;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border: 1px solid #40526b;
+      white-space: nowrap;
+      touch-action: manipulation;
+      text-decoration: none;
+    }
+
+    .btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 #0a0f17;
+    }
+
+    .btn-home {
+      background: #1e3a8a;
+      color: #93c5fd;
+      border-color: #3b82f6;
+      box-shadow: 0 4px 0 #0f172a;
+    }
+
+    .btn-home:hover {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    .btn-warning {
+      background: #FBBF24;
+      color: #0b0e14;
+      border-color: #FBBF24;
+      box-shadow: 0 4px 0 #9e7a17;
+      font-weight: 900;
+    }
+
+    .msg-box {
+      text-align: center;
+      min-height: 2rem;
+      font-size: 0.7rem;
+      color: #b9cef0;
+      padding: 0.2rem;
+      margin-top: 0.2rem;
+      background: #141c26;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #314153;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    @media (max-width: 600px) {
+      .game-container {
+        padding: 0.6rem 0.4rem;
+      }
+      .title-88m {
+        font-size: 1.6rem;
+      }
+      .title-sub {
+        font-size: 0.7rem;
+        letter-spacing: 4px;
+      }
+      .game-wrapper {
+        border-radius: 8px;
+      }
+      .hud-item {
+        font-size: 9px;
+        padding: 1px 6px;
+      }
+      .crosshair {
+        width: 30px;
+        height: 30px;
+      }
+      .center-overlay .big-title {
+        font-size: 2rem;
+      }
+      .center-overlay .start-btn {
+        padding: 0.6rem 1.8rem;
+        font-size: 1rem;
+      }
+      .center-overlay .info-text {
+        font-size: 0.75rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .hud-item {
+        font-size: 7px;
+        padding: 1px 4px;
+      }
+      .crosshair {
+        width: 24px;
+        height: 24px;
+      }
+      .center-overlay .big-title {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="game-container">
+    <div class="title-88m">88M</div>
+    <div class="title-sub">CAZAPALABRAS</div>
+
+    <div class="game-wrapper" id="gameWrapper">
+      <canvas id="wordCanvas"></canvas>
+
+      <div class="hud" id="hud">
+        <div class="hud-left">
+          <div class="hud-item">🎯 PAREJAS: <span class="value" id="pairsDisplay">0</span>/<span id="maxPairsDisplay">10</span></div>
+          <div class="hud-item">⭐ PUNTOS: <span class="value" id="scoreDisplay">0</span></div>
+        </div>
+        <div class="hud-right">
+          <div class="hud-item">⏱️ TIEMPO: <span class="value highlight" id="timerDisplay">40</span>s</div>
+          <div class="hud-item">📚 RONDA: <span class="value" id="levelDisplay">1</span></div>
+        </div>
+      </div>
+
+      <div class="crosshair" id="crosshair">
+        <div class="dot"></div>
+      </div>
+
+      <div class="center-overlay" id="centerOverlay">
+        <div class="big-title" id="overlayTitle">CAZAPALABRAS</div>
+        <div class="sub-title" id="overlaySub"></div>
+        <div class="info-text" id="overlayInfo">Encuentra las parejas de palabras<br>⏱️ Ronda 1: 40s · Ronda 2: 30s · Ronda 3: 18s</div>
+        <button class="start-btn" id="mainActionBtn">▶ START</button>
+      </div>
+    </div>
+
+    <div class="controls-row">
+      <a href="index.html" class="btn btn-home">⌂ INICIO</a>
+      <button class="btn btn-warning" id="pauseBtn">⏸ PAUSA</button>
+    </div>
+
+    <div class="msg-box" id="messageBox">🔤 Presiona START para comenzar</div>
+  </div>
+
+  <script>
+    (function() {
+      // --- CONFIGURACIÓN ---
+      const canvas = document.getElementById('wordCanvas');
+      const ctx = canvas.getContext('2d');
+      const wrapper = document.getElementById('gameWrapper');
+      const crosshair = document.getElementById('crosshair');
+      const overlay = document.getElementById('centerOverlay');
+      const overlayTitle = document.getElementById('overlayTitle');
+      const overlaySub = document.getElementById('overlaySub');
+      const overlayInfo = document.getElementById('overlayInfo');
+      const mainActionBtn = document.getElementById('mainActionBtn');
+
+      const pairsDisplay = document.getElementById('pairsDisplay');
+      const maxPairsDisplay = document.getElementById('maxPairsDisplay');
+      const scoreDisplay = document.getElementById('scoreDisplay');
+      const timerDisplay = document.getElementById('timerDisplay');
+      const levelDisplay = document.getElementById('levelDisplay');
+      const msgBox = document.getElementById('messageBox');
+
+      // --- VOCABULARIO (100 palabras) ---
+      const WORD_POOL = [
+        'casa', 'perro', 'gato', 'sol', 'luna', 'flor', 'árbol', 'río', 'mar', 'cielo',
+        'rojo', 'verde', 'azul', 'amarillo', 'blanco', 'negro', 'rosado', 'morado', 'naranja', 'gris',
+        'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez',
+        'niño', 'niña', 'amigo', 'familia', 'escuela', 'maestra', 'libro', 'cuaderno', 'lápiz', 'borrador',
+        'feliz', 'triste', 'enojado', 'cansado', 'emocionado', 'aburrido', 'contento', 'asustado', 'sorprendido',
+        'curioso',
+        'comer', 'beber', 'dormir', 'correr', 'saltar', 'leer', 'escribir', 'pintar', 'bailar', 'cantar',
+        'grande', 'pequeño', 'alto', 'bajo', 'rápido', 'lento', 'fuerte', 'débil', 'caliente', 'frío',
+        'arriba', 'abajo', 'dentro', 'fuera', 'cerca', 'lejos', 'derecha', 'izquierda',
+        'mañana', 'tarde', 'noche', 'hoy', 'ayer', 'siempre', 'nunca', 'tal vez', 'pronto', 'después',
+        'gracias', 'correa', 'perdón', 'salud', 'adiós', 'hola', 'sí', 'no', 'silla', 'claro',
+        'elefante', 'mariposa', 'castillo', 'aventura', 'biblioteca', 'chocolate', 'cumpleaños', 'familia',
+        'hermano', 'hermana', 'juguete', 'pelota', 'computadora', 'tablet', 'teléfono', 'ventana',
+        'montaña', 'paisaje', 'recuerdo', 'sonrisa', 'viaje', 'zapato', 'camisa', 'pantalón'
+      ];
+
+      // --- FUNCIÓN PARA CONTAR SÍLABAS ---
+      function countSyllables(word) {
+        word = word.toLowerCase();
+        let count = 0;
+        const vowels = 'aeiouáéíóú';
+        let prevWasVowel = false;
+        for (let i = 0; i < word.length; i++) {
+          const char = word[i];
+          if (vowels.includes(char)) {
+            if (!prevWasVowel) {
+              count++;
+            }
+            prevWasVowel = true;
+          } else {
+            prevWasVowel = false;
+          }
+        }
+        if (count === 0) count = 1;
+        return count;
+      }
+
+      function isTrisyllabic(word) {
+        return countSyllables(word) >= 3;
+      }
+
+      // --- ESTADO ---
+      let words = [];
+      let selectedWords = [];
+      let foundPairs = 0;
+      let maxPairs = 10;
+      let score = 0;
+      let level = 1;
+      let timeLimit = 40;
+      let timeRemaining = 40;
+      let timerInterval = null;
+      let gameRunning = false;
+      let gameStarted = false;
+      let paused = false;
+      let gameOver = false;
+      let animFrameId = null;
+      let canvasWidth = 0,
+        canvasHeight = 0;
+      let wordObjects = [];
+      let isMouseInCanvas = false;
+      let usedWordSets = [];
+
+      // --- SONIDOS ---
+      let audioCtx = null;
+
+      function initAudio() {
+        if (!audioCtx) {
+          try {
+            audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+          } catch (e) {}
+        }
+      }
+
+      function playClickSound() {
+        try {
+          initAudio();
+          if (!audioCtx) return;
+          const now = audioCtx.currentTime;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.frequency.value = 600;
+          osc.type = 'sine';
+          gain.gain.setValueAtTime(0.1, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        } catch (e) {}
+      }
+
+      function playMatchSound() {
+        try {
+          initAudio();
+          if (!audioCtx) return;
+          const now = audioCtx.currentTime;
+          const notes = [523, 659, 784];
+          notes.forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.value = freq;
+            osc.type = 'sine';
+            const t = now + i * 0.06;
+            gain.gain.setValueAtTime(0, t);
+            gain.gain.linearRampToValueAtTime(0.12, t + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+            osc.start(t);
+            osc.stop(t + 0.1);
+          });
+        } catch (e) {}
+      }
+
+      function playWrongSound() {
+        try {
+          initAudio();
+          if (!audioCtx) return;
+          const now = audioCtx.currentTime;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.frequency.value = 300;
+          osc.type = 'sawtooth';
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+          osc.start(now);
+          osc.stop(now + 0.15);
+        } catch (e) {}
+      }
+
+      function playLevelCompleteSound() {
+        try {
+          initAudio();
+          if (!audioCtx) return;
+          const now = audioCtx.currentTime;
+          const notes = [523, 659, 784, 1047, 1319];
+          notes.forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.value = freq;
+            osc.type = 'square';
+            const t = now + i * 0.07;
+            gain.gain.setValueAtTime(0, t);
+            gain.gain.linearRampToValueAtTime(0.1, t + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+            osc.start(t);
+            osc.stop(t + 0.12);
+          });
+        } catch (e) {}
+      }
+
+      function playGameOverSound() {
+        try {
+          initAudio();
+          if (!audioCtx) return;
+          const now = audioCtx.currentTime;
+          const notes = [440, 349, 294];
+          notes.forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.value = freq;
+            osc.type = 'sawtooth';
+            const t = now + i * 0.15;
+            gain.gain.setValueAtTime(0, t);
+            gain.gain.linearRampToValueAtTime(0.1, t + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+            osc.start(t);
+            osc.stop(t + 0.2);
+          });
+        } catch (e) {}
+      }
+
+      // --- FUNCIONES ---
+      function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+
+      function resizeCanvas() {
+        const rect = wrapper.getBoundingClientRect();
+        canvasWidth = rect.width;
+        canvasHeight = rect.height;
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+      }
+
+      // --- SELECCIÓN INTELIGENTE DE PALABRAS ---
+      function getRandomWordsWithSyllableControl(count) {
+        let available = WORD_POOL.filter(w => !usedWordSets.includes(w));
+        if (available.length < count) {
+          usedWordSets = [];
+          available = [...WORD_POOL];
+        }
+
+        const shortWords = available.filter(w => !isTrisyllabic(w));
+        const longWords = available.filter(w => isTrisyllabic(w));
+
+        let targetLong = Math.round(count * 0.3);
+        let selectedLong = [];
+        let selectedShort = [];
+
+        if (longWords.length >= targetLong) {
+          const shuffledLong = shuffleArray([...longWords]);
+          selectedLong = shuffledLong.slice(0, targetLong);
+        } else {
+          selectedLong = [...longWords];
+        }
+
+        const remaining = count - selectedLong.length;
+        const shuffledShort = shuffleArray([...shortWords]);
+        selectedShort = shuffledShort.slice(0, remaining);
+
+        const result = [...selectedLong, ...selectedShort];
+
+        if (result.length < count) {
+          const allAvailable = shuffleArray([...available]);
+          const extra = allAvailable.filter(w => !result.includes(w));
+          result.push(...extra.slice(0, count - result.length));
+        }
+
+        result.forEach(w => usedWordSets.push(w));
+        return shuffleArray(result);
+      }
+
+      // --- GENERAR PAREJAS ---
+      function generatePairs() {
+        let testWords = getRandomWordsWithSyllableControl(10);
+        let trisyllabicCount = testWords.filter(w => isTrisyllabic(w)).length;
+        let trisyllabicPercentage = (trisyllabicCount / 10) * 100;
+
+        let pairCount = 10;
+        if (trisyllabicPercentage > 40) {
+          pairCount = Math.round(10 * 0.8);
+        }
+        if (pairCount < 4) pairCount = 4;
+
+        maxPairs = pairCount;
+
+        let uniqueWords = getRandomWordsWithSyllableControl(pairCount);
+
+        while (uniqueWords.length < pairCount) {
+          const extra = WORD_POOL.filter(w => !usedWordSets.includes(w) && !uniqueWords.includes(w));
+          if (extra.length === 0) {
+            usedWordSets = [];
+            const allWords = shuffleArray([...WORD_POOL]);
+            uniqueWords = allWords.slice(0, pairCount);
+          } else {
+            uniqueWords.push(extra[0]);
+          }
+        }
+
+        let pairWords = [];
+        uniqueWords.forEach(word => {
+          pairWords.push(word, word);
+        });
+        return shuffleArray(pairWords);
+      }
+
+      // --- DISTRIBUIR PALABRAS ---
+      function distributeWords(wordList) {
+        const total = wordList.length;
+        const cols = 5;
+        const rows = Math.ceil(total / cols);
+
+        const longWords = wordList.filter(w => isTrisyllabic(w));
+        const shortWords = wordList.filter(w => !isTrisyllabic(w));
+
+        shuffleArray(longWords);
+        shuffleArray(shortWords);
+
+        const positions = [];
+        for (let r = 0; r < rows; r++) {
+          positions[r] = [];
+          for (let c = 0; c < cols; c++) {
+            positions[r][c] = null;
+          }
+        }
+
+        const numLong = longWords.length;
+        const numShort = shortWords.length;
+
+        let longIndex = 0;
+        for (let r = 0; r < rows && longIndex < numLong; r++) {
+          for (let c = 0; c < cols && longIndex < numLong; c++) {
+            if ((r + c) % 2 === 0) {
+              positions[r][c] = longWords[longIndex];
+              longIndex++;
+            }
+          }
+        }
+
+        for (let r = 0; r < rows && longIndex < numLong; r++) {
+          for (let c = 0; c < cols && longIndex < numLong; c++) {
+            if (positions[r][c] === null) {
+              positions[r][c] = longWords[longIndex];
+              longIndex++;
+            }
+          }
+        }
+
+        let shortIndex = 0;
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            if (positions[r][c] === null && shortIndex < numShort) {
+              positions[r][c] = shortWords[shortIndex];
+              shortIndex++;
+            }
+          }
+        }
+
+        for (let r = 0; r < rows && shortIndex < numShort; r++) {
+          for (let c = 0; c < cols && shortIndex < numShort; c++) {
+            if (positions[r][c] === null) {
+              positions[r][c] = shortWords[shortIndex];
+              shortIndex++;
+            }
+          }
+        }
+
+        const result = [];
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            if (positions[r][c] !== null) {
+              result.push(positions[r][c]);
+            }
+          }
+        }
+
+        while (result.length < total) {
+          const allWords = [...longWords, ...shortWords];
+          for (const w of allWords) {
+            if (!result.includes(w) && result.length < total) {
+              result.push(w);
+            }
+          }
+        }
+
+        return result;
+      }
+
+      // --- DIBUJO ---
+      function drawWordTile(obj) {
+        const x = obj.x;
+        const y = obj.y;
+        const s = obj.size;
+        const word = obj.word;
+
+        const fontSize = Math.min(s * 0.5, 24);
+        ctx.font = `bold ${fontSize}px Arial, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        ctx.shadowColor = 'rgba(0,0,0,0.6)';
+        ctx.shadowBlur = 6;
+        ctx.shadowOffsetX = 1;
+        ctx.shadowOffsetY = 1;
+
+        if (obj.matched) {
+          ctx.fillStyle = '#F5F5F5';
+        } else if (obj.selected) {
+          ctx.fillStyle = '#FBBF24';
+        } else {
+          ctx.fillStyle = '#FBBF24';
+        }
+
+        ctx.fillText(word.toUpperCase(), x, y + 1);
+
+        if (obj.selected && !obj.matched) {
+          ctx.shadowBlur = 0;
+          ctx.strokeStyle = '#FBBF24';
+          ctx.lineWidth = 2;
+          const textWidth = ctx.measureText(word.toUpperCase()).width;
+          ctx.beginPath();
+          ctx.moveTo(x - textWidth / 2, y + fontSize * 0.4);
+          ctx.lineTo(x + textWidth / 2, y + fontSize * 0.4);
+          ctx.stroke();
+        }
+
+        if (obj.matched) {
+          ctx.shadowBlur = 0;
+          ctx.strokeStyle = 'rgba(200, 200, 200, 0.3)';
+          ctx.lineWidth = 1;
+          const textWidth = ctx.measureText(word.toUpperCase()).width;
+          ctx.beginPath();
+          ctx.moveTo(x - textWidth / 2, y + fontSize * 0.4);
+          ctx.lineTo(x + textWidth / 2, y + fontSize * 0.4);
+          ctx.stroke();
+        }
+
+        ctx.shadowBlur = 0;
+      }
+
+      function render() {
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+        const grad = ctx.createRadialGradient(canvasWidth / 2, canvasHeight / 2, 0, canvasWidth / 2, canvasHeight / 2, canvasWidth * 0.6);
+        grad.addColorStop(0, '#1a2a1a');
+        grad.addColorStop(1, '#0a0e0a');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+        for (const obj of wordObjects) {
+          if (!obj.matched) {
+            drawWordTile(obj);
+          }
+        }
+
+        for (const obj of wordObjects) {
+          if (obj.matched) {
+            drawWordTile(obj);
+          }
+        }
+
+        if (gameRunning && !paused && !gameOver) {
+          ctx.fillStyle = 'rgba(251,191,36,0.06)';
+          ctx.fillRect(0, canvasHeight - 20, (timeRemaining / timeLimit) * canvasWidth, 20);
+          ctx.fillStyle = 'rgba(251,191,36,0.12)';
+          ctx.fillRect(0, canvasHeight - 20, (timeRemaining / timeLimit) * canvasWidth, 2);
+        }
+      }
+
+      // --- LÓGICA ---
+      function handleClick(x, y) {
+        if (!gameRunning || paused || gameOver || !gameStarted) return;
+
+        let closest = null;
+        let closestDist = Infinity;
+
+        for (const obj of wordObjects) {
+          if (obj.matched) continue;
+          const dx = obj.x - x;
+          const dy = obj.y - y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < obj.size * 0.6 && dist < closestDist) {
+            closest = obj;
+            closestDist = dist;
+          }
+        }
+
+        if (!closest) return;
+
+        if (closest.selected) {
+          closest.selected = false;
+          selectedWords = selectedWords.filter(w => w.id !== closest.id);
+          playClickSound();
+          render();
+          return;
+        }
+
+        if (selectedWords.length >= 2) {
+          selectedWords.forEach(w => w.selected = false);
+          selectedWords = [];
+        }
+
+        closest.selected = true;
+        selectedWords.push(closest);
+        playClickSound();
+
+        if (selectedWords.length === 2) {
+          const w1 = selectedWords[0];
+          const w2 = selectedWords[1];
+
+          if (w1.word === w2.word && w1.id !== w2.id) {
+            w1.matched = true;
+            w2.matched = true;
+            w1.selected = false;
+            w2.selected = false;
+            foundPairs++;
+            const points = 10 + (level - 1) * 5;
+            score += points;
+            playMatchSound();
+            msgBox.textContent = `✅ ¡Pareja! +${points} pts (${foundPairs}/${maxPairs})`;
+            selectedWords = [];
+
+            const requiredPairs = Math.ceil(maxPairs * 0.5);
+            if (foundPairs >= requiredPairs) {
+              playLevelCompleteSound();
+              if (level < 3) {
+                level++;
+                const times = [40, 30, 18];
+                timeLimit = times[level - 1];
+                msgBox.textContent = `🎉 ¡Ronda ${level-1} completada! Ronda ${level} · ${timeLimit}s`;
+                usedWordSets = [];
+                setTimeout(() => {
+                  startLevel();
+                }, 1500);
+              } else {
+                gameRunning = false;
+                gameOver = true;
+                playLevelCompleteSound();
+                showOverlay('🏆 ¡VICTORIA!', `Puntuación final: ${score}`, '🔄 REINICIAR');
+                msgBox.textContent = `🏆 ¡Completaste las 3 rondas! Puntuación: ${score}`;
+              }
+            }
+            updateUI();
+            render();
+          } else {
+            playWrongSound();
+            msgBox.textContent = `❌ No coinciden · Intenta de nuevo`;
+            setTimeout(() => {
+              w1.selected = false;
+              w2.selected = false;
+              selectedWords = [];
+              render();
+            }, 400);
+          }
+        }
+
+        render();
+        updateUI();
+      }
+
+      // --- START LEVEL ---
+      function startLevel() {
+        const times = [40, 30, 18];
+        timeLimit = times[level - 1];
+        timeRemaining = timeLimit;
+
+        const wordList = generatePairs();
+        words = wordList;
+        selectedWords = [];
+        foundPairs = 0;
+        wordObjects = [];
+
+        const distributedWords = distributeWords(words);
+
+        const cols = 5;
+        const rows = Math.ceil(distributedWords.length / cols);
+        const total = distributedWords.length;
+
+        const marginX = 30;
+        const marginY = 40;
+        const spacingX = (canvasWidth - marginX * 2) / cols;
+        const spacingY = (canvasHeight - marginY * 2 - 20) / rows;
+
+        for (let i = 0; i < total; i++) {
+          const col = i % cols;
+          const row = Math.floor(i / cols);
+          const x = marginX + col * spacingX + spacingX / 2;
+          const y = marginY + row * spacingY + spacingY / 2 + 10;
+          const size = Math.min(spacingX, spacingY) * 0.7;
+
+          wordObjects.push({
+            word: distributedWords[i],
+            x: x,
+            y: y,
+            size: size,
+            matched: false,
+            selected: false,
+            id: i
+          });
+        }
+
+        wordObjects.forEach((obj, idx) => obj.id = idx);
+
+        let pairId = 0;
+        const assigned = {};
+        wordObjects.forEach(obj => {
+          if (!assigned[obj.word]) {
+            assigned[obj.word] = pairId;
+            pairId++;
+          }
+          obj.pairId = assigned[obj.word];
+        });
+
+        foundPairs = 0;
+        selectedWords = [];
+        gameRunning = true;
+        gameOver = false;
+        paused = false;
+
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+
+        timerInterval = setInterval(() => {
+          if (!paused && gameRunning && !gameOver) {
+            timeRemaining--;
+            timerDisplay.textContent = timeRemaining;
+            if (timeRemaining <= 0) {
+              clearInterval(timerInterval);
+              timerInterval = null;
+              gameRunning = false;
+              gameOver = true;
+              playGameOverSound();
+              showOverlay('⏰ TIEMPO AGOTADO', `Puntuación: ${score}`, '🔄 REINICIAR');
+              msgBox.textContent = `⏰ Tiempo agotado · Puntuación: ${score}`;
+            }
+            updateUI();
+            render();
+          }
+        }, 1000);
+
+        hideOverlay();
+        updateUI();
+        render();
+        const requiredPairs = Math.ceil(maxPairs * 0.5);
+        msgBox.textContent = `🔤 Ronda ${level} · Encuentra ${requiredPairs} parejas (50%) · ${timeLimit}s`;
+      }
+
+      // --- OVERLAY ---
+      function showOverlay(title, sub, btnText) {
+        overlay.classList.remove('hidden');
+        overlayTitle.textContent = title;
+        overlaySub.textContent = sub || '';
+        overlayInfo.textContent = btnText === '🔄 REINICIAR' ? 'Presiona para reiniciar' :
+          btnText === '▶ START' ? 'Encuentra el 50% de las parejas para avanzar' :
+          'Presiona para continuar';
+        mainActionBtn.textContent = btnText || '▶ START';
+
+        if (btnText === '🔄 REINICIAR') {
+          mainActionBtn.onclick = function() {
+            resetGame();
+            startGame();
+          };
+        } else if (btnText === '▶ START' || btnText === '▶ REANUDAR') {
+          mainActionBtn.onclick = function() {
+            startGame();
+          };
+        } else {
+          mainActionBtn.onclick = function() {
+            startGame();
+          };
+        }
+      }
+
+      function hideOverlay() {
+        overlay.classList.add('hidden');
+      }
+
+      // --- START / PAUSE / RESET ---
+      function startGame() {
+        initAudio();
+        if (!gameStarted) {
+          gameStarted = true;
+          gameRunning = true;
+          paused = false;
+          level = 1;
+          score = 0;
+          usedWordSets = [];
+          const times = [40, 30, 18];
+          timeLimit = times[0];
+          timeRemaining = timeLimit;
+          hideOverlay();
+          startLevel();
+          document.getElementById('pauseBtn').textContent = '⏸ PAUSA';
+          msgBox.textContent = '🔤 ¡A cazar palabras!';
+        } else if (paused) {
+          paused = false;
+          hideOverlay();
+          document.getElementById('pauseBtn').textContent = '⏸ PAUSA';
+          msgBox.textContent = '▶ Reanudado';
+          if (!timerInterval && gameRunning && !gameOver) {
+            timerInterval = setInterval(() => {
+              if (!paused && gameRunning && !gameOver) {
+                timeRemaining--;
+                timerDisplay.textContent = timeRemaining;
+                if (timeRemaining <= 0) {
+                  clearInterval(timerInterval);
+                  timerInterval = null;
+                  gameRunning = false;
+                  gameOver = true;
+                  playGameOverSound();
+                  showOverlay('⏰ TIEMPO AGOTADO', `Puntuación: ${score}`, '🔄 REINICIAR');
+                  msgBox.textContent = `⏰ Tiempo agotado · Puntuación: ${score}`;
+                }
+                updateUI();
+                render();
+              }
+            }, 1000);
+          }
+        }
+      }
+
+      function togglePause() {
+        if (!gameStarted || gameOver) {
+          msgBox.textContent = '⚠️ Primero presiona START';
+          return;
+        }
+        paused = !paused;
+        if (paused) {
+          document.getElementById('pauseBtn').textContent = '▶ REANUDAR';
+          showOverlay('⏸ PAUSADO', '', '▶ REANUDAR');
+          mainActionBtn.onclick = function() {
+            togglePause();
+            hideOverlay();
+          };
+          msgBox.textContent = '⏸ Juego pausado';
+        } else {
+          document.getElementById('pauseBtn').textContent = '⏸ PAUSA';
+          hideOverlay();
+          msgBox.textContent = '▶ Reanudado';
+          if (!timerInterval && gameRunning && !gameOver) {
+            timerInterval = setInterval(() => {
+              if (!paused && gameRunning && !gameOver) {
+                timeRemaining--;
+                timerDisplay.textContent = timeRemaining;
+                if (timeRemaining <= 0) {
+                  clearInterval(timerInterval);
+                  timerInterval = null;
+                  gameRunning = false;
+                  gameOver = true;
+                  playGameOverSound();
+                  showOverlay('⏰ TIEMPO AGOTADO', `Puntuación: ${score}`, '🔄 REINICIAR');
+                  msgBox.textContent = `⏰ Tiempo agotado · Puntuación: ${score}`;
+                }
+                updateUI();
+                render();
+              }
+            }, 1000);
+          }
+        }
+      }
+
+      function resetGame() {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+        if (animFrameId) {
+          cancelAnimationFrame(animFrameId);
+          animFrameId = null;
+        }
+
+        gameRunning = false;
+        gameOver = false;
+        paused = false;
+        gameStarted = false;
+        level = 1;
+        score = 0;
+        foundPairs = 0;
+        selectedWords = [];
+        wordObjects = [];
+        usedWordSets = [];
+        const times = [40, 30, 18];
+        timeLimit = times[0];
+        timeRemaining = timeLimit;
+
+        document.getElementById('pauseBtn').textContent = '⏸ PAUSA';
+        updateUI();
+        showOverlay('CAZAPALABRAS', '', '▶ START');
+        msgBox.textContent = '🔄 Juego reiniciado · Presiona START';
+
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+        if (animFrameId) {
+          cancelAnimationFrame(animFrameId);
+          animFrameId = null;
+        }
+        gameLoop();
+      }
+
+      function updateUI() {
+        pairsDisplay.textContent = foundPairs;
+        maxPairsDisplay.textContent = maxPairs;
+        scoreDisplay.textContent = score;
+        timerDisplay.textContent = timeRemaining;
+        levelDisplay.textContent = level;
+      }
+
+      // --- EVENTOS ---
+      function handleShoot(e) {
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvasWidth / rect.width;
+        const scaleY = canvasHeight / rect.height;
+
+        let clientX, clientY;
+        if (e.touches) {
+          clientX = e.touches[0].clientX;
+          clientY = e.touches[0].clientY;
+        } else {
+          clientX = e.clientX;
+          clientY = e.clientY;
+        }
+
+        const x = (clientX - rect.left) * scaleX;
+        const y = (clientY - rect.top) * scaleY;
+
+        handleClick(x, y);
+      }
+
+      function handleMouseMove(e) {
+        e.preventDefault();
+        const wrapperRect = wrapper.getBoundingClientRect();
+        crosshair.style.left = (e.clientX - wrapperRect.left) + 'px';
+        crosshair.style.top = (e.clientY - wrapperRect.top) + 'px';
+        crosshair.classList.add('show');
+        isMouseInCanvas = true;
+      }
+
+      function handleMouseLeave(e) {
+        isMouseInCanvas = false;
+        crosshair.classList.remove('show');
+      }
+
+      function handleTouchMove(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const wrapperRect = wrapper.getBoundingClientRect();
+        crosshair.style.left = (touch.clientX - wrapperRect.left) + 'px';
+        crosshair.style.top = (touch.clientY - wrapperRect.top) + 'px';
+        crosshair.classList.add('show');
+        isMouseInCanvas = true;
+      }
+
+      function handleTouchEnd(e) {
+        isMouseInCanvas = false;
+        setTimeout(() => {
+          if (!isMouseInCanvas) {
+            crosshair.classList.remove('show');
+          }
+        }, 1000);
+      }
+
+      // --- LOOP ---
+      function gameLoop() {
+        render();
+        animFrameId = requestAnimationFrame(gameLoop);
+      }
+
+      // --- INICIALIZAR ---
+      function init() {
+        resizeCanvas();
+        showOverlay('CAZAPALABRAS', '', '▶ START');
+        updateUI();
+        msgBox.textContent = '🔤 Presiona START para comenzar';
+
+        const wordList = generatePairs();
+        words = wordList;
+
+        gameLoop();
+
+        canvas.addEventListener('click', handleShoot);
+        canvas.addEventListener('mousemove', handleMouseMove);
+        canvas.addEventListener('mouseleave', handleMouseLeave);
+        canvas.addEventListener('touchstart', handleShoot, { passive: false });
+        canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+        canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+        window.addEventListener('resize', () => {
+          resizeCanvas();
+        });
+
+        document.getElementById('pauseBtn').addEventListener('click', togglePause);
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'p' || e.key === 'P') {
+            togglePause();
+          }
+          if (e.key === 'r' || e.key === 'R') {
+            resetGame();
+          }
+          if (e.key === ' ' || e.key === 'Enter') {
+            if (!gameStarted) {
+              startGame();
+            }
+          }
+        });
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
