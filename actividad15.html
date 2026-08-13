@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GÉNERO Y NÚMERO - Actividad Interactiva</title>
+  <style>
+    :root {
+      --bg-color: #f4f7f6;
+      --card-bg: #ffffff;
+      --primary: #5b7086;
+      --primary-light: #eef2f5;
+      --accent: #48a9a6;
+      --text-main: #2b3a42;
+      --text-muted: #6c7a89;
+      --success: #52b788;
+      --border-color: #dcdfe3;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+    }
+
+    /* Header & Teoría */
+    header {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      margin-bottom: 25px;
+      border-top: 6px solid var(--primary);
+    }
+
+    h1 {
+      color: var(--primary);
+      text-align: center;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+      font-size: 2em;
+    }
+
+    .theory-box {
+      background-color: var(--primary-light);
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .theory-box h3 {
+      color: var(--primary);
+      margin-bottom: 8px;
+      font-size: 1.1em;
+    }
+
+    .theory-box ul {
+      margin-left: 20px;
+      margin-top: 5px;
+    }
+
+    .instruction {
+      font-size: 0.95em;
+      color: var(--text-main);
+      background: #fff8e1;
+      padding: 12px 15px;
+      border-left: 4px solid #ffca28;
+      border-radius: 4px;
+    }
+
+    /* Ejercicios */
+    .exercise-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      border: 1px solid var(--border-color);
+    }
+
+    .exercise-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .word-num {
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: bold;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 0.9em;
+    }
+
+    .word-title {
+      font-size: 1.1em;
+      font-weight: bold;
+      color: var(--text-main);
+    }
+
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    input[type="text"] {
+      padding: 10px 14px;
+      border: 2px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 1em;
+      outline: none;
+      transition: border-color 0.3s;
+      width: 200px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary);
+    }
+
+    .feedback-tag {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.9em;
+      font-weight: bold;
+      display: none;
+      animation: fadeIn 0.4s ease-in-out forwards;
+    }
+
+    /* Paginación y Botones */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 25px;
+      gap: 10px;
+    }
+
+    button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #4a5c6e;
+    }
+
+    button:disabled {
+      background-color: #c0c9d0;
+      cursor: not-allowed;
+    }
+
+    .btn-home {
+      background-color: var(--accent);
+    }
+
+    .btn-home:hover {
+      background-color: #368784;
+    }
+
+    .page-indicator {
+      font-weight: bold;
+      color: var(--text-muted);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header id="top">
+    <h1>GÉNERO Y NÚMERO DEL SUSTANTIVO</h1>
+    
+    <div class="theory-box">
+      <h3>Resumen Gramatical:</h3>
+      <ul>
+        <li><strong>Género:</strong> Los sustantivos son <em>masculinos</em> (el/un) o <em>femeninos</em> (la/una). Hay palabras que varían con la terminación (<em>gato/gata</em>), otras cambian de raíz (<em>padre/madre</em>) y algunas son ambiguas o cambian de significado con el artículo (<em>el orden / la orden</em>).</li>
+        <li><strong>Número:</strong> Indica si es <em>singular</em> (uno) o <em>plural</em> (varios). Se añade <strong>-s</strong> si termina en vocal átona o <em>-é</em> (<em>casas, cafés</em>) y <strong>-es</strong> si termina en consonante, vocal tónica o <em>-z</em> pasándola a <em>-ces</em> (<em>árboles, lápices, rubíes</em>).</li>
+      </ul>
+    </div>
+
+    <div class="instruction">
+      <strong>Indicación:</strong> Escribe la transformación solicitada para cada ejercicio. Al responder correctamente, aparecerá la nota explicativa automáticamente.
+    </div>
+  </header>
+
+  <main id="quiz-container"></main>
+
+  <div class="controls">
+    <button id="prev-btn" onclick="changePage(-1)">Anterior</button>
+    <button class="btn-home" onclick="goToHome()">🏠 Inicio</button>
+    <span class="page-indicator" id="page-indicator">Página 1 de 8</span>
+    <button id="next-btn" onclick="changePage(1)">Siguiente</button>
+  </div>
+</div>
+
+<script>
+  const exercises = [
+    // 1 - 5
+    { prompt: "Escribe el femenino de: <strong>El actor</strong>", correct: ["la actriz"], note: "Femenino heterónimo/irregular (-triz)." },
+    { prompt: "Escribe el plural de: <strong>El lápiz</strong>", correct: ["los lápices"], note: "Termina en -z, cambia a -ces en plural." },
+    { prompt: "Escribe el femenino de: <strong>El rey</strong>", correct: ["la reina"], note: "Terminación femenina especial." },
+    { prompt: "Escribe el plural de: <strong>El rubí</strong>", correct: ["los rubíes", "los rubis"], note: "Sustantivos con vocal tónica admiten -es." },
+    { prompt: "Escribe el género opuesto de: <strong>El caballo</strong>", correct: ["la yegua"], note: "Heterónimo: cambia completamente la raíz." },
+
+    // 6 - 10
+    { prompt: "Escribe el plural de: <strong>La crisis</strong>", correct: ["las crisis"], note: "Invariable en número por ser llana terminada en -s." },
+    { prompt: "Escribe el femenino de: <strong>El poeta</strong>", correct: ["la poeta", "la poetisa"], note: "Admite 'la poeta' o la forma tradicional 'poetisa'." },
+    { prompt: "Escribe el plural de: <strong>El lunes</strong>", correct: ["los lunes"], note: "Invariable en plural por terminar en -s siendo átona." },
+    { prompt: "Escribe el género opuesto de: <strong>El yerno</strong>", correct: ["la nuera"], note: "Heterónimo de parentesco." },
+    { prompt: "Escribe el plural de: <strong>El régimen</strong>", correct: ["los regímenes"], note: "Cambia la acentuación en plural (esdrújula)." },
+
+    // 11 - 15
+    { prompt: "Escribe el femenino de: <strong>El alcalde</strong>", correct: ["la alcaldesa"], note: "Forma femenina con sufijo -esa." },
+    { prompt: "Escribe el plural de: <strong>El ají</strong>", correct: ["los ajíes", "los ajís"], note: "Admite -es (preferido) o -s." },
+    { prompt: "Escribe el género opuesto de: <strong>El toro</strong>", correct: ["la vaca"], note: "Heterónimo." },
+    { prompt: "Escribe el plural de: <strong>El tórax</strong>", correct: ["los tórax"], note: "Palabras llanas/esdrújulas en -x son invariables." },
+    { prompt: "Escribe el femenino de: <strong>El médico</strong>", correct: ["la médica"], note: "Femenino regular adaptado en -a." },
+
+    // 16 - 20
+    { prompt: "Escribe el plural de: <strong>La luz</strong>", correct: ["las luces"], note: "La -z final pasa a -ces en plural." },
+    { prompt: "Escribe el femenino de: <strong>El héroe</strong>", correct: ["la heroína"], note: "Sufijo femenino -ína." },
+    { prompt: "Escribe el plural de: <strong>El menú</strong>", correct: ["los menús", "los menúes"], note: "Admite ambos, aunque -s es más común hoy." },
+    { prompt: "Escribe el femenino de: <strong>El marqués</strong>", correct: ["la marquesa"], note: "Pierde la tilde al añadir -esa." },
+    { prompt: "Escribe el plural de: <strong>El carácter</strong>", correct: ["los caracteres"], note: "Cambia la posición del acento tónico." },
+
+    // 21 - 25
+    { prompt: "Escribe el género opuesto de: <strong>El carnero</strong>", correct: ["la oveja"], note: "Heterónimo." },
+    { prompt: "Escribe el plural de: <strong>La tesis</strong>", correct: ["las tesis"], note: "Invariable en plural." },
+    { prompt: "Escribe el femenino de: <strong>El estratega</strong>", correct: ["la estratega"], note: "Sustantivo común en cuanto al género." },
+    { prompt: "Escribe el plural de: <strong>El álbum</strong>", correct: ["los álbumes"], note: "Añade -es por terminar en consonante -m." },
+    { prompt: "Escribe el género opuesto de: <strong>El conde</strong>", correct: ["la condesa"], note: "Sufijo femenino -esa." },
+
+    // 26 - 30
+    { prompt: "Escribe el plural de: <strong>El virus</strong>", correct: ["los virus"], note: "Invariable en plural." },
+    { prompt: "Escribe el femenino de: <strong>El emperador</strong>", correct: ["la emperatriz"], note: "Terminación irregular -triz." },
+    { prompt: "Escribe el plural de: <strong>La ley</strong>", correct: ["las leyes"], note: "Terminación en -y añade -es." },
+    { prompt: "Escribe el género opuesto de: <strong>El padrastro</strong>", correct: ["la madrastra"], note: "Femenino regular con -a." },
+    { prompt: "Escribe el plural de: <strong>El paraguas</strong>", correct: ["los paraguas"], note: "Sustantivo compuesto invariable en plural." },
+
+    // 31 - 35
+    { prompt: "Escribe el femenino de: <strong>El estudiante</strong>", correct: ["la estudiante"], note: "Común en cuanto al género (varía el artículo)." },
+    { prompt: "Escribe el plural de: <strong>El buey</strong>", correct: ["los bueyes"], note: "Añade -es al terminar en -y." },
+    { prompt: "Escribe el femenino de: <strong>El duque</strong>", correct: ["la duquesa"], note: "Sufijo femenino -esa." },
+    { prompt: "Escribe el plural de: <strong>El análisis</strong>", correct: ["los análisis"], note: "Invariable por terminar en -s no tónica." },
+    { prompt: "Escribe el femenino de: <strong>El capitán</strong>", correct: ["la capitana"], note: "Añade -a a los sustantivos terminados en -án." },
+
+    // 36 - 40
+    { prompt: "Escribe el plural de: <strong>El cruz</strong>", correct: ["las cruces", "los cruces"], note: "La -z pasa a -ces en plural." },
+    { prompt: "Escribe el femenino de: <strong>El barón</strong>", correct: ["la baronesa"], note: "Sufijo femenino -esa." },
+    { prompt: "Escribe el plural de: <strong>El paraguas</strong>", correct: ["los paraguas"], note: "Invariable." },
+    { prompt: "Escribe el género opuesto de: <strong>El macho</strong>", correct: ["la hembra"], note: "Heterónimo para género gramatical." },
+    { prompt: "Escribe el plural de: <strong>El mamut</strong>", correct: ["los mamuts"], note: "Préstamos terminados en consonantes raras añaden -s." }
+  ];
+
+  let currentPage = 0;
+  const itemsPerPage = 5;
+
+  function renderPage() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = '';
+
+    const start = currentPage * itemsPerPage;
+    const end = start + itemsPerPage;
+    const currentExercises = exercises.slice(start, end);
+
+    currentExercises.forEach((item, index) => {
+      const globalIndex = start + index;
+      const card = document.createElement('div');
+      card.className = 'exercise-card';
+      
+      card.innerHTML = `
+        <div class="exercise-header">
+          <span class="word-num">${globalIndex + 1}</span>
+          <span class="word-title">${item.prompt}</span>
+        </div>
+        <div class="input-group">
+          <span>&rightarrow;</span>
+          <input type="text" 
+                 id="input-${globalIndex}" 
+                 placeholder="Escribe aquí..." 
+                 oninput="checkAnswer(${globalIndex})"
+                 autocomplete="off">
+          <div id="tag-${globalIndex}" class="feedback-tag">
+            ✓ ${item.note}
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    const totalPages = Math.ceil(exercises.length / itemsPerPage);
+    document.getElementById('page-indicator').innerText = `Página ${currentPage + 1} de ${totalPages}`;
+    
+    document.getElementById('prev-btn').disabled = currentPage === 0;
+    document.getElementById('next-btn').disabled = currentPage === totalPages - 1;
+  }
+
+  function checkAnswer(index) {
+    const input = document.getElementById(`input-${index}`);
+    const tag = document.getElementById(`tag-${index}`);
+    const userAnswer = input.value.trim().toLowerCase();
+    
+    const isCorrect = exercises[index].correct.some(val => val.toLowerCase() === userAnswer);
+
+    if (isCorrect) {
+      input.style.borderColor = "var(--success)";
+      input.style.backgroundColor = "#f1f8e9";
+      tag.style.display = "inline-block";
+    } else {
+      input.style.borderColor = "var(--border-color)";
+      input.style.backgroundColor = "white";
+      tag.style.display = "none";
+    }
+  }
+
+  function changePage(direction) {
+    currentPage += direction;
+    renderPage();
+    document.getElementById('top').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function goToHome() {
+    currentPage = 0;
+    renderPage();
+    document.getElementById('top').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  renderPage();
+</script>
+
+</body>
+</html>
