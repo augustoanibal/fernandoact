@@ -152,20 +152,24 @@
       justify-content: space-between;
       align-items: center;
       margin-top: 25px;
+      gap: 10px;
     }
 
-    button {
+    button, .btn-home {
       background-color: var(--primary);
       color: white;
       border: none;
-      padding: 12px 24px;
+      padding: 12px 20px;
       border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
       transition: background-color 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
     }
 
-    button:hover {
+    button:hover, .btn-home:hover {
       background-color: #3f51b5;
     }
 
@@ -174,11 +178,11 @@
       cursor: not-allowed;
     }
 
-    .btn-secondary {
+    .btn-home {
       background-color: var(--accent);
     }
 
-    .btn-secondary:hover {
+    .btn-home:hover {
       background-color: #00897b;
     }
 
@@ -196,7 +200,7 @@
 <body>
 
 <div class="container">
-  <header>
+  <header id="top">
     <h1>EL DIPTONGO</h1>
     
     <div class="theory-box">
@@ -215,9 +219,10 @@
   <!-- Contenedor dinámico de ejercicios -->
   <main id="quiz-container"></main>
 
-  <!-- Paginador -->
+  <!-- Paginador con botón de Inicio -->
   <div class="controls">
     <button id="prev-btn" onclick="changePage(-1)">Anterior</button>
+    <a href="https://augustoanibal.github.io/fernandoact/index.html" class="btn-home">🏠 Inicio</a>
     <span class="page-indicator" id="page-indicator">Página 1 de 4</span>
     <button id="next-btn" onclick="changePage(1)">Siguiente</button>
   </div>
@@ -314,6 +319,10 @@
     currentPage += direction;
     renderPage();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goToHome() {
+    window.location.href = "https://augustoanibal.github.io/fernandoact/index.html";
   }
 
   // Carga inicial
