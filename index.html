@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Actividades de Lenguaje</title>
+  <title>Actividades de Aprendizaje</title>
   <style>
     :root {
       --bg-color: #f0f4f8;
@@ -27,6 +27,7 @@
     h1 { font-size: 2.2rem; margin-bottom: 8px; }
     p { color: var(--text-muted); margin-bottom: 32px; }
 
+    /* Contenedor responsivo */
     .grid { 
       display: flex; 
       flex-wrap: wrap; 
@@ -36,6 +37,7 @@
       margin: 0 auto; 
     }
 
+    /* Estilo de Tarjetas */
     .card { 
       background: var(--card-bg); 
       border: 2px solid var(--border-color); 
@@ -65,13 +67,12 @@
 </head>
 <body>
 
-  <h1>📚 Actividades de Lenguaje</h1>
+  <h1>📚 Actividades de Aprendizaje</h1>
   <p>Selecciona una opción para comenzar:</p>
 
   <div class="grid" id="activities-grid"></div>
 
   <script>
-    // Enlaces emparejados exactamente con los archivos de tu repositorio de GitHub
     const actividades = [
       { 
         titulo: "Actividades 1 a 3", 
@@ -81,12 +82,17 @@
       { 
         titulo: "Actividad 4 (MULTIPLICACIÓN)", 
         icono: "🎡", 
-        url: "actividad4.html"  // Coincide con tu archivo en GitHub
+        url: "actividad4.html" 
       },
       { 
         titulo: "Actividad 5 (Lectura)", 
         icono: "👁️", 
-        url: "actividad5.html"  // Coincide con tu archivo en GitHub
+        url: "actividad5.html" 
+      },
+      { 
+        titulo: "Actividad 6 (Sudoku)", 
+        icono: "🐌", 
+        url: "actividad6.html" 
       }
     ];
 
