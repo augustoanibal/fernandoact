@@ -128,18 +128,18 @@
       { titulo: "Actividades 1 a 3", icono: "📑", url: "Actividades_Todas.html" },
       { titulo: "Actividad 4 (MULTIPLICACIÓN)", icono: "🎡", url: "actividad4.html" },
       { titulo: "Actividad 5 (Lectura)", icono: "👁️", url: "actividad5.html" },
-      { titulo: "Actividad 11", icono: "📝", url: "actividad11" },
-      { titulo: "Actividad 12", icono: "📘", url: "actividad12" },
-      { titulo: "Actividad 13", icono: "📐", url: "actividad13" }
+      { titulo: "Actividad 11", icono: "📝", url: "actividad11.html" },
+      { titulo: "Actividad 12", icono: "📘", url: "actividad12.html" },
+      { titulo: "Actividad 13", icono: "📐", url: "actividad13.html" }
     ];
 
     // 2. Juegos de Concentración
     const juegosConcentracion = [
       { titulo: "Actividad 6: SUDOKU 4X4 (FIGURAS)", icono: "🍄", url: "actividad6.html" },
-      { titulo: "Actividad 7: MEMORIA", icono: "🃏", url: "actividad7" },
-      { titulo: "Actividad 8: SUDOKU 6X6", icono: "🔢", url: "actividad8" },
-      { titulo: "Actividad 9: TETRIS", icono: "🧩", url: "actividad9" },
-      { titulo: "Actividad 10: Cazapalabras", icono: "🔍", url: "actividad10" }
+      { titulo: "Actividad 7: MEMORIA", icono: "🃏", url: "actividad7.html" },
+      { titulo: "Actividad 8: SUDOKU 6X6", icono: "🔢", url: "actividad8.html" },
+      { titulo: "Actividad 9: TETRIS", icono: "🧩", url: "actividad9.html" },
+      { titulo: "Actividad 10: Cazapalabras", icono: "🔍", url: "actividad10.html" }
     ];
 
     function renderCards(lista, containerId, isGame = false) {
@@ -157,7 +157,6 @@
       });
     }
 
-    // Renderizado de ambas secciones
     renderCards(actividadesAprendizaje, 'learning-grid', false);
     renderCards(juegosConcentracion, 'concentration-grid', true);
   </script>
