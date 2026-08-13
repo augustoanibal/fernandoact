@@ -70,10 +70,37 @@
       border-radius: 42px;
       border: 1.4px solid #1EA7FD;
       margin-bottom: 0.84rem;
+      gap: 0.4rem;
+    }
+
+    /* Botón de Inicio */
+    .btn-home {
+      background: #1EA7FD;
+      border: none;
+      border-radius: 42px;
+      padding: 0.25rem 0.65rem;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      color: #FFFFFF;
+      text-decoration: none;
+      box-shadow: 0 2.8px 0 #0C74B9;
+      transition: 0.08s linear;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-home:hover {
+      background: #39B5FF;
+    }
+    .btn-home:active {
+      transform: translateY(2.8px);
+      box-shadow: 0 0 0 #0C74B9;
     }
 
     .level-display {
-      font-size: 1.6rem;
+      font-size: 1.3rem;
       font-weight: 700;
       color: #FFFFFF;
       letter-spacing: 0.7px;
@@ -89,12 +116,12 @@
     }
     .star-icon {
       color: #FFE800;
-      font-size: 2.50rem;
+      font-size: 2.0rem;
       line-height: 1;
       filter: drop-shadow(0 0 4px #FFE800);
     }
     .star-count {
-      font-size: 1.84rem;
+      font-size: 1.5rem;
       font-weight: 700;
       color: #FFFFFF;
     }
@@ -254,6 +281,8 @@
       .title-88m { font-size: 1.4rem; }
       .card-content { font-size: 1.26rem; }
       .memory-grid { gap: 6px; padding: 7px; }
+      .level-display { font-size: 1rem; }
+      .btn-home { font-size: 0.65rem; padding: 0.2rem 0.5rem; }
     }
   </style>
 </head>
@@ -264,6 +293,7 @@
   <div class="title-sub">MEMORY CARDS</div>
 
   <div class="top-bar">
+    <a href="index.html" class="btn-home">⌂ INICIO</a>
     <div class="level-display">NIVEL <span id="levelDisplay">1</span> / 15</div>
     <div class="stars-display">
       <span class="star-icon">✦</span>
