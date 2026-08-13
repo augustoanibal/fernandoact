@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory Cards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Fondo principal */
+    body {
+      background: #FFE800;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Orbitron', sans-serif;
+      padding: 0.7rem;
+      margin: 0;
+    }
+
+    /* Contenedor del juego (Reducido a 490px máx) */
+    .game-container {
+      max-width: 490px;
+      width: 100%;
+      background: #4C12A1;
+      padding: 1.4rem 1.05rem 1.4rem 1.05rem;
+      border-radius: 34px 34px 22px 22px;
+      box-shadow: 0 14px 28px rgba(0,0,0,0.4), inset 0 0 0 1.4px #FF0043;
+    }
+
+    .title-88m {
+      text-align: center;
+      font-size: 3.52rem;
+      font-weight: 900;
+      letter-spacing: 4.2px;
+      text-transform: uppercase;
+      color: #FFFFFF;
+      text-shadow: 0 0 7px rgba(255, 255, 255, 0.5);
+      margin-bottom: 0.07rem;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .title-sub {
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 5.6px;
+      color: #1EA7FD;
+      text-shadow: none;
+      margin-top: -4px;
+      margin-bottom: 0.7rem;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    /* Barra Superior */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #330A73;
+      padding: 0.35rem 0.84rem;
+      border-radius: 42px;
+      border: 1.4px solid #1EA7FD;
+      margin-bottom: 0.84rem;
+    }
+
+    .level-display {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: 0.7px;
+    }
+    .level-display span {
+      color: #FFE800;
+    }
+
+    .stars-display {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .star-icon {
+      color: #FFE800;
+      font-size: 2.50rem;
+      line-height: 1;
+      filter: drop-shadow(0 0 4px #FFE800);
+    }
+    .star-count {
+      font-size: 1.84rem;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    /* Grid de memorama */
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      background: #330A73;
+      padding: 11px;
+      border-radius: 22px;
+      box-shadow: inset 0 0 0 1.4px #1EA7FD;
+      margin-bottom: 0.84rem;
+      aspect-ratio: 4 / 3;
+    }
+
+    /* Carta */
+    .card {
+      background: #1EA7FD;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.54rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: inset 0 -2.8px 0 #0C74B9, 0 2.8px 0 rgba(0,0,0,0.3);
+      aspect-ratio: 1 / 1;
+      user-select: none;
+      position: relative;
+      color: #FFFFFF;
+    }
+
+    .card.flipped {
+      background: #FFFFFF;
+      color: #4C12A1;
+      box-shadow: inset 0 0 0 2.1px #1EA7FD, 0 2.8px 0 rgba(0,0,0,0.2);
+      transform: scale(1.02);
+    }
+
+    .card.matched {
+      background: #FF0043;
+      color: #FFE800;
+      box-shadow: inset 0 -2.8px 0 #B3002F, 0 1.4px 0 rgba(0,0,0,0.3);
+      cursor: default;
+      opacity: 0.95;
+      transform: scale(0.95);
+    }
+
+    .card:not(.flipped):not(.matched) .card-content {
+      display: none;
+    }
+    .card.flipped .card-content,
+    .card.matched .card-content {
+      display: flex;
+    }
+
+    .card-content {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      font-size: 1.54rem;
+    }
+
+    .card .card-back {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      font-size: 3.5rem;
+      color: #FFFFFF;
+    }
+    .card.flipped .card-back,
+    .card.matched .card-back {
+      display: none;
+    }
+
+    .card:hover:not(.matched):not(.flipped) {
+      background: #39B5FF;
+      transform: scale(1.03);
+    }
+
+    /* Iconos */
+    .mario-icon {
+      font-size: 5.2rem;
+      filter: drop-shadow(0 1.4px 2.8px rgba(0,0,0,0.2));
+    }
+
+    /* Botones de acción */
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin: 0.42rem 0;
+    }
+
+    .btn {
+      background: #1EA7FD;
+      border: none;
+      border-radius: 42px;
+      padding: 0.42rem 0.98rem;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.7px;
+      color: #FFFFFF;
+      box-shadow: 0 2.8px 0 #0C74B9;
+      cursor: pointer;
+      transition: 0.08s linear;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .btn:active {
+      transform: translateY(2.8px);
+      box-shadow: 0 0 0 #0C74B9;
+    }
+    .btn-primary {
+      background: #1EA7FD;
+      box-shadow: 0 2.8px 0 #0C74B9;
+    }
+    .btn-warning {
+      background: #FF0043;
+      box-shadow: 0 2.8px 0 #B3002F;
+    }
+    .btn-success {
+      background: #FFE800;
+      color: #4C12A1;
+      box-shadow: 0 2.8px 0 #C7B500;
+    }
+
+    .msg-box {
+      text-align: center;
+      min-height: 1.68rem;
+      font-size: 0.595rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      padding: 0.28rem;
+      margin-top: 0.28rem;
+      background: #330A73;
+      border-radius: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.4px solid #1EA7FD;
+    }
+
+    @media (max-width: 480px) {
+      .game-container { padding: 0.84rem; }
+      .title-88m { font-size: 1.4rem; }
+      .card-content { font-size: 1.26rem; }
+      .memory-grid { gap: 6px; padding: 7px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="game-container">
+  <div class="title-88m">88M</div>
+  <div class="title-sub">MEMORY CARDS</div>
+
+  <div class="top-bar">
+    <div class="level-display">NIVEL <span id="levelDisplay">1</span> / 15</div>
+    <div class="stars-display">
+      <span class="star-icon">✦</span>
+      <span class="star-count" id="starCount">0</span>
+    </div>
+  </div>
+
+  <div class="memory-grid" id="memoryGrid"></div>
+
+  <div class="action-row">
+    <button class="btn btn-primary" id="resetBtn">⟳ REINICIAR</button>
+    <button class="btn btn-warning" id="checkBtn">✔ VERIFICAR</button>
+    <button class="btn btn-success" id="solveBtn">★ REVELAR</button>
+  </div>
+
+  <div class="msg-box" id="messageBox">✦ Encuentra las parejas · 15 niveles</div>
+</div>
+
+<script>
+  (function() {
+    const TOTAL_LEVELS = 15;
+    const PAIRS_PER_LEVEL = 8;
+
+    const MARIO_ICONS = ['♞', '♝', '♜', '♛', '♘', '♕', '♗', '♤', '♡'];
+
+    let currentLevel = 0;
+    let starCount = 0;
+    let cards = [];
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let isLocked = false;
+    let timeoutId = null;
+    let cardElements = [];
+
+    const gridEl = document.getElementById('memoryGrid');
+    const levelDisplay = document.getElementById('levelDisplay');
+    const starCountEl = document.getElementById('starCount');
+    const msgBox = document.getElementById('messageBox');
+
+    // --- EFECTOS DE SONIDO (Web Audio API) ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playFlipSound() {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.08);
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.08);
+    }
+
+    function playMatchSound() {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const now = audioCtx.currentTime;
+      
+      const playTone = (freq, start, duration) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, start);
+        gain.gain.setValueAtTime(0.2, start);
+        gain.gain.exponentialRampToValueAtTime(0.01, start + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(start);
+        osc.stop(start + duration);
+      };
+
+      // Arpegio victorioso rápido (Do - Mi - Sol)
+      playTone(523.25, now, 0.1);       // C5
+      playTone(659.25, now + 0.08, 0.1);  // E5
+      playTone(783.99, now + 0.16, 0.25); // G5
+    }
+
+    // --- LÓGICA DEL JUEGO ---
+    function generateLevel(levelIndex) {
+      const icons = [...MARIO_ICONS];
+      for (let i = icons.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [icons[i], icons[j]] = [icons[j], icons[i]];
+      }
+
+      let deck = [];
+      for (let i = 0; i < PAIRS_PER_LEVEL; i++) {
+        const icon = icons[i % icons.length];
+        deck.push(icon, icon);
+      }
+
+      for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+      }
+
+      return deck;
+    }
+
+    function loadLevel(levelIndex) {
+      if (levelIndex < 0) levelIndex = 0;
+      if (levelIndex >= TOTAL_LEVELS) levelIndex = TOTAL_LEVELS - 1;
+      currentLevel = levelIndex;
+
+      flippedCards = [];
+      matchedPairs = 0;
+      isLocked = false;
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+      window._starEarnedThisLevel = false;
+
+      const deck = generateLevel(currentLevel);
+      cards = deck.map((icon, index) => ({
+        id: index,
+        icon: icon,
+        matched: false,
+        flipped: false,
+      }));
+
+      renderGrid();
+      updateInfo();
+      msgBox.textContent = `✦ Nivel ${currentLevel+1} · encuentra los pares`;
+    }
+
+    function renderGrid() {
+      gridEl.innerHTML = '';
+      cardElements = [];
+      cards.forEach((card, index) => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.dataset.index = index;
+
+        const content = document.createElement('div');
+        content.className = 'card-content';
+        content.innerHTML = `<span class="mario-icon">${card.icon}</span>`;
+        div.appendChild(content);
+
+        const back = document.createElement('div');
+        back.className = 'card-back';
+        back.textContent = '⬡';
+        div.appendChild(back);
+
+        if (card.matched) {
+          div.classList.add('matched');
+        }
+        if (card.flipped) {
+          div.classList.add('flipped');
+        }
+
+        div.addEventListener('click', () => handleCardClick(index));
+
+        gridEl.appendChild(div);
+        cardElements.push(div);
+      });
+    }
+
+    function handleCardClick(index) {
+      if (isLocked) return;
+      const card = cards[index];
+      if (card.matched) return;
+      if (card.flipped) return;
+      if (flippedCards.length >= 2) return;
+
+      playFlipSound();
+
+      card.flipped = true;
+      const el = cardElements[index];
+      el.classList.add('flipped');
+
+      flippedCards.push(index);
+
+      if (flippedCards.length === 2) {
+        isLocked = true;
+        const idx1 = flippedCards[0];
+        const idx2 = flippedCards[1];
+        const card1 = cards[idx1];
+        const card2 = cards[idx2];
+
+        if (card1.icon === card2.icon) {
+          setTimeout(playMatchSound, 150);
+
+          card1.matched = true;
+          card2.matched = true;
+          card1.flipped = false;
+          card2.flipped = false;
+
+          const el1 = cardElements[idx1];
+          const el2 = cardElements[idx2];
+          el1.classList.remove('flipped');
+          el2.classList.remove('flipped');
+          el1.classList.add('matched');
+          el2.classList.add('matched');
+
+          matchedPairs++;
+          flippedCards = [];
+          isLocked = false;
+
+          msgBox.textContent = `✅ ¡Par encontrado! (${matchedPairs}/${PAIRS_PER_LEVEL})`;
+
+          if (matchedPairs === PAIRS_PER_LEVEL) {
+            handleLevelComplete();
+          }
+        } else {
+          timeoutId = setTimeout(() => {
+            card1.flipped = false;
+            card2.flipped = false;
+            const el1 = cardElements[idx1];
+            const el2 = cardElements[idx2];
+            el1.classList.remove('flipped');
+            el2.classList.remove('flipped');
+            flippedCards = [];
+            isLocked = false;
+            timeoutId = null;
+            msgBox.textContent = `✗ No coinciden · intenta de nuevo`;
+          }, 700);
+        }
+      } else {
+        msgBox.textContent = `🔍 Selecciona la segunda carta`;
+      }
+    }
+
+    function handleLevelComplete() {
+      if (!window._starEarnedThisLevel) {
+        starCount++;
+        starCountEl.textContent = starCount;
+        window._starEarnedThisLevel = true;
+        msgBox.textContent = `🌟 ¡Nivel ${currentLevel+1} completado! +1 estrella (total ${starCount})`;
+
+        setTimeout(() => {
+          if (currentLevel < TOTAL_LEVELS - 1) {
+            loadLevel(currentLevel + 1);
+          } else {
+            msgBox.textContent = `🏆 ¡Completaste todos los niveles!`;
+          }
+        }, 1200);
+      } else {
+        msgBox.textContent = `✓ Ya ganaste la estrella de este nivel.`;
+      }
+    }
+
+    function resetLevel() {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+      const deck = generateLevel(currentLevel);
+      cards = deck.map((icon, index) => ({
+        id: index,
+        icon: icon,
+        matched: false,
+        flipped: false,
+      }));
+      flippedCards = [];
+      matchedPairs = 0;
+      isLocked = false;
+      window._starEarnedThisLevel = false;
+      renderGrid();
+      updateInfo();
+      msgBox.textContent = `⟳ Reiniciado nivel ${currentLevel+1}`;
+    }
+
+    function revealAll() {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+      cards.forEach((card, index) => {
+        if (!card.matched) {
+          card.flipped = true;
+          const el = cardElements[index];
+          el.classList.add('flipped');
+        }
+      });
+      msgBox.textContent = `👀 Cartas reveladas`;
+    }
+
+    function checkComplete() {
+      const allMatched = cards.every(card => card.matched);
+      if (allMatched) {
+        if (!window._starEarnedThisLevel) {
+          starCount++;
+          starCountEl.textContent = starCount;
+          window._starEarnedThisLevel = true;
+          msgBox.textContent = `🌟 ¡Nivel ${currentLevel+1} completado! +1 estrella`;
+          setTimeout(() => {
+            if (currentLevel < TOTAL_LEVELS - 1) {
+              loadLevel(currentLevel + 1);
+            } else {
+              msgBox.textContent = `🏆 ¡Completaste todos los niveles!`;
+            }
+          }, 1200);
+        } else {
+          msgBox.textContent = `✓ Ya ganaste la estrella de este nivel.`;
+        }
+      } else {
+        const remaining = cards.filter(c => !c.matched).length / 2;
+        msgBox.textContent = `✗ Faltan ${remaining} pares por encontrar.`;
+      }
+    }
+
+    function updateInfo() {
+      levelDisplay.textContent = currentLevel + 1;
+      starCountEl.textContent = starCount;
+    }
+
+    function init() {
+      window._starEarnedThisLevel = false;
+      loadLevel(0);
+
+      document.getElementById('resetBtn').addEventListener('click', resetLevel);
+      document.getElementById('checkBtn').addEventListener('click', checkComplete);
+      document.getElementById('solveBtn').addEventListener('click', revealAll);
+    }
+
+    init();
+  })();
+</script>
+</body>
+</html>
