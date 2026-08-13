@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EL HIATO - Actividad Interactiva</title>
+  <style>
+    :root {
+      --bg-color: #f4f7f6;
+      --card-bg: #ffffff;
+      --primary: #5b7086;
+      --primary-light: #eef2f5;
+      --accent: #48a9a6;
+      --text-main: #2b3a42;
+      --text-muted: #6c7a89;
+      --success: #52b788;
+      --border-color: #dcdfe3;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+    }
+
+    /* Header & Teoría */
+    header {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      margin-bottom: 25px;
+      border-top: 6px solid var(--primary);
+    }
+
+    h1 {
+      color: var(--primary);
+      text-align: center;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+      font-size: 2em;
+    }
+
+    .theory-box {
+      background-color: var(--primary-light);
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .theory-box h3 {
+      color: var(--primary);
+      margin-bottom: 8px;
+      font-size: 1.1em;
+    }
+
+    .theory-box ul {
+      margin-left: 20px;
+      margin-top: 5px;
+    }
+
+    .instruction {
+      font-size: 0.95em;
+      color: var(--text-main);
+      background: #fff8e1;
+      padding: 12px 15px;
+      border-left: 4px solid #ffca28;
+      border-radius: 4px;
+    }
+
+    /* Ejercicios */
+    .exercise-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      border: 1px solid var(--border-color);
+      transition: transform 0.2s ease;
+    }
+
+    .exercise-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .word-num {
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: bold;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 0.9em;
+    }
+
+    .word-title {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: var(--text-main);
+    }
+
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    input[type="text"] {
+      padding: 10px 14px;
+      border: 2px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 1em;
+      outline: none;
+      transition: border-color 0.3s;
+      width: 180px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary);
+    }
+
+    .hiato-tag {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.95em;
+      font-weight: bold;
+      font-style: italic;
+      display: none;
+      animation: fadeIn 0.4s ease-in-out forwards;
+    }
+
+    /* Paginación y Botones */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 25px;
+      gap: 10px;
+    }
+
+    button, .btn-home {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    button:hover, .btn-home:hover {
+      background-color: #4a5c6e;
+    }
+
+    button:disabled {
+      background-color: #c0c9d0;
+      cursor: not-allowed;
+    }
+
+    .btn-home {
+      background-color: var(--accent);
+    }
+
+    .btn-home:hover {
+      background-color: #368784;
+    }
+
+    .page-indicator {
+      font-weight: bold;
+      color: var(--text-muted);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header id="top">
+    <h1>EL HIATO</h1>
+    
+    <div class="theory-box">
+      <h3>Definición:</h3>
+      <p>Se produce cuando dos vocales que están juntas en la escritura pertenecen a sílabas distintas y se separan al pronunciarse.</p>
+      <br>
+      <h3>Tipos de hiato:</h3>
+      <ul>
+        <li><strong>Hiato simple:</strong> Dos vocales abiertas distintas o dos vocales iguales (<em>te-a-tro, pa-se-o, co-o-pe-rar</em>).</li>
+        <li><strong>Hiato acentual:</strong> Una vocal cerrada tónica (<em>í, ú</em>) junto a una vocal abierta (<em>a, e, o</em>). La fuerza de voz en la vocal cerrada rompe el diptongo (<em>rí-o, bú-ho, ma-íz</em>).</li>
+      </ul>
+    </div>
+
+    <div class="instruction">
+      <strong>Indicación:</strong> Separa las siguientes palabras en sílabas utilizando guiones (ejemplo: <em>po-e-ta</em>). Al escribir la respuesta correcta, ¡se describirá automáticamente el tipo de hiato!
+    </div>
+  </header>
+
+  <!-- Contenedor dinámico de ejercicios -->
+  <main id="quiz-container"></main>
+
+  <!-- Paginador -->
+  <div class="controls">
+    <button id="prev-btn" onclick="changePage(-1)">Anterior</button>
+    <a href="https://augustoanibal.github.io/fernandoact/index.html" class="btn-home">🏠 Inicio</a>
+    <span class="page-indicator" id="page-indicator">Página 1 de 4</span>
+    <button id="next-btn" onclick="changePage(1)">Siguiente</button>
+  </div>
+</div>
+
+<script>
+  // Respuestas corregidas (ma-íz, ra-íz) y alternativas aceptadas
+  const exercises = [
+    { word: "Poeta", correct: ["po-e-ta"], type: "Hiato simple" },
+    { word: "Río", correct: ["rí-o"], type: "Hiato acentual" },
+    { word: "Teatro", correct: ["te-a-tro"], type: "Hiato simple" },
+    { word: "Maíz", correct: ["ma-íz", "ma-i-z"], type: "Hiato acentual" },
+    { word: "Paseo", correct: ["pa-se-o"], type: "Hiato simple" },
+    { word: "Búho", correct: ["bú-ho", "bu-ho"], type: "Hiato acentual" },
+    { word: "Canoa", correct: ["ca-no-a"], type: "Hiato simple" },
+    { word: "María", correct: ["ma-rí-a"], type: "Hiato acentual" },
+    { word: "Cacao", correct: ["ca-ca-o"], type: "Hiato simple" },
+    { word: "Raíz", correct: ["ra-íz", "ra-i-z"], type: "Hiato acentual" },
+    { word: "Leer", correct: ["le-er"], type: "Hiato simple" },
+    { word: "Baúl", correct: ["ba-úl"], type: "Hiato acentual" },
+    { word: "Toalla", correct: ["to-a-lla"], type: "Hiato simple" },
+    { word: "Acróbata", correct: ["a-cró-ba-ta"], type: "Hiato simple" },
+    { word: "Tía", correct: ["tí-a"], type: "Hiato acentual" },
+    { word: "Línea", correct: ["lí-ne-a"], type: "Hiato simple" },
+    { word: "Sonría", correct: ["son-rí-a"], type: "Hiato acentual" },
+    { word: "Aéreo", correct: ["a-é-re-o"], type: "Hiato simple" },
+    { word: "Grúa", correct: ["grú-a"], type: "Hiato acentual" },
+    { word: "Poesía", correct: ["po-e-sí-a"], type: "Hiato simple y acentual" }
+  ];
+
+  let currentPage = 0;
+  const itemsPerPage = 5;
+
+  function renderPage() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = '';
+
+    const start = currentPage * itemsPerPage;
+    const end = start + itemsPerPage;
+    const currentExercises = exercises.slice(start, end);
+
+    currentExercises.forEach((item, index) => {
+      const globalIndex = start + index;
+      const card = document.createElement('div');
+      card.className = 'exercise-card';
+      
+      card.innerHTML = `
+        <div class="exercise-header">
+          <span class="word-num">${globalIndex + 1}</span>
+          <span class="word-title">${item.word}</span>
+        </div>
+        <div class="input-group">
+          <span>&rightarrow;</span>
+          <input type="text" 
+                 id="input-${globalIndex}" 
+                 placeholder="Ej: po-e-ta" 
+                 oninput="checkAnswer(${globalIndex})"
+                 autocomplete="off">
+          <div id="type-${globalIndex}" class="hiato-tag">
+            | Tipo: ${item.type}
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    const totalPages = Math.ceil(exercises.length / itemsPerPage);
+    document.getElementById('page-indicator').innerText = `Página ${currentPage + 1} de ${totalPages}`;
+    
+    document.getElementById('prev-btn').disabled = currentPage === 0;
+    document.getElementById('next-btn').disabled = currentPage === totalPages - 1;
+  }
+
+  function checkAnswer(index) {
+    const input = document.getElementById(`input-${index}`);
+    const tag = document.getElementById(`type-${index}`);
+    const userAnswer = input.value.trim().toLowerCase();
+    
+    // Verifica si la respuesta coincide con alguna de las variantes aceptadas
+    const isCorrect = exercises[index].correct.some(val => val.toLowerCase() === userAnswer);
+
+    if (isCorrect) {
+      input.style.borderColor = "var(--success)";
+      input.style.backgroundColor = "#f1f8e9";
+      tag.style.display = "inline-block";
+    } else {
+      input.style.borderColor = "var(--border-color)";
+      input.style.backgroundColor = "white";
+      tag.style.display = "none";
+    }
+  }
+
+  function changePage(direction) {
+    currentPage += direction;
+    renderPage();
+    document.getElementById('top').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function goToHome() {
+    window.location.href = "https://augustoanibal.github.io/fernandoact/index.html";
+  }
+
+  renderPage();
+</script>
+
+</body>
+</html>
