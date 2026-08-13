@@ -13,7 +13,8 @@
       --accent: #48a9a6;
       --text-main: #2b3a42;
       --text-muted: #6c7a89;
-      --success: #52b788;
+      --success: #2e7d32;
+      --success-bg: #e8f5e9;
       --border-color: #dcdfe3;
     }
 
@@ -33,7 +34,7 @@
     }
 
     .container {
-      max-width: 800px;
+      max-width: 850px;
       width: 100%;
     }
 
@@ -50,7 +51,7 @@
     h1 {
       color: var(--primary);
       text-align: center;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       margin-bottom: 15px;
       font-size: 1.8em;
     }
@@ -71,6 +72,7 @@
     .theory-box ul {
       margin-left: 20px;
       margin-top: 5px;
+      line-height: 1.5;
     }
 
     .instruction {
@@ -80,6 +82,7 @@
       padding: 12px 15px;
       border-left: 4px solid #ffca28;
       border-radius: 4px;
+      font-weight: 600;
     }
 
     /* Ejercicios */
@@ -95,7 +98,7 @@
     .exercise-header {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 12px;
     }
 
@@ -132,10 +135,11 @@
       padding: 10px 14px;
       border: 2px solid var(--border-color);
       border-radius: 6px;
-      font-size: 1em;
+      font-size: 0.95em;
       outline: none;
       transition: border-color 0.3s;
-      width: 180px;
+      min-width: 240px;
+      flex-grow: 1;
     }
 
     input[type="text"]:focus {
@@ -143,13 +147,14 @@
     }
 
     .feedback-tag {
-      background-color: #e8f5e9;
-      color: #2e7d32;
+      background-color: var(--success-bg);
+      color: var(--success);
       padding: 8px 12px;
       border-radius: 6px;
       font-size: 0.9em;
-      font-weight: bold;
+      font-weight: 600;
       display: none;
+      line-height: 1.3;
       animation: fadeIn 0.4s ease-in-out forwards;
     }
 
@@ -162,7 +167,7 @@
       gap: 10px;
     }
 
-    button, .btn-home {
+    button {
       background-color: var(--primary);
       color: white;
       border: none;
@@ -171,14 +176,9 @@
       font-weight: bold;
       cursor: pointer;
       transition: background-color 0.2s;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.95em;
     }
 
-    button:hover, .btn-home:hover {
+    button:hover {
       background-color: #4a5c6e;
     }
 
@@ -213,22 +213,22 @@
     <h1>LOS DEMOSTRATIVOS Y POSESIVOS</h1>
     
     <div class="theory-box">
-      <h3>Resumen Gramatical (RAE):</h3>
+      <h3>Repaso rápido para aprender:</h3>
       <ul>
-        <li><strong>Demostrativos:</strong> Señalan la distancia espacial o temporal respecto al hablante.
-          <br>• Cerca: <em>este, esta, estos, estas</em> (neutro: <em>esto</em>).
-          <br>• Distancia media: <em>ese, esa, esos, esas</em> (neutro: <em>eso</em>).
-          <br>• Lejos: <em>aquel, aquella, aquellos, aquellas</em> (neutro: <em>aquello</em>).
+        <li><strong>Demostrativos:</strong> Indican qué tan cerca o lejos está algo.
+          <br>• Cerca de ti: <em>este, esta, estos, estas, esto</em>.
+          <br>• A distancia media: <em>ese, esa, esos, esas, eso</em>.
+          <br>• Muy lejos: <em>aquel, aquella, aquellos, aquellas, aquello</em>.
         </li>
-        <li><strong>Posesivos:</strong> Indican pertenencia o posesión.
-          <br>• Formas átonas (antepuestas al sustantivo): <em>mi, tu, su, nuestro/a, vuestro/a, sus</em>.
-          <br>• Formas tónicas (pospuestas): <em>mío/a, tuyo/a, suyo/a, nuestro/a, vuestro/a</em>.
+        <li><strong>Posesivos:</strong> Indican de quién es el objeto o la persona.
+          <br>• Si es de uno o varios: <em>mi, tu, su, nuestro/a, vuestro/a, mis, tus, sus</em>.
+          <br>• Cuando van después de la palabra: <em>mío/a, tuyo/a, suyo/a</em>.
         </li>
       </ul>
     </div>
 
     <div class="instruction">
-      <strong>Indicación:</strong> Escribe la palabra requerida según las pautas entre paréntesis. Al acertar, se desplegará el análisis gramatical.
+      Indicación: Lee las pistas entre paréntesis y escribe la palabra correcta en la casilla.
     </div>
   </header>
 
@@ -236,7 +236,7 @@
 
   <div class="controls">
     <button id="prev-btn" onclick="changePage(-1)">Anterior</button>
-    <a href="https://augustoanibal.github.io/fernandoact/index.html" class="btn-home">🏠 Inicio</a>
+    <button class="btn-home" onclick="goToHome()">🏠 Inicio</button>
     <span class="page-indicator" id="page-indicator">Página 1 de 8</span>
     <button id="next-btn" onclick="changePage(1)">Siguiente</button>
   </div>
@@ -244,61 +244,61 @@
 
 <script>
   const exercises = [
-    // PÁGINA 1: Demostrativos (Cercanía)
-    { prompt: "Completa con el demostrativo de cercanía (femenino singular):<br>«___ mesa está muy limpia.»", correct: ["esta"], note: "Demostrativo femenino singular (cercanía)." },
-    { prompt: "Completa con el demostrativo de cercanía (masculino plural):<br>«___ libros son de la biblioteca.»", correct: ["estos"], note: "Demostrativo masculino plural (cercanía)." },
-    { prompt: "Escribe el neutro demostrativo de cercanía:<br>«___ no me gusta para nada.»", correct: ["esto"], note: "Demostrativo neutro (invariable, no lleva tilde)." },
-    { prompt: "Completa con el posesivo antepuesto (1.ª persona singular, un poseedor):<br>«___ perro es muy juguetón.»", correct: ["mi"], note: "Posesivo átono de 1.ª persona." },
-    { prompt: "Completa con el posesivo antepuesto (3.ª persona singular, varios objetos):<br>«___ ideas fueron aceptadas.»", correct: ["sus"], note: "Posesivo plural de 3.ª persona." },
+    // PÁGINA 1: Objetos cercanos y de mi propiedad
+    { prompt: "Completa con un demostrativo de cercanía (femenino):<br>«___ mesa está muy limpia.»", correct: ["esta"], note: "¡Muy bien! 'Esta' se usa para cosas femeninas y cercanas." },
+    { prompt: "Completa con un demostrativo de cercanía (masculino plural):<br>«___ libros son de la biblioteca.»", correct: ["estos"], note: "¡Correcto! 'Estos' señala varias cosas masculinas cerca de ti." },
+    { prompt: "Escribe el demostrativo neutro de cercanía:<br>«___ no me gusta para nada.»", correct: ["esto"], note: "¡Excelente! 'Esto' se usa cuando no mencionamos el objeto exacto." },
+    { prompt: "Completa con el posesivo de primera persona (mí):<br>«___ perro es muy juguetón.»", correct: ["mi"], note: "¡Muy bien! 'Mi' indica que el perro te pertenece." },
+    { prompt: "Completa con el posesivo de tercera persona (de ellos/ellas):<br>«___ ideas fueron aceptadas.»", correct: ["sus"], note: "¡Correcto! 'Sus' indica pertenencia de varias cosas." },
 
-    // PÁGINA 2: Demostrativos (Distancia media) y Posesivos
-    { prompt: "Completa con el demostrativo de distancia media (masculino singular):<br>«___ lápiz que tienes ahí es mío.»", correct: ["ese"], note: "Demostrativo de distancia media (cerca del oyente)." },
-    { prompt: "Completa con el demostrativo de distancia media (femenino plural):<br>«___ sillas están ocupadas.»", correct: ["esas"], note: "Demostrativo femenino plural (distancia media)." },
-    { prompt: "Escribe el neutro demostrativo de distancia media:<br>«___ es lo que querías decir.»", correct: ["eso"], note: "Demostrativo neutro de distancia media." },
-    { prompt: "Completa con el posesivo tónico pospuesto (1.ª persona, fem. singular):<br>«Una amiga ___ vino a visitarme.»", correct: ["mía"], note: "Posesivo tónico pospuesto." },
-    { prompt: "Completa con el posesivo antepuesto (1.ª persona plural, masc. singular):<br>«___ colegio es muy grande.»", correct: ["nuestro"], note: "Posesivo de 1.ª persona plural (varios poseedores)." },
+    // PÁGINA 2: Distancia media y posesivos
+    { prompt: "Completa con el demostrativo de distancia media (masculino):<br>«___ lápiz que tienes ahí es mío.»", correct: ["ese"], note: "¡Excelente! 'Ese' señala algo a distancia media (cerca del oyente)." },
+    { prompt: "Completa con el demostrativo de distancia media (femenino plural):<br>«___ sillas están ocupadas.»", correct: ["esas"], note: "¡Muy bien! 'Esas' indica objetos a media distancia." },
+    { prompt: "Escribe el demostrativo neutro de distancia media:<br>«___ es lo que querías decir.»", correct: ["eso"], note: "¡Correcto! 'Eso' es la forma neutra a distancia media." },
+    { prompt: "Completa con el posesivo que va al final (de mí):<br>«Una amiga ___ vino a visitarme.»", correct: ["mía"], note: "¡Excelente! 'Mía' se coloca después del nombre." },
+    { prompt: "Completa con el posesivo de nosotros (masculino):<br>«___ colegio es muy grande.»", correct: ["nuestro"], note: "¡Muy bien! 'Nuestro' indica pertenencia de varias personas." },
 
-    // PÁGINA 3: Demostrativos (Lejanía)
-    { prompt: "Completa con el demostrativo de lejanía (masculino singular):<br>«___ árbol a lo lejos es enorme.»", correct: ["aquel"], note: "Demostrativo de lejanía en el espacio/tiempo." },
-    { prompt: "Completa con el demostrativo de lejanía (femenino singular):<br>«___ montaña del fondo tiene nieve.»", correct: ["aquella"], note: "Demostrativo femenino singular (lejanía)." },
-    { prompt: "Completa con el demostrativo de lejanía (masculino plural):<br>«___ días de verano fueron inolvidables.»", correct: ["aquellos"], note: "Demostrativo masculino plural (tiempo lejano)." },
-    { prompt: "Escribe el neutro demostrativo de lejanía:<br>«___ fue una experiencia aterradora.»", correct: ["aquello"], note: "Demostrativo neutro (lejanía)." },
-    { prompt: "Completa con el posesivo antepuesto (2.ª persona singular, un poseedor):<br>«___ cuaderno está ordenado.»", correct: ["tu"], note: "Posesivo átono de 2.ª persona (sin tilde)." },
+    // PÁGINA 3: Cosas que están lejos
+    { prompt: "Completa con el demostrativo de lejanía (masculino):<br>«___ árbol a lo lejos es enorme.»", correct: ["aquel"], note: "¡Correcto! 'Aquel' se usa para algo que está muy lejos." },
+    { prompt: "Completa con el demostrativo de lejanía (femenino):<br>«___ montaña del fondo tiene nieve.»", correct: ["aquella"], note: "¡Excelente! 'Aquella' se usa para objetos femeninos lejanos." },
+    { prompt: "Completa con el demostrativo de lejanía para tiempo pasado:<br>«___ días de verano fueron inolvidables.»", correct: ["aquellos"], note: "¡Muy bien! 'Aquellos' señala un tiempo lejano." },
+    { prompt: "Escribe el demostrativo neutro de lejanía:<br>«___ fue una experiencia genial.»", correct: ["aquello"], note: "¡Correcto! 'Aquello' es la forma neutra para cosas lejanas." },
+    { prompt: "Completa con el posesivo de segunda persona (de ti):<br>«___ cuaderno está ordenado.»", correct: ["tu"], note: "¡Excelente! 'Tu' es un posesivo (y no lleva tilde)." },
 
-    // PÁGINA 4: Posesivos tónicos y combinación
-    { prompt: "Completa con el posesivo tónico (2.ª persona singular, masc. singular):<br>«El coche ___ está bien estacionado.»", correct: ["tuyo"], note: "Posesivo tónico pospuesto." },
-    { prompt: "Completa con el posesivo tónico (3.ª persona, fem. plural):<br>«Esas decisiones son ___ .»", correct: ["suyas"], note: "Posesivo tónico plural (3.ª persona)." },
-    { prompt: "Completa con el posesivo (1.ª persona plural, fem. plural):<br>«___ costumbres son muy antiguas.»", correct: ["nuestras"], note: "Posesivo femenino plural de 1.ª persona." },
-    { prompt: "Completa con el demostrativo de cercanía (femenino plural):<br>«___ flores huelen riquísimo.»", correct: ["estas"], note: "Demostrativo femenino plural (cercanía)." },
-    { prompt: "Completa con el posesivo (2.ª persona plural - España, masc. singular):<br>«___ esfuerzo dará frutos.»", correct: ["vuestro"], note: "Posesivo de 2.ª persona plural." },
+    // PÁGINA 4: Posesivos y combinaciones
+    { prompt: "Completa con el posesivo que va después (de ti):<br>«El coche ___ está bien estacionado.»", correct: ["tuyo"], note: "¡Muy bien! 'Tuyo' se usa después del nombre." },
+    { prompt: "Completa con el posesivo que va después (de ellos/ellas):<br>«Esas decisiones son ___ .»", correct: ["suyas"], note: "¡Correcto! 'Suyas' indica posesión de varias cosas femeninas." },
+    { prompt: "Completa con el posesivo de nosotros (femenino plural):<br>«___ costumbres son muy antiguas.»", correct: ["nuestras"], note: "¡Excelente! 'Nuestras' concuerda en femenino y plural." },
+    { prompt: "Completa con el demostrativo de cercanía (femenino plural):<br>«___ flores huelen riquísimo.»", correct: ["estas"], note: "¡Muy bien! 'Estas' señala plantas u objetos cercanos." },
+    { prompt: "Completa con el posesivo de vosotros (masculino singular):<br>«___ esfuerzo dará frutos.»", correct: ["vuestro"], note: "¡Correcto! 'Vuestro' se usa para varios poseedores." },
 
     // PÁGINA 5: Identificación y concordancia
-    { prompt: "Escribe la forma reducida (átona) del posesivo 'mío':<br>«Es ___ casa.»", correct: ["mi"], note: "Apócope del posesivo antepuesto al sustantivo." },
-    { prompt: "Escribe la forma reducida (átona) del posesivo 'tuyo':<br>«Es ___ hermano.»", correct: ["tu"], note: "Apócope de 'tuyo' ante sustantivo." },
-    { prompt: "Escribe la forma reducida (átona) del posesivo 'suyo':<br>«Es ___ proyecto.»", correct: ["su"], note: "Apócope de 'suyo' ante sustantivo." },
-    { prompt: "Completa con el demostrativo de distancia media (femenino singular):<br>«Pásame ___ chaqueta, por favor.»", correct: ["esa"], note: "Demostrativo de distancia media." },
-    { prompt: "Completa con el demostrativo de lejanía (femenino plural):<br>«___ nubes anuncian lluvia.»", correct: ["aquellas"], note: "Demostrativo femenino plural (lejanía)." },
+    { prompt: "Escribe la palabra corta para decir que la casa es mía:<br>«Es ___ casa.»", correct: ["mi"], note: "¡Excelente! 'Mi' va antes de la palabra casa." },
+    { prompt: "Escribe la palabra corta para decir que el hermano es tuyo:<br>«Es ___ hermano.»", correct: ["tu"], note: "¡Muy bien! 'Tu' va antes del nombre sin tilde." },
+    { prompt: "Escribe la palabra corta para decir que el proyecto es de él o ella:<br>«Es ___ proyecto.»", correct: ["su"], note: "¡Correcto! 'Su' se utiliza para tercera persona." },
+    { prompt: "Completa con el demostrativo de distancia media (femenino):<br>«Pásame ___ chaqueta, por favor.»", correct: ["esa"], note: "¡Excelente! 'Esa' indica una prenda a distancia media." },
+    { prompt: "Completa con el demostrativo de lejanía (femenino plural):<br>«___ nubes anuncian lluvia.»", correct: ["aquellas"], note: "¡Muy bien! 'Aquellas' se refiere a cosas lejanas en el cielo." },
 
-    // PÁGINA 6: Análisis de valor temporal
-    { prompt: "En 'Esta mañana me levanté temprano', 'esta' indica un tiempo... (cercano / lejano)", correct: ["cercano"], note: "Los demostrativos de cercanía refieren al presente o pasado reciente." },
-    { prompt: "En 'En aquellos años se vivía diferente', 'aquellos' señala un tiempo... (cercano / lejano)", correct: ["lejano"], note: "Los demostrativos de lejanía expresan tiempo remoto." },
-    { prompt: "Escribe el posesivo para varios poseedores (2.ª persona plural, fem. plural):<br>«___ ideas son geniales.»", correct: ["vuestras"], note: "Posesivo femenino plural." },
-    { prompt: "Completa con el demostrativo de cercanía (masculino singular):<br>«___ poema fue escrito por un gran autor.»", correct: ["este"], note: "Demostrativo masculino singular." },
-    { prompt: "Completa con el posesivo tónico (1.ª persona singular, masc. plural):<br>«Los derechos ___ deben respetarse.»", correct: ["míos"], note: "Posesivo tónico masculino plural." },
+    // PÁGINA 6: Cerca o lejos en el tiempo
+    { prompt: "En «Esta mañana me levanté temprano», la palabra 'esta' indica un tiempo... (cercano / lejano)", correct: ["cercano"], note: "¡Correcto! Se refiere al presente o a hoy mismo." },
+    { prompt: "En «En aquellos años se vivía diferente», la palabra 'aquellos' señala un tiempo... (cercano / lejano)", correct: ["lejano"], note: "¡Excelente! 'Aquellos' se refiere al pasado distante." },
+    { prompt: "Escribe el posesivo de vosotras (femenino plural):<br>«___ ideas son geniales.»", correct: ["vuestras"], note: "¡Muy bien! Concuerda en femenino y plural." },
+    { prompt: "Completa con el demostrativo de cercanía (masculino singular):<br>«___ poema fue escrito por un gran autor.»", correct: ["este"], note: "¡Correcto! 'Este' indica que el poema está cerca." },
+    { prompt: "Completa con el posesivo que va al final (de mí, plural):<br>«Los derechos ___ deben respetarse.»", correct: ["míos"], note: "¡Excelente! 'Míos' va pospuesto al nombre." },
 
-    // PÁGINA 7: Casos especiales
-    { prompt: "¿Los pronombres demostrativos neutros (esto, eso, aquello) llevan tilde? (si / no)", correct: ["no"], note: "Según la RAE, los neutros NUNCA llevan tilde por no tener variantes sustantivas." },
-    { prompt: "Completa con el demostrativo de distancia media (masculino plural):<br>«___ zapatos me ajustan un poco.»", correct: ["esos"], note: "Demostrativo masculino plural." },
-    { prompt: "Completa con el posesivo de 3.ª persona plural antepuesto:<br>«___ mochilas están en el salón.»", correct: ["sus"], note: "Posesivo de varios poseedores / varias cosas." },
-    { prompt: "Completa con el demostrativo de lejanía (masculino singular):<br>«Miró a ___ hombre que cruzaba la calle.»", correct: ["aquel"], note: "Demostrativo masculino singular." },
-    { prompt: "Completa con el posesivo tónico (2.ª persona singular, fem. plural):<br>«Esas cartas ___ llegaron tarde.»", correct: ["tuyas"], note: "Posesivo tónico femenino plural." },
+    // PÁGINA 7: Reglas y repaso
+    { prompt: "¿Las palabras 'esto', 'eso' y 'aquello' llevan tilde alguna vez? (si / no)", correct: ["no"], note: "¡Muy bien! Los demostrativos neutros NUNCA llevan tilde." },
+    { prompt: "Completa con el demostrativo de distancia media (masculino plural):<br>«___ zapatos me ajustan un poco.»", correct: ["esos"], note: "¡Correcto! 'Esos' señala objetos a media distancia." },
+    { prompt: "Completa con el posesivo de ellos (varias mochilas):<br>«___ mochilas están en el salón.»", correct: ["sus"], note: "¡Excelente! 'Sus' concuerda en plural con mochilas." },
+    { prompt: "Completa con el demostrativo de lejanía (masculino):<br>«Miró a ___ hombre que cruzaba la calle.»", correct: ["aquel"], note: "¡Muy bien! 'Aquel' se usa para personas lejanas." },
+    { prompt: "Completa con el posesivo pospuesto (de ti, femenino plural):<br>«Esas cartas ___ llegaron tarde.»", correct: ["tuyas"], note: "¡Correcto! 'Tuyas' es el posesivo para cartas." },
 
-    // PÁGINA 8: Repaso general
-    { prompt: "Completa: «Prefiero ___ manzana que tengo en la mano.» (demostrativo de cercanía)", correct: ["esta"], note: "Demostrativo femenino (cercanía)." },
-    { prompt: "Completa: «___ casa que está al final del camino es viejísima.» (demostrativo de lejanía)", correct: ["aquella"], note: "Demostrativo femenino (lejanía)." },
-    { prompt: "Completa: «Señor, ¿es ___ el sombrero?» (posesivo tónico 3.ª persona, masc. singular)", correct: ["suyo"], note: "Posesivo tónico de cortesía / 3.ª persona." },
-    { prompt: "Completa: «Hijo, ___ deber es estudiar.» (posesivo 2.ª persona singular)", correct: ["tu"], note: "Posesivo átono (sin tilde)." },
-    { prompt: "Completa: «___ es todo lo que debemos repasar hoy.» (demostrativo neutro de cercanía)", correct: ["esto"], note: "Demostrativo neutro de cercanía." }
+    // PÁGINA 8: Desafío final
+    { prompt: "Completa: «Prefiero ___ manzana que tengo en la mano.» (cercanía)", correct: ["esta"], note: "¡Excelente! Si la tienes en la mano, está muy cerca." },
+    { prompt: "Completa: «___ casa que está al final del camino es viejísima.» (lejanía)", correct: ["aquella"], note: "¡Muy bien! Al estar al final del camino está lejos." },
+    { prompt: "Completa con educación: «Señor, ¿es ___ el sombrero?» (posesivo de usted)", correct: ["suyo"], note: "¡Correcto! 'Suyo' se usa para dirigirse con respeto." },
+    { prompt: "Completa: «Hijo, ___ deber es estudiar.» (posesivo de ti)", correct: ["tu"], note: "¡Excelente! 'Tu' es la palabra indicada (sin tilde)." },
+    { prompt: "Completa: «___ es todo lo que debemos repasar hoy.» (neutro de cercanía)", correct: ["esto"], note: "¡Perfecto! Has terminado los ejercicios correctamente." }
   ];
 
   let currentPage = 0;
@@ -326,7 +326,7 @@
           <span>&rightarrow;</span>
           <input type="text" 
                  id="input-${globalIndex}" 
-                 placeholder="Respuesta..." 
+                 placeholder="Escribe la respuesta..." 
                  oninput="checkAnswer(${globalIndex})"
                  autocomplete="off">
           <div id="tag-${globalIndex}" class="feedback-tag">
@@ -353,7 +353,7 @@
 
     if (isCorrect) {
       input.style.borderColor = "var(--success)";
-      input.style.backgroundColor = "#f1f8e9";
+      input.style.backgroundColor = "var(--success-bg)";
       tag.style.display = "inline-block";
     } else {
       input.style.borderColor = "var(--border-color)";
@@ -369,7 +369,7 @@
   }
 
   function goToHome() {
-    window.location.href = "https://augustoanibal.github.io/fernandoact/index.html";
+    window.location.href = "https://augustoanibal.github.io/fernandoact/";
   }
 
   renderPage();
