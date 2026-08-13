@@ -60,7 +60,7 @@
       margin-top: -4px;
     }
 
-    /* === BARRA SUPERIOR: números + nivel === */
+    /* === BARRA SUPERIOR: inicio + números + nivel === */
     .top-bar {
       display: flex;
       justify-content: space-between;
@@ -71,6 +71,25 @@
       border: 1px solid #314153;
       margin: 0.4rem 0;
       gap: 0.4rem;
+    }
+
+    .btn-home {
+      background: #202a3a;
+      border: 1px solid #40526b;
+      border-radius: 20px;
+      padding: 0.25rem 0.5rem;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 0.65rem;
+      color: #ccddf7;
+      text-decoration: none;
+      box-shadow: 0 2px 0 #0a0f17;
+      transition: 0.1s;
+      white-space: nowrap;
+    }
+    .btn-home:hover {
+      background: #2b364b;
+      border-color: #6c8bb0;
     }
 
     .num-selector {
@@ -298,6 +317,7 @@
   </div>
 
   <div class="top-bar">
+    <a href="index.html" class="btn-home">⌂ INICIO</a>
     <div class="num-selector" id="numSelector">
       <button class="num-btn" data-num="1">1</button>
       <button class="num-btn" data-num="2">2</button>
