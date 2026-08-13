@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Actividades de Aprendizaje</title>
+  <title>Portal de Actividades</title>
   <style>
     :root {
       --bg-color: #f0f4f8;
@@ -11,6 +11,7 @@
       --text-main: #1e293b;
       --text-muted: #64748b;
       --primary-color: #2563eb;
+      --accent-color: #7c3aed;
       --border-color: #e2e8f0;
     }
 
@@ -25,16 +26,35 @@
     }
 
     h1 { font-size: 2.2rem; margin-bottom: 8px; }
-    p { color: var(--text-muted); margin-bottom: 32px; }
+    p.subtitle { color: var(--text-muted); margin-bottom: 32px; }
 
-    /* Contenedor responsivo */
+    /* Secciones */
+    .section-title {
+      font-size: 1.5rem;
+      color: var(--text-main);
+      margin: 30px 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .section-title::before, .section-title::after {
+      content: "";
+      flex: 1;
+      max-width: 100px;
+      height: 2px;
+      background: var(--border-color);
+    }
+
+    /* Contenedores Grid */
     .grid { 
       display: flex; 
       flex-wrap: wrap; 
       justify-content: center; 
       gap: 16px; 
-      max-width: 800px; 
-      margin: 0 auto; 
+      max-width: 900px; 
+      margin: 0 auto 30px; 
     }
 
     /* Estilo de Tarjetas */
@@ -42,7 +62,7 @@
       background: var(--card-bg); 
       border: 2px solid var(--border-color); 
       border-radius: 12px; 
-      padding: 24px 16px; 
+      padding: 20px 16px; 
       width: 220px; 
       text-decoration: none; 
       color: var(--primary-color); 
@@ -53,8 +73,13 @@
       flex-direction: column; 
       align-items: center; 
       justify-content: center; 
-      gap: 8px; 
+      gap: 10px; 
       text-align: center;
+      position: relative;
+    }
+
+    .card .icon {
+      font-size: 2rem;
     }
 
     .card:hover, .card:focus { 
@@ -63,48 +88,78 @@
       border-color: var(--primary-color);
       outline: none;
     }
+
+    /* Estilos específicos para juegos de concentración */
+    .card-game {
+      color: var(--accent-color);
+      border-color: #e9d5ff;
+    }
+
+    .card-game:hover, .card-game:focus {
+      border-color: var(--accent-color);
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: #f3e8ff;
+      color: var(--accent-color);
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
 
-  <h1>📚 Actividades de Aprendizaje</h1>
-  <p>Selecciona una opción para comenzar:</p>
+  <h1>🚀 Portal de Actividades</h1>
+  <p class="subtitle">Selecciona una opción para comenzar:</p>
 
-  <div class="grid" id="activities-grid"></div>
+  <!-- Sección 1: Aprendizaje -->
+  <h2 class="section-title">📚 Actividades de Aprendizaje</h2>
+  <div class="grid" id="learning-grid"></div>
+
+  <!-- Sección 2: Concentración -->
+  <h2 class="section-title">🧠 Juegos de Concentración</h2>
+  <div class="grid" id="concentration-grid"></div>
 
   <script>
-    const actividades = [
-      { 
-        titulo: "Actividades 1 a 3", 
-        icono: "📑", 
-        url: "Actividades_Todas.html" 
-      },
-      { 
-        titulo: "Actividad 4 (MULTIPLICACIÓN)", 
-        icono: "🎡", 
-        url: "actividad4.html" 
-      },
-      { 
-        titulo: "Actividad 5 (Lectura)", 
-        icono: "👁️", 
-        url: "actividad5.html" 
-      },
-      { 
-        titulo: "Actividad 6 (Sudoku)", 
-        icono: "🐌", 
-        url: "actividad6.html" 
-      }
+    // 1. Actividades de Aprendizaje
+    const actividadesAprendizaje = [
+      { titulo: "Actividades 1 a 3", icono: "📑", url: "Actividades_Todas.html" },
+      { titulo: "Actividad 4 (MULTIPLICACIÓN)", icono: "🎡", url: "actividad4.html" },
+      { titulo: "Actividad 5 (Lectura)", icono: "👁️", url: "actividad5.html" },
+      { titulo: "Actividad 11", icono: "📝", url: "actividad11" },
+      { titulo: "Actividad 12", icono: "📘", url: "actividad12" },
+      { titulo: "Actividad 13", icono: "📐", url: "actividad13" }
     ];
 
-    const grid = document.getElementById('activities-grid');
+    // 2. Juegos de Concentración
+    const juegosConcentracion = [
+      { titulo: "Actividad 6: SUDOKU 4X4 (FIGURAS)", icono: "🍄", url: "actividad6.html" },
+      { titulo: "Actividad 7: MEMORIA", icono: "🃏", url: "actividad7" },
+      { titulo: "Actividad 8: SUDOKU 6X6", icono: "🔢", url: "actividad8" },
+      { titulo: "Actividad 9: TETRIS", icono: "🧩", url: "actividad9" },
+      { titulo: "Actividad 10: Cazapalabras", icono: "🔍", url: "actividad10" }
+    ];
 
-    actividades.forEach(act => {
-      const card = document.createElement('a');
-      card.className = 'card';
-      card.href = act.url;
-      card.innerHTML = `${act.icono} <span>${act.titulo}</span>`;
-      grid.appendChild(card);
-    });
+    function renderCards(lista, containerId, isGame = false) {
+      const container = document.getElementById(containerId);
+      lista.forEach(act => {
+        const card = document.createElement('a');
+        card.className = isGame ? 'card card-game' : 'card';
+        card.href = act.url;
+        card.innerHTML = `
+          <span class="icon">${act.icono}</span>
+          <span>${act.titulo}</span>
+          ${isGame ? '<span class="badge">Concentración</span>' : ''}
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Renderizado de ambas secciones
+    renderCards(actividadesAprendizaje, 'learning-grid', false);
+    renderCards(juegosConcentracion, 'concentration-grid', true);
   </script>
 
 </body>
