@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>USO DE LAS MAYÚSCULAS - Actividad Interactiva RAE</title>
+  <title>USO DE LAS MAYÚSCULAS - Actividad Interactiva para Niños</title>
   <style>
     :root {
       --bg-color: #f4f7f6;
@@ -51,7 +51,7 @@
     h1 {
       color: var(--primary);
       text-align: center;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       margin-bottom: 15px;
       font-size: 1.8em;
     }
@@ -72,6 +72,7 @@
     .theory-box ul {
       margin-left: 20px;
       margin-top: 5px;
+      line-height: 1.5;
     }
 
     .instruction {
@@ -81,6 +82,7 @@
       padding: 12px 15px;
       border-left: 4px solid #ffca28;
       border-radius: 4px;
+      font-weight: 600;
     }
 
     /* Ejercicios */
@@ -96,7 +98,7 @@
     .exercise-header {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 12px;
     }
 
@@ -165,7 +167,7 @@
       gap: 10px;
     }
 
-    button, .btn-home {
+    button {
       background-color: var(--primary);
       color: white;
       border: none;
@@ -174,14 +176,9 @@
       font-weight: bold;
       cursor: pointer;
       transition: background-color 0.2s;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.95em;
     }
 
-    button:hover, .btn-home:hover {
+    button:hover {
       background-color: #4a5c6e;
     }
 
@@ -213,21 +210,19 @@
 
 <div class="container">
   <header id="top">
-    <h1>USO DE MAYÚSCULAS SEGÚN LA RAE</h1>
+    <h1>REGLAS DE LAS MAYÚSCULAS Y MINÚSCULAS</h1>
     
     <div class="theory-box">
-      <h3>Reglas ortográficas esenciales:</h3>
+      <h3>Reglas sencillas para recordar:</h3>
       <ul>
-        <li><strong>Cargos y títulos:</strong> Se escriben en <strong>minúscula</strong> (<em>el rey, el papa, el presidente, la ministra</em>).</li>
-        <li><strong>Nombres propios y topónimos:</strong> Llevan <strong>mayúscula inicial</strong> (<em>García, Madrid, América</em>).</li>
-        <li><strong>Títulos de obras:</strong> Solo la primera palabra y los nombres propios llevan mayúscula (<em>Cien años de soledad</em>).</li>
-        <li><strong>Días, meses y estaciones:</strong> Se escriben en <strong>minúscula</strong> (<em>lunes, mayo, primavera</em>).</li>
-        <li><strong>Festividades e Instituciones:</strong> Llevan <strong>mayúscula</strong> (<em>Navidad, el Gobierno, Estado</em>).</li>
+        <li><strong>Llevan MAYÚSCULA:</strong> Nombres de personas, mascotas, países, ciudades, festividades e instituciones (<em>Carlos, Firulais, Perú, Navidad, Colegio</em>).</li>
+        <li><strong>Llevan MINÚSCULA:</strong> Profesiones u oficios (<em>profesor, médica, presidente, rey</em>), días de la semana, meses y estaciones del año (<em>lunes, mayo, verano</em>).</li>
+        <li><strong>Títulos de libros o películas:</strong> Solo lleva mayúscula la <strong>primera palabra</strong> y los nombres propios (<em>El rey león</em>).</li>
       </ul>
     </div>
 
     <div class="instruction">
-      <strong>Indicación:</strong> Escribe la corrección ortográfica o la oración ajustada según la norma de la RAE.
+      Indicación: Lee cada ejercicio y escribe la palabra o título corregido en la caja de texto.
     </div>
   </header>
 
@@ -235,7 +230,7 @@
 
   <div class="controls">
     <button id="prev-btn" onclick="changePage(-1)">Anterior</button>
-    <a href="https://augustoanibal.github.io/fernandoact/index.html" class="btn-home">🏠 Inicio</a>
+    <button class="btn-home" onclick="goToHome()">🏠 Inicio</button>
     <span class="page-indicator" id="page-indicator">Página 1 de 8</span>
     <button id="next-btn" onclick="changePage(1)">Siguiente</button>
   </div>
@@ -243,220 +238,220 @@
 
 <script>
   const exercises = [
-    // PÁGINA 1: Cargos y Títulos (Regla de minúscula RAE)
+    // PÁGINA 1: Profesiones y Cargos (Siempre en minúscula)
     { 
-      prompt: "Corrige la palabra en negrita:<br>«El <strong>Presidente</strong> dio un discurso ayer.»", 
-      correct: ["presidente", "El presidente dio un discurso ayer.", "El presidente dio un discurso ayer"], 
-      note: "Correcto: los cargos y títulos se escriben en minúscula." 
+      prompt: "Escribe la palabra destacada correctamente:<br>«El <strong>Presidente</strong> dio un mensaje a los niños.»", 
+      correct: ["presidente"], 
+      note: "¡Correcto! Los cargos como presidente o rey van con minúscula." 
     },
     { 
-      prompt: "Corrige la palabra en negrita:<br>«Ayer recibimos la visita del <strong>Papa</strong> en el Vaticano.»", 
-      correct: ["papa", "Ayer recibimos la visita del papa en el Vaticano.", "Ayer recibimos la visita del papa en el Vaticano"], 
-      note: "Correcto: en minúscula cargos y títulos religiosos." 
+      prompt: "Escribe la palabra destacada correctamente:<br>«Ayer fuimos al consultorio del <strong>Doctor</strong> Pérez.»", 
+      correct: ["doctor"], 
+      note: "¡Muy bien! Las profesiones se escriben con minúscula." 
     },
     { 
-      prompt: "Corrige la palabra en negrita:<br>«El <strong>Rey</strong> Felipe VI asistió al evento.»", 
-      correct: ["rey", "El rey Felipe VI asistió al evento.", "El rey Felipe VI asistió al evento"], 
-      note: "Correcto: en minúscula cargos y títulos monárquicos." 
+      prompt: "Escribe la palabra destacada correctamente:<br>«La <strong>Profesora</strong> de arte explicó la clase.»", 
+      correct: ["profesora"], 
+      note: "¡Excelente! Las profesiones u oficios van con minúscula." 
     },
     { 
-      prompt: "Corrige la palabra en negrita:<br>«La <strong>Ministra</strong> de Educación firmó el acuerdo.»", 
-      correct: ["ministra", "La ministra de Educación firmó el acuerdo.", "La ministra de Educación firmó el acuerdo"], 
-      note: "Correcto: en minúscula cargos públicos y políticos." 
+      prompt: "Escribe la palabra destacada correctamente:<br>«El <strong>Rey</strong> de España visitó la escuela.»", 
+      correct: ["rey"], 
+      note: "¡Correcto! 'Rey' o 'reina' van con minúscula." 
     },
     { 
-      prompt: "Corrige la palabra en negrita:<br>«Nos atendió el <strong>Doctor</strong> García en su consultorio.»", 
-      correct: ["doctor", "Nos atendió el doctor García en su consultorio.", "Nos atendió el doctor García en su consultorio"], 
-      note: "Correcto: los tratamientos o profesiones van en minúscula." 
-    },
-
-    // PÁGINA 2: Meses, Días y Estaciones
-    { 
-      prompt: "Corrige si es necesario:<br>«La reunión será el próximo <strong>Lunes</strong> por la tarde.»", 
-      correct: ["lunes", "La reunión será el próximo lunes por la tarde.", "La reunión será el próximo lunes por la tarde"], 
-      note: "Correcto: los días de la semana van en minúscula." 
-    },
-    { 
-      prompt: "Corrige si es necesario:<br>«Nací en el mes de <strong>Mayo</strong>.»", 
-      correct: ["mayo", "Nací en el mes de mayo.", "Nací en el mes de mayo"], 
-      note: "Correcto: los meses del año se escriben en minúscula." 
-    },
-    { 
-      prompt: "Corrige si es necesario:<br>«Me encanta viajar durante la <strong>Primavera</strong>.»", 
-      correct: ["primavera", "Me encanta viajar durante la primavera.", "Me encanta viajar durante la primavera"], 
-      note: "Correcto: las estaciones del año van en minúscula." 
-    },
-    { 
-      prompt: "Corrige si es necesario:<br>«El 12 de <strong>Octubre</strong> es una fecha destacada.»", 
-      correct: ["octubre", "El 12 de octubre es una fecha destacada.", "El 12 de octubre es una fecha destacada"], 
-      note: "Correcto: en minúscula meses salvo en nombres propios de festividades." 
-    },
-    { 
-      prompt: "Corrige si es necesario:<br>«Iremos al campo el <strong>Sábado</strong>.»", 
-      correct: ["sábado", "sabado", "Iremos al campo el sábado.", "Iremos al campo el sábado"], 
-      note: "Correcto: en minúscula los días de la semana." 
+      prompt: "Escribe la palabra destacada correctamente:<br>«La <strong>Alcaldesa</strong> saludó a los vecinos.»", 
+      correct: ["alcaldesa"], 
+      note: "¡Muy bien! Los cargos públicos van en minúscula." 
     },
 
-    // PÁGINA 3: Títulos de Obras Literarias y Artísticas
+    // PÁGINA 2: Días, Meses y Estaciones (Siempre en minúscula)
     { 
-      prompt: "Escribe correctamente el título del libro:<br>«Leí <strong>Cien Años De Soledad</strong> en la escuela.»", 
+      prompt: "Escribe correctamente el día de la semana:<br>«El próximo <strong>Lunes</strong> iremos de excursión.»", 
+      correct: ["lunes"], 
+      note: "¡Correcto! Los días de la semana van en minúscula." 
+    },
+    { 
+      prompt: "Escribe correctamente el mes del año:<br>«Mi cumpleaños es en el mes de <strong>Mayo</strong>.»", 
+      correct: ["mayo"], 
+      note: "¡Muy bien! Los meses del año se escriben con minúscula." 
+    },
+    { 
+      prompt: "Escribe correctamente la estación del año:<br>«Me gusta comer helado en <strong>Verano</strong>.»", 
+      correct: ["verano"], 
+      note: "¡Excelente! Las estaciones (verano, invierno, etc.) van con minúscula." 
+    },
+    { 
+      prompt: "Escribe correctamente el mes:<br>«Celebraremos Halloween en <strong>Octubre</strong>.»", 
+      correct: ["octubre"], 
+      note: "¡Correcto! Los meses del año se escriben con minúscula." 
+    },
+    { 
+      prompt: "Escribe correctamente el día:<br>«Jugamos al fútbol todos los <strong>Sábados</strong>.»", 
+      correct: ["sábados", "sabados", "sábado", "sabado"], 
+      note: "¡Muy bien! Los días de la semana no llevan mayúscula." 
+    },
+
+    // PÁGINA 3: Libros, Películas y Cuentos
+    { 
+      prompt: "Escribe correctamente el título de la película:<br>«Ayer vi la película <strong>El Rey León</strong>.»", 
+      correct: ["El rey león"], 
+      note: "¡Correcto! En títulos de películas, solo la primera palabra lleva mayúscula." 
+    },
+    { 
+      prompt: "Escribe correctamente el título del libro:<br>«Leímos el libro <strong>Cien Años De Soledad</strong>.»", 
       correct: ["Cien años de soledad"], 
-      note: "Correcto: en títulos de obras solo la primera palabra y nombres propios llevan mayúscula." 
+      note: "¡Muy bien! En títulos de libros solo la primera palabra va con mayúscula." 
     },
     { 
-      prompt: "Escribe correctamente el título de la novela:<br>«Analizamos <strong>El Ingenioso Hidalgo Don Quijote De La Mancha</strong>.»", 
-      correct: ["El ingenioso hidalgo don Quijote de la Mancha", "El ingenioso hidalgo Don Quijote de la Mancha"], 
-      note: "Correcto: mayúscula inicial solo en la primera palabra y nombres propios del título." 
+      prompt: "Escribe correctamente el título del cuento:<br>«Nos contaron el cuento de <strong>Caperucita Roja</strong>.»", 
+      correct: ["Caperucita Roja"], 
+      note: "¡Correcto! Aquí 'Roja' también lleva mayúscula porque es el nombre propio del personaje." 
     },
     { 
-      prompt: "Escribe correctamente el título del cuadro:<br>«Admiramos <strong>La Gioconda</strong> en la exposición.»", 
-      correct: ["La Gioconda"], 
-      note: "Correcto: mayúscula inicial en títulos de obras de arte." 
+      prompt: "Escribe correctamente el título de la película:<br>«Fuimos a ver <strong>Buscando A Nemo</strong>.»", 
+      correct: ["Buscando a Nemo"], 
+      note: "¡Excelente! 'Buscando' es la primera palabra y 'Nemo' es un nombre propio." 
     },
     { 
-      prompt: "Escribe correctamente el título de la película:<br>«Fuimos a ver <strong>El Señor De Los Anillos</strong>.»", 
-      correct: ["El señor de los anillos"], 
-      note: "Correcto: solo mayúscula en la palabra inicial en títulos de películas." 
-    },
-    { 
-      prompt: "Escribe correctamente el título de la canción:<br>«Escuchamos <strong>Himno A La Alegría</strong>.»", 
+      prompt: "Escribe correctamente el título de la canción:<br>«En el coro cantamos <strong>Himno A La Alegría</strong>.»", 
       correct: ["Himno a la alegría"], 
-      note: "Correcto: solo mayúscula inicial en títulos de canciones." 
+      note: "¡Muy bien! Solo la primera palabra lleva mayúscula inicial." 
     },
 
-    // PÁGINA 4: Festividades y Acontecimientos Históricos
+    // PÁGINA 4: Fiestas y Fechas Especiales
     { 
-      prompt: "Corrige la palabra de la festividad:<br>«Celebraremos la <strong>navidad</strong> en familia.»", 
-      correct: ["Navidad", "Celebraremos la Navidad en familia.", "Celebraremos la Navidad en familia"], 
-      note: "Correcto: las festividades religiosas o civiles llevan mayúscula inicial." 
+      prompt: "Escribe correctamente el nombre de la festividad:<br>«Celebraremos la <strong>navidad</strong> en familia.»", 
+      correct: ["Navidad"], 
+      note: "¡Correcto! Los nombres de las festividades siempre llevan mayúscula." 
     },
     { 
-      prompt: "Corrige la denominación conmemorativa:<br>«Se conmemora el <strong>día de la independencia</strong>.»", 
+      prompt: "Escribe la fecha especial correctamente:<br>«Celebramos el <strong>día de la independencia</strong>.»", 
       correct: ["Día de la Independencia"], 
-      note: "Correcto: sustantivos y adjetivos de festividades llevan mayúscula." 
+      note: "¡Muy bien! Las fechas patrias o festivas llevan mayúscula." 
     },
     { 
-      prompt: "Corrige el acontecimiento histórico:<br>«Estudiamos la <strong>segunda guerra mundial</strong>.»", 
-      correct: ["Segunda Guerra Mundial"], 
-      note: "Correcto: los acontecimientos históricos relevantes van en mayúscula." 
-    },
-    { 
-      prompt: "Corrige la época/movimiento cultural:<br>«El esplendor del <strong>renacimiento</strong> influyó en el arte.»", 
-      correct: ["Renacimiento"], 
-      note: "Correcto: grandes épocas o movimientos culturales llevan mayúscula." 
-    },
-    { 
-      prompt: "Corrige el nombre de la festividad:<br>«Pasaremos el <strong>año nuevo</strong> en la playa.»", 
+      prompt: "Escribe el nombre de la fiesta:<br>«Comeremos uvas en <strong>año nuevo</strong>.»", 
       correct: ["Año Nuevo"], 
-      note: "Correcto: las festividades oficiales llevan mayúscula inicial." 
+      note: "¡Excelente! 'Año Nuevo' se escribe con mayúsculas." 
+    },
+    { 
+      prompt: "Escribe el evento histórico:<br>«En historia estudiamos la <strong>segunda guerra mundial</strong>.»", 
+      correct: ["Segunda Guerra Mundial"], 
+      note: "¡Correcto! Los hechos históricos importantes llevan mayúscula." 
+    },
+    { 
+      prompt: "Escribe la festividad:<br>«En abril celebramos el <strong>día del niño</strong>.»", 
+      correct: ["Día del Niño"], 
+      note: "¡Muy bien! Las celebraciones especiales se escriben con mayúscula." 
     },
 
-    // PÁGINA 5: Geografía y Topónimos
+    // PÁGINA 5: Lugares, Ríos y Montañas
     { 
-      prompt: "Corrige si es necesario el accidente geográfico:<br>«Cruzamos el <strong>océano pacífico</strong> en barco.»", 
-      correct: ["océano Pacífico", "oceano Pacifico"], 
-      note: "Correcto: genérico en minúscula ('océano') y nombre propio en mayúscula ('Pacífico')." 
-    },
-    { 
-      prompt: "Corrige si es necesario:<br>«Visitaremos la <strong>cordillera de los andes</strong>.»", 
-      correct: ["cordillera de los Andes"], 
-      note: "Correcto: sustantivo común en minúscula ('cordillera') y topónimo en mayúscula ('Andes')." 
-    },
-    { 
-      prompt: "Corrige si es necesario:<br>«Navegamos por el <strong>río amazonas</strong>.»", 
+      prompt: "Escribe correctamente el nombre del río:<br>«Navegamos por el <strong>río amazonas</strong>.»", 
       correct: ["río Amazonas", "rio Amazonas"], 
-      note: "Correcto: 'río' en minúscula y el nombre propio 'Amazonas' en mayúscula." 
+      note: "¡Correcto! La palabra 'río' va en minúscula y el nombre 'Amazonas' con mayúscula." 
     },
     { 
-      prompt: "Corrige la ciudad:<br>«Nos hospedamos en <strong>buenos aires</strong>.»", 
-      correct: ["Buenos Aires"], 
-      note: "Correcto: en mayúscula los nombres propios de ciudades." 
-    },
-    { 
-      prompt: "Corrige si es necesario:<br>«El pico más alto es el <strong>monte everest</strong>.»", 
+      prompt: "Escribe el nombre de la montaña:<br>«Subieron al <strong>monte everest</strong>.»", 
       correct: ["monte Everest"], 
-      note: "Correcto: 'monte' en minúscula y 'Everest' con mayúscula inicial." 
+      note: "¡Muy bien! 'monte' va en minúscula y 'Everest' en mayúscula." 
+    },
+    { 
+      prompt: "Escribe el nombre de la ciudad:<br>«Mi primo vive en <strong>buenos aires</strong>.»", 
+      correct: ["Buenos Aires"], 
+      note: "¡Excelente! Los nombres de ciudades van con mayúscula inicial." 
+    },
+    { 
+      prompt: "Escribe el nombre del océano:<br>«Cruzamos el <strong>océano pacífico</strong>.»", 
+      correct: ["océano Pacífico", "oceano Pacifico"], 
+      note: "¡Correcto! 'océano' va en minúscula y 'Pacífico' con mayúscula." 
+    },
+    { 
+      prompt: "Escribe el nombre de las montañas:<br>«Los viajeros cruzaron la <strong>cordillera de los andes</strong>.»", 
+      correct: ["cordillera de los Andes"], 
+      note: "¡Muy bien! 'cordillera' va en minúscula y 'Andes' con mayúscula." 
     },
 
-    // PÁGINA 6: Instituciones y Mayúscula Diacrítica
+    // PÁGINA 6: Escuelas e Instituciones
     { 
-      prompt: "Corrige la palabra referida a la entidad política:<br>«El <strong>estado</strong> debe velar por los derechos.»", 
-      correct: ["Estado"], 
-      note: "Correcto: 'Estado' lleva mayúscula cuando refiere a la institución política soberana." 
+      prompt: "Escribe correctamente el nombre de la escuela:<br>«Estudio en el <strong>colegio san martín</strong>.»", 
+      correct: ["Colegio San Martín", "Colegio San Martin"], 
+      note: "¡Correcto! Los nombres completos de escuelas o colegios llevan mayúscula." 
     },
     { 
-      prompt: "Corrige la palabra referida al órgano ejecutivo:<br>«Sometieron la propuesta al <strong>gobierno</strong>.»", 
-      correct: ["Gobierno"], 
-      note: "Correcto: 'Gobierno' en mayúscula al referirse al órgano ejecutivo del Estado." 
-    },
-    { 
-      prompt: "Corrige el nombre de la institución:<br>«Estudió en la <strong>real academia española</strong>.»", 
-      correct: ["Real Academia Española"], 
-      note: "Correcto: en mayúscula todas las palabras significativas de instituciones." 
-    },
-    { 
-      prompt: "Corrige el cuerpo/institución militar:<br>«Se incorporó a la <strong>marina</strong> nacional.»", 
-      correct: ["Marina"], 
-      note: "Correcto: en mayúscula cuando hace referencia a la institución armada." 
-    },
-    { 
-      prompt: "Corrige la institución educativa:<br>«Ingresó a la <strong>universidad nacional</strong>.»", 
+      prompt: "Escribe el nombre de la institución:<br>«Mi hermana estudia en la <strong>universidad nacional</strong>.»", 
       correct: ["Universidad Nacional"], 
-      note: "Correcto: mayúscula inicial en nombres de centros e instituciones educativas." 
+      note: "¡Excelente! Las universidades llevan mayúscula inicial." 
+    },
+    { 
+      prompt: "Escribe la institución militar:<br>«El marinero sirve en la <strong>marina</strong> del país.»", 
+      correct: ["Marina"], 
+      note: "¡Muy bien! Cuando es la institución oficial lleva mayúscula." 
+    },
+    { 
+      prompt: "Escribe correctamente la palabra destacada:<br>«El <strong>gobierno</strong> inauguró un nuevo parque.»", 
+      correct: ["Gobierno"], 
+      note: "¡Correcto! Al referirse a la institución del país va con mayúscula." 
+    },
+    { 
+      prompt: "Escribe la institución de la lengua española:<br>«Consultamos la duda en la <strong>real academia española</strong>.»", 
+      correct: ["Real Academia Española"], 
+      note: "¡Excelente! Es el nombre oficial de la institución." 
     },
 
-    // PÁGINA 7: Sobrenombres, Apodos y Mayúscula Inicial
+    // PÁGINA 7: Mascotas, Apodos y Cursos
     { 
-      prompt: "Corrige el apodo histórico:<br>«Alfonso X el <strong>sabio</strong> promovió las letras.»", 
-      correct: ["Sabio"], 
-      note: "Correcto: en mayúscula los apodos y sobrenombres." 
+      prompt: "Escribe el nombre del perro:<br>«Mi perrito se llama <strong>firulais</strong>.»", 
+      correct: ["Firulais"], 
+      note: "¡Correcto! Los nombres de mascotas son nombres propios y llevan mayúscula." 
     },
     { 
-      prompt: "Corrige el sobrenombre antonomástico:<br>«El <strong>fénix de los ingenios</strong> escribió teatro.»", 
-      correct: ["Fénix de los Ingenios"], 
-      note: "Correcto: mayúscula en los sobrenombres o antonomasias." 
+      prompt: "Escribe la asignatura o curso escolar:<br>«Mañana tenemos examen de <strong>matemáticas</strong>.»", 
+      correct: ["Matemáticas", "Matematicas"], 
+      note: "¡Muy bien! Los cursos o materias del colegio llevan mayúscula." 
     },
     { 
-      prompt: "Corrige la asignatura escolar oficial:<br>«Aprobé el examen de <strong>matemáticas</strong>.»", 
-      correct: ["Matemáticas", "matematicas"], 
-      note: "Correcto: en mayúscula las materias o asignaturas de planes de estudio." 
+      prompt: "Escribe el nombre del famoso héroe:<br>«El caballero de la noche es el apodo de <strong>batman</strong>.»", 
+      correct: ["Batman"], 
+      note: "¡Excelente! Los nombres propios llevan mayúscula." 
     },
     { 
-      prompt: "Corrige el nombre propio del animal:<br>«Don Quijote montaba a su caballo <strong>rocinante</strong>.»", 
-      correct: ["Rocinante"], 
-      note: "Correcto: los nombres propios de animales se escriben con mayúscula inicial." 
+      prompt: "Escribe la palabra tras los dos puntos de un saludo:<br>«Querido amigo:<br><strong>te</strong> escribo para invitarte...»", 
+      correct: ["Te"], 
+      note: "¡Correcto! Después del saludo con dos puntos en una carta se empieza con mayúscula." 
     },
     { 
-      prompt: "Corrige la palabra inicial tras el saludo formal:<br>«Estimado profesor:<br><strong>le</strong> escribo esta carta...»", 
-      correct: ["Le"], 
-      note: "Correcto: tras dos puntos en el encabezamiento de una carta se inicia con mayúscula." 
+      prompt: "Escribe el nombre de la mascota:<br>«El gato de mi abuela se llama <strong>pelusa</strong>.»", 
+      correct: ["Pelusa"], 
+      note: "¡Muy bien! Los nombres dados a las mascotas llevan mayúscula." 
     },
 
-    // PÁGINA 8: Repaso de casos de duda frecuente
+    // PÁGINA 8: Repaso de Dudas Frecuentes
     { 
-      prompt: "Corrige si es necesario:<br>«El escritor <strong>Español</strong> publicó un libro.»", 
+      prompt: "Escribe la nacionalidad correctamente:<br>«El atleta <strong>Español</strong> ganó la medalla.»", 
       correct: ["español", "espanol"], 
-      note: "Correcto: los gentilicios van siempre en minúscula." 
+      note: "¡Muy bien! La nacionalidad (gentilicio) se escribe con minúscula." 
     },
     { 
-      prompt: "Corrige si es necesario:<br>«Estamos aprendiendo <strong>Inglés</strong>.»", 
+      prompt: "Escribe el idioma correctamente:<br>«En mi colegio estamos aprendiendo <strong>Inglés</strong>.»", 
       correct: ["inglés", "ingles"], 
-      note: "Correcto: los nombres de idiomas se escriben en minúscula." 
+      note: "¡Correcto! Los nombres de los idiomas se escriben en minúscula." 
     },
     { 
-      prompt: "Corrige si es necesario:<br>«Profesa la religión <strong>Católica</strong>.»", 
-      correct: ["católica", "catolica"], 
-      note: "Correcto: en minúscula las religiones o doctrinas religiosas." 
-    },
-    { 
-      prompt: "Corrige en contexto astronómico estricto:<br>«La Tierra gira alrededor del <strong>sol</strong>.»", 
+      prompt: "Escribe la palabra en contexto astronómico:<br>«Los planetas giran alrededor del <strong>sol</strong>.»", 
       correct: ["Sol"], 
-      note: "Correcto: en contextos astronómicos los cuerpos celestes llevan mayúscula." 
+      note: "¡Excelente! Hablando de astronomía y ciencia, 'Sol' lleva mayúscula." 
     },
     { 
-      prompt: "Corrige si se refiere al edificio o templo físico:<br>«Nos encontramos frente a la <strong>Iglesia</strong> del pueblo.»", 
+      prompt: "Escribe el edificio físico:<br>«Nos encontramos frente a la <strong>Iglesia</strong> de la ciudad.»", 
       correct: ["iglesia"], 
-      note: "Correcto: en minúscula cuando se refiere al edificio o templo físico." 
+      note: "¡Correcto! Si hablas del edificio o templo de piedra va con minúscula." 
+    },
+    { 
+      prompt: "Escribe el nombre del planeta:<br>«Vivimos en el planeta <strong>tierra</strong>.»", 
+      correct: ["Tierra"], 
+      note: "¡Muy bien! El nombre de nuestro planeta lleva mayúscula inicial." 
     }
   ];
 
@@ -485,7 +480,7 @@
           <span>&rightarrow;</span>
           <input type="text" 
                  id="input-${globalIndex}" 
-                 placeholder="Escribe la corrección..." 
+                 placeholder="Escribe la respuesta..." 
                  oninput="checkAnswer(${globalIndex})"
                  autocomplete="off">
           <div id="tag-${globalIndex}" class="feedback-tag">
@@ -528,7 +523,9 @@
   }
 
   function goToHome() {
-    window.location.href = "https://augustoanibal.github.io/fernandoact/index.html";
+    currentPage = 0;
+    renderPage();
+    document.getElementById('top').scrollIntoView({ behavior: 'smooth' });
   }
 
   renderPage();
